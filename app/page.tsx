@@ -493,9 +493,9 @@ export default function Home() {
                     </div>
                     <div className="flex-none mt-auto">
                       <div className="flex items-center text-sm text-gray-500 mb-4">
-                        <span>May 15, 2024</span>
+                        <span>April 16, 2025</span>
                         <span className="mx-2">•</span>
-                        <span>6 min read</span>
+                        <span>10 min read</span>
                       </div>
                       <Link
                         href="/blog/uv-fastest-python-package-manager"
@@ -517,14 +517,14 @@ export default function Home() {
                     </div>
                     <div className="flex-grow">
                       <p className="text-gray-500 dark:text-gray-400 mb-4">
-                        Learn how to use LangChain's MCP SDK to manage and control AI models effectively.
+                      A beginner's guide to the Model Control Protocol in AI agents with LangChain, Gemini and Python-MCP SDK.
                       </p>
                     </div>
                     <div className="flex-none mt-auto">
                       <div className="flex items-center text-sm text-gray-500 mb-4">
-                        <span>June 1, 2024</span>
+                        <span>April 16, 2025</span>
                         <span className="mx-2">•</span>
-                        <span>12 min read</span>
+                        <span>10 min read</span>
                       </div>
                       <Link
                         href="/blog/mcp-model-control-protocol"

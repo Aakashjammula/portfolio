@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator"
 const blogPosts = {
   "uv-fastest-python-package-manager": {
     title: "uv: The Fastest Python Package Manager for Python",
-    date: "May 15, 2024",
+    date: "April 16, 2025",
     content: [
       {
         type: "heading",
@@ -233,194 +233,214 @@ const blogPosts = {
     ],
   },
   "mcp-model-control-protocol": {
-    title: "Understanding MCP (Model Control Protocol) and Using LangChain MCP SDK",
-    date: "June 1, 2024",
+    title: "Beginner's Guide to MCP with LangChain and Gemini",
+    date: "April 16, 2025",
     content: [
       {
-        type: "heading",
-        level: 1,
-        content: "Understanding MCP (Model Control Protocol) and Using LangChain MCP SDK",
-        id: "understanding-mcp",
+        "type": "heading",
+        "level": 1,
+        "content": "Beginner's Guide to MCP with LangChain and Gemini",
+        "id": "beginners-guide-to-mcp"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "What is MCP?",
-        id: "what-is-mcp",
+        "type": "heading",
+        "level": 2,
+        "content": "What is MCP?",
+        "id": "what-is-mcp"
       },
       {
-        type: "paragraph",
-        content:
-          "Model Control Protocol (MCP) is a standardized protocol for interacting with and controlling AI models. It provides a unified interface to manage different AI models regardless of their underlying architecture or framework.",
+        "type": "paragraph",
+        "content": "MCP (Model Control Protocol) is a standard way for language models to interact with external tools like web search, calculators, or databases in a structured and clean manner."
       },
       {
-        type: "heading",
-        level: 3,
-        content: "Key Features of MCP:",
-        id: "key-features-of-mcp",
+        "type": "paragraph",
+        "content": "It acts like a bridge between the model and the tools, making communication modular and manageable."
       },
       {
-        type: "list",
-        style: "unordered",
-        items: [
-          "Standardized model interaction",
-          "Model lifecycle management",
-          "Performance monitoring",
-          "Unified API across different model types",
-          "Scalable deployment options",
-        ],
+        "type": "heading",
+        "level": 2,
+        "content": "Why Use MCP in Agents?",
+        "id": "why-use-mcp-in-agents"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Why Use MCP with LangChain?",
-        id: "why-use-mcp-with-langchain",
+        "type": "list",
+        "style": "unordered",
+        "items": [
+          "Separates model logic from tool logic",
+          "Allows AI agents to decide when and how to use tools",
+          "Keeps the system modular, scalable, and easier to maintain",
+          "Works great with agent frameworks like LangChain"
+        ]
       },
       {
-        type: "paragraph",
-        content: "LangChain's MCP SDK provides several benefits:",
+        "type": "paragraph",
+        "content": "In short, MCP makes your AI agent smarter and more capable by letting it access external knowledge or functionalities as needed."
       },
       {
-        type: "list",
-        style: "unordered",
-        items: [
-          "Simplified integration with various AI models",
-          "Consistent interface across different providers",
-          "Built-in support for common AI workflows",
-          "Easy switching between models",
-          "Enhanced monitoring and control capabilities",
-        ],
+        "type": "divider"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Getting Started with LangChain MCP SDK",
-        id: "getting-started-with-langchain-mcp-sdk",
+        "type": "heading",
+        "level": 2,
+        "content": "Let's Understand This by a Simple Project",
+        "id": "lets-understand-this-by-a-simple-project"
       },
       {
-        type: "heading",
-        level: 3,
-        content: "Installation",
-        id: "installation",
+        "type": "paragraph",
+        "content": "To see MCP in action, let's look at a practical example: the GitHub project mcp_langchain_examples."
       },
       {
-        type: "paragraph",
-        content: "First, install the required packages:",
+        "type": "list",
+        "style": "unordered",
+        "items": [
+          "Uses LangChain to create and manage the agent",
+          "Uses Gemini 2.0 Flash as the base AI model",
+          "Adds DuckDuckGo as an external web search tool",
+          "Uses MCP to connect the model and tools cleanly"
+        ]
       },
       {
-        type: "code",
-        language: "bash",
-        content: "pip install langchain-mcp",
+        "type": "paragraph",
+        "content": "Here's how the project is structured:"
       },
       {
-        type: "heading",
-        level: 3,
-        content: "Basic Usage",
-        id: "basic-usage",
+        "type": "list",
+        "style": "unordered",
+        "items": [
+          "server.py - Implements the MCP server and tool (DuckDuckGo)",
+          "prompt.py - Contains system prompts to guide the AI",
+          "main.py - Runs the agent logic with Gemini and MCP tools",
+          "requirements.txt - Lists Python dependencies"
+        ]
       },
       {
-        type: "paragraph",
-        content: "Here's how to initialize and use the MCP client:",
+        "type": "divider"
       },
       {
-        type: "code",
-        language: "python",
-        content:
-          'from langchain_mcp import MCPClient\n\n# Initialize the client\nmcp = MCPClient(\n    api_key="your_api_key",\n    endpoint="https://api.mcp.example.com"\n)\n\n# List available models\nmodels = mcp.list_models()\nprint("Available models:", models)\n\n# Load a model\nmodel = mcp.load_model(\n    model_id="gpt-4",\n    config={"temperature": 0.7, "max_tokens": 1000}\n)\n\n# Make a prediction\nresponse = model.predict(\n    input_text="Explain MCP protocol in simple terms"\n)\nprint(response)',
+        "type": "heading",
+        "level": 2,
+        "content": "Installation & Setup",
+        "id": "installation-and-setup"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Advanced Features",
-        id: "advanced-features",
+        "type": "heading",
+        "level": 3,
+        "content": "Prerequisites",
+        "id": "prerequisites"
       },
       {
-        type: "heading",
-        level: 3,
-        content: "Model Monitoring",
-        id: "model-monitoring",
+        "type": "list",
+        "style": "unordered",
+        "items": [
+          "Python 3.8+",
+          "Google API key for Gemini model"
+        ]
       },
       {
-        type: "code",
-        language: "python",
-        content:
-          '# Get model metrics\nmetrics = mcp.get_metrics(model_id="gpt-4")\nprint("Model metrics:", metrics)\n\n# Get usage statistics\nusage = mcp.get_usage()\nprint("Usage stats:", usage)',
+        "type": "heading",
+        "level": 3,
+        "content": "Method 1: Using uv (recommended)",
+        "id": "using-uv"
       },
       {
-        type: "heading",
-        level: 3,
-        content: "Model Configuration",
-        id: "model-configuration",
+        "type": "code",
+        "language": "bash",
+        "content": "# Install uv\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n\n# Create env & install\nuv venv\nuv sync"
       },
       {
-        type: "code",
-        language: "python",
-        content:
-          '# Update model configuration\nupdated_config = mcp.update_config(\n    model_id="gpt-4",\n    config={"temperature": 0.5}\n)\n\n# Get current configuration\ncurrent_config = mcp.get_config(model_id="gpt-4")',
+        "type": "heading",
+        "level": 3,
+        "content": "Method 2: Using pip",
+        "id": "using-pip"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Practical Example: Building a Chat Application",
-        id: "practical-example-building-a-chat-application",
+        "type": "code",
+        "language": "bash",
+        "content": "# Create and activate virtual environment\npython -m venv .venv\nsource .venv/bin/activate\n\n# Install requirements\npip install -r requirements.txt"
       },
       {
-        type: "paragraph",
-        content: "Let's build a simple chat application using MCP:",
+        "type": "paragraph",
+        "content": "Then, create a `.env` file in the root and add your Gemini API key:"
       },
       {
-        type: "code",
-        language: "python",
-        content:
-          'from langchain_mcp import MCPClient\nfrom typing import List, Dict\n\nclass ChatApp:\n    def __init__(self, api_key: str):\n        self.mcp = MCPClient(api_key=api_key)\n        self.model = None\n        self.chat_history: List[Dict] = []\n    \n    def start_chat(self, model_id: str = "gpt-4"):\n        self.model = self.mcp.load_model(\n            model_id=model_id,\n            config={"temperature": 0.7}\n        )\n        print(f"Chat with {model_id} started!")\n    \n    def send_message(self, message: str):\n        if not self.model:\n            raise ValueError("Model not loaded. Call start_chat() first.")\n        \n        # Add user message to history\n        self.chat_history.append({"role": "user", "content": message})\n        \n        # Generate response\n        response = self.model.predict(\n            input_text=message,\n            context=self.chat_history\n        )\n        \n        # Add AI response to history\n        self.chat_history.append({"role": "assistant", "content": response})\n        \n        return response\n\n# Usage\nchat = ChatApp(api_key="your_api_key")\nchat.start_chat()\nprint(chat.send_message("Hello! How are you?"))\nprint(chat.send_message("Can you explain MCP to me?"))',
+        "type": "code",
+        "language": "bash",
+        "content": "GOOGLE_API_KEY=your_api_key_here"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Best Practices",
-        id: "best-practices",
+        "type": "divider"
       },
       {
-        type: "list",
-        style: "ordered",
-        items: [
-          "Error Handling: Always implement proper error handling for API calls",
-          "Rate Limiting: Respect rate limits and implement retry logic",
-          "Context Management: Maintain appropriate context for conversations",
-          "Configuration: Experiment with different model configurations",
-          "Monitoring: Regularly check model metrics and usage",
-        ],
+        "type": "heading",
+        "level": 2,
+        "content": "Running the Project",
+        "id": "running-the-project"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Resources",
-        id: "resources",
+        "type": "code",
+        "language": "bash",
+        "content": "# Start the MCP Server\nuv run ./src/server.py\n\n# In another terminal, run the main app\nuv run ./src/main.py"
       },
       {
-        type: "list",
-        style: "unordered",
-        items: [
-          "MCP LangChain Examples GitHub: https://github.com/Aakashjammula/mcp_langchain_examples",
-          "Official MCP Documentation",
-          "LangChain MCP SDK Documentation",
-        ],
+        "type": "divider"
       },
       {
-        type: "heading",
-        level: 2,
-        content: "Conclusion",
-        id: "conclusion-mcp",
+        "type": "heading",
+        "level": 2,
+        "content": "How It Works",
+        "id": "how-it-works"
       },
       {
-        type: "paragraph",
-        content:
-          "MCP provides a powerful way to standardize interactions with AI models, and the LangChain MCP SDK makes it even easier to integrate into your applications. With its consistent interface and advanced features, you can build robust AI applications while maintaining control over your models.",
+        "type": "list",
+        "style": "unordered",
+        "items": [
+          "User inputs a question",
+          "The agent checks the prompt and decides to use the search tool",
+          "The MCP server handles the DuckDuckGo search",
+          "Results are returned and formatted as a response"
+        ]
       },
       {
-        type: "paragraph",
-        content: "For more examples and detailed implementations, check out the GitHub repository linked above.",
+        "type": "heading",
+        "level": 2,
+        "content": "Example Interaction",
+        "id": "example-interaction"
       },
+      {
+        "type": "code",
+        "language": "bash",
+        "content": "Question: Who is the current CEO of OpenAI?\nAnswer: As of the latest search, the CEO of OpenAI is Sam Altman."
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "content": "Conclusion",
+        "id": "conclusion"
+      },
+      {
+        "type": "paragraph",
+        "content": "MCP brings a structured and scalable way to empower your AI agents. By combining it with LangChain and a capable model like Gemini, you can build smart, flexible, tool-using agents easily. Try out this project and start building your own powerful AI workflows!"
+      },
+      {
+        "type": "links",
+        "items": [
+          {
+            "text": "Project GitHub Repo",
+            "url": "https://github.com/Aakashjammula/mcp_langchain_examples"
+          },
+          {
+            "text": "Learn about LangChain",
+            "url": "https://docs.langchain.com"
+          },
+          {
+            "text": "Explore Gemini API",
+            "url": "https://ai.google.dev/"
+          }
+    ],
+  },
     ],
   },
 }

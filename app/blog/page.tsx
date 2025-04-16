@@ -13,16 +13,16 @@ export default function BlogPage() {
     {
       title: "uv: The Fastest Python Package Manager",
       description:
-        "Discover the blazing fast Python package manager written in Rust that's revolutionizing Python workflows.",
-      date: "May 15, 2024",
-      readTime: "6 min read",
+        "Discover the blazing-fast Python package manager written in Rust that's revolutionizing Python workflows.",
+      date: "April 16, 2025",
+      readTime: "10 min read",
       slug: "uv-fastest-python-package-manager",
     },
     {
-      title: "Understanding Model Control Protocols",
-      description: "Learn how to use LangChain's MCP SDK to manage and control AI models effectively.",
-      date: "June 1, 2024",
-      readTime: "12 min read",
+      title: "Beginner's Guide to MCP with LangChain and Gemini",
+      description: "A beginner's guide to the Model Control Protocol in AI agents with LangChain, Gemini and Python-MCP SDK.",
+      date: "April 16, 2025",
+      readTime: "10 min read",
       slug: "mcp-model-control-protocol",
     },
   ]
