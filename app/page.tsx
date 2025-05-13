@@ -11,7 +11,7 @@ import { ProjectCard } from "@/components/project-card"
 import { TechStack } from "@/components/tech-stack"
 import { StatCard } from "@/components/stat-card"
 import { Typewriter } from "@/components/typewriter"
-
+import Timeline from "@/components/Timeline"; // Import the Timeline component
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -307,28 +307,20 @@ export default function Home() {
                 >
                   About Me
                 </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="mt-4 text-gray-500 dark:text-gray-400 text-lg"
-                >
-                  Get to know more about my background and expertise
-                </motion.p>
+
               </motion.div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+              <div className="flex flex-col items-center text-center">
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="space-y-6 order-2 md:order-1"
+                  className="space-y-6 max-w-2xl"
                 >
                   <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="text-gray-500 dark:text-gray-400"
@@ -337,35 +329,19 @@ export default function Home() {
                     complex problems. With expertise in large language models, natural language processing, and software
                     development, I create innovative solutions that push the boundaries of what's possible.
                   </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-gray-500 dark:text-gray-400"
-                  >
-                    My journey in AI began with a fascination for how machines can learn and adapt. Today, I specialize
-                    in developing cutting-edge generative AI applications that transform industries and enhance human
-                    capabilities through the power of large language models.
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-gray-500 dark:text-gray-400"
-                  >
-                    When I'm not coding, you can find me exploring the latest research papers, contributing to
-                    open-source projects, or sharing my knowledge through writing and speaking engagements.
-                  </motion.p>
+
                 </motion.div>
 
+                {/* Timeline Component */}
+                <Timeline />
+
+                {/* Tech Stack Component */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="order-1 md:order-2"
+                  className="mt-12" // Add some margin top
                 >
                   <TechStack />
                 </motion.div>
