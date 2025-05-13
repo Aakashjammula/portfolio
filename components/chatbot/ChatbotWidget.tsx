@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { MessageSquare, X, Send } from "lucide-react" // Removed CornerDownLeft if not used
-import { Button } from "@/components/ui/button" // Keep using your existing Button
+import { MessageSquare, X, Send } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface ChatMessage {
   id: string
@@ -12,68 +12,76 @@ interface ChatMessage {
   timestamp: Date
 }
 
+// simple unique-ID generator
+const getId = () =>
+  `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+
 export function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      id: "1",
+      id: getId(),
       text: "Hello! How can I help you today?",
       sender: "bot",
       timestamp: new Date(),
     },
   ])
   const [inputValue, setInputValue] = useState("")
-  const messagesEndRef = useRef<null | HTMLDivElement>(null)
-  const messagesContainerRef = useRef<null | HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
+  // smooth scroll on new message
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [])
+  useEffect(scrollToBottom, [messages, scrollToBottom])
 
-  const scrollToBottom = () => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-    }
-  }
+  const toggleOpen = () => setIsOpen(o => !o)
 
-  useEffect(scrollToBottom, [messages])
+  const handleSendMessage = useCallback(
+    async (e?: React.FormEvent<HTMLFormElement>) => {
+      e?.preventDefault()
+      const text = inputValue.trim()
+      if (!text || loading) return
 
-  const toggleOpen = () => setIsOpen(!isOpen)
+      // add user msg
+      setMessages(m => [
+        ...m,
+        { id: getId(), text, sender: "user", timestamp: new Date() },
+      ])
+      setInputValue("")
+      setError(null)
+      setLoading(true)
 
-  const handleSendMessage = (e?: React.FormEvent<HTMLFormElement>) => {
-    if (e) e.preventDefault()
-    if (inputValue.trim() === "") return
+      try {
+        const res = await fetch(
+          "https://d951-111-93-231-202.ngrok-free.app/ask",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ q: text, k: 5 }),
+          }
+        )
+        if (!res.ok) throw new Error(`Status ${res.status}`)
+        const { answer } = await res.json()
 
-    const newUserMessage: ChatMessage = {
-      id: Date.now().toString(),
-      text: inputValue,
-      sender: "user",
-      timestamp: new Date(),
-    }
-    setMessages((prev) => [...prev, newUserMessage])
-    setInputValue("")
-
-    // Simulate bot response
-    setTimeout(() => {
-      let botResponseText = "Thanks for your message! I'm a simple bot. Aakash will get back to you if needed."
-      if (inputValue.toLowerCase().includes("hello") || inputValue.toLowerCase().includes("hi")) {
-        botResponseText = "Hi there! How can I assist you further?"
-      } else if (inputValue.toLowerCase().includes("project")) {
-        botResponseText = "You can find Aakash's projects in the 'Projects' section or on GitHub!"
-      } else if (inputValue.toLowerCase().includes("contact")) {
-        botResponseText = "You can contact Aakash via the 'Contact' section or email him directly."
+        setMessages(m => [
+          ...m,
+          { id: getId(), text: answer, sender: "bot", timestamp: new Date() },
+        ])
+      } catch {
+        setError("Oops! Something went wrong.")
+      } finally {
+        setLoading(false)
       }
-
-      const newBotMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: botResponseText,
-        sender: "bot",
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, newBotMessage])
-    }, 1000)
-  }
+    },
+    [inputValue, loading],
+  )
 
   return (
     <>
-      {/* Chat Toggle Button */}
+      {/* Toggle Button */}
       <motion.div
         className="fixed bottom-6 right-6 z-[999]"
         initial={{ scale: 0 }}
@@ -99,17 +107,21 @@ export function ChatbotWidget() {
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="fixed bottom-24 right-6 z-[998] w-full max-w-sm bg-white dark:bg-gray-800 rounded-lg shadow-xl border dark:border-gray-700 flex flex-col overflow-hidden"
-            style={{ height: "min(70vh, 500px)"}} // Responsive height, ensure overflow-hidden on parent
+            style={{ height: "min(70vh, 500px)" }}
           >
             {/* Header */}
             <div className="p-4 border-b dark:border-gray-700 flex-shrink-0">
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Chat with Aakash's Assistant</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Typically replies in a moment</p>
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
+                Chat with Aakash's Assistant
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Typically replies in a moment
+              </p>
             </div>
 
-            {/* Messages Area - Basic Scrollable Div */}
-            <div ref={messagesContainerRef} className="flex-grow p-4 space-y-3 overflow-y-auto">
-              {messages.map((msg) => (
+            {/* Messages */}
+            <div className="flex-grow p-4 space-y-3 overflow-y-auto">
+              {messages.map(msg => (
                 <div
                   key={msg.id}
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
@@ -121,26 +133,54 @@ export function ChatbotWidget() {
                         : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                     }`}
                   >
-                    <p className="break-words">{msg.text}</p> {/* break-words for long text */}
-                     <div className={`text-xs mt-1 ${msg.sender === "user" ? "text-primary-foreground/70 text-right" : "text-gray-400 dark:text-gray-500 text-left"}`}>
-                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <p className="break-words">{msg.text}</p>
+                    <div
+                      className={`text-xs mt-1 ${
+                        msg.sender === "user"
+                          ? "text-primary-foreground/70 text-right"
+                          : "text-gray-400 dark:text-gray-500 text-left"
+                      }`}
+                    >
+                      {msg.timestamp.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </div>
                   </div>
                 </div>
               ))}
-              <div ref={messagesEndRef} /> {/* For scrolling to bottom if needed, though direct scroll on container is used */}
+              <div ref={messagesEndRef} />
+              {loading && (
+                <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+                  …typing
+                </p>
+              )}
+              {error && (
+                <p className="text-center text-xs text-red-500 dark:text-red-400">
+                  {error}
+                </p>
+              )}
             </div>
 
-            {/* Input Area */}
-            <form onSubmit={handleSendMessage} className="p-3 border-t dark:border-gray-700 flex items-center gap-2 flex-shrink-0">
+            {/* Input */}
+            <form
+              onSubmit={handleSendMessage}
+              className="p-3 border-t dark:border-gray-700 flex items-center gap-2 flex-shrink-0"
+            >
               <input
                 type="text"
-                placeholder="Type your message..."
+                placeholder="Type your message…"
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                className="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                onChange={e => setInputValue(e.target.value)}
+                disabled={loading}
+                className="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
               />
-              <Button type="submit" size="icon" className="bg-primary hover:bg-primary/90">
+              <Button
+                type="submit"
+                size="icon"
+                className="bg-primary hover:bg-primary/90"
+                disabled={loading}
+              >
                 <Send className="h-5 w-5" />
                 <span className="sr-only">Send message</span>
               </Button>
