@@ -12,6 +12,7 @@ import { TechStack } from "@/components/tech-stack"
 import { StatCard } from "@/components/stat-card"
 import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline"; // Import the Timeline component
+import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -640,6 +641,7 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+        <ChatbotWidget />
       </footer>
     </div>
   )
