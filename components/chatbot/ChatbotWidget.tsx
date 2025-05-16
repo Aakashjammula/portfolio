@@ -56,7 +56,7 @@ export function ChatbotWidget() {
 
       try {
         const res = await fetch(
-          "https://d951-111-93-231-202.ngrok-free.app/ask",
+          "https://d951-111-93-231-202.ngrok-free.app/ask", // Replace with your actual API endpoint
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -106,8 +106,16 @@ export function ChatbotWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed bottom-24 right-6 z-[998] w-full max-w-sm bg-white dark:bg-gray-800 rounded-lg shadow-xl border dark:border-gray-700 flex flex-col overflow-hidden"
-            style={{ height: "min(70vh, 500px)" }}
+            className={`
+              fixed z-[998] flex flex-col overflow-hidden bg-white dark:bg-gray-800 shadow-xl
+              bottom-0 left-0 right-0 w-full rounded-t-lg border-t dark:border-gray-700 h-[90vh]
+              md:bottom-24 md:right-6 md:left-auto md:max-w-sm md:rounded-lg md:border md:h-[500px] md:max-h-[70vh]
+            `}
+            // The style attribute for height (style={{ height: "min(70vh, 500px)" }})
+            // is removed as Tailwind classes now handle responsive height.
+            // - Mobile (default): h-[90vh] (90% of viewport height).
+            //   Consider h-[90dvh] for better handling of mobile browser dynamic toolbars if your Tailwind setup supports it.
+            // - Desktop (md and up): md:h-[500px] md:max-h-[70vh] effectively achieves min(500px, 70vh).
           >
             {/* Header */}
             <div className="p-4 border-b dark:border-gray-700 flex-shrink-0">
