@@ -56,7 +56,7 @@ export function ChatbotWidget() {
 
       try {
         const res = await fetch(
-          "https://d951-111-93-231-202.ngrok-free.app/ask", // Replace with your actual API endpoint
+          "https://aakashjammula-backend-port.hf.space/ask", // Replace with your actual API endpoint
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
