@@ -264,41 +264,26 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: 0.3 }}
                   className="flex items-center justify-center mt-10 md:mt-0" // Added margin top for mobile
                 >
-                {/* <motion.div
+                <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 6, repeat: Infinity, repeatType: "reverse" }}
-                  className="w-full flex  items-center" // Added flex to center the animation
+                  className="w-full flex justify-start items-center -ml-28"
                 >
-                  <div className="w-2/5 md:w-3/4 lg:w-2/3  paddign">
+                  <div className="w-64 h-64 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px]">
                     <DotLottieReact
                       src="https://lottie.host/f1150457-df05-47b9-b381-fdad41f69e95/9dsj2iV81T.lottie"
                       speed={1}
                       loop
                       autoplay
-                      style={{ width: "270%", height: "200" }}
+                      style={{
+                        width: "280%",
+                        height: "auto",
+                        paddingBottom:"10%",
+                        transform: "translateX(-200px) translateY(-80px)"   // ← add this
+                      }}
                     />
                   </div>
-                </motion.div> */}
-                <motion.div
-  animate={{ y: [0, -10, 0] }}
-  transition={{ duration: 6, repeat: Infinity, repeatType: "reverse" }}
-  className="w-full flex justify-start items-center -ml-28"
->
-  <div className="w-64 h-64 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px]">
-    <DotLottieReact
-      src="https://lottie.host/f1150457-df05-47b9-b381-fdad41f69e95/9dsj2iV81T.lottie"
-      speed={1}
-      loop
-      autoplay
-      style={{
-        width: "280%",
-        height: "auto",
-        paddingBottom:"10%",
-        transform: "translateX(-200px) translateY(-80px)"   // ← add this
-      }}
-    />
-  </div>
-</motion.div>
+                </motion.div>
 
                 </motion.div>
               </motion.div>
@@ -487,6 +472,15 @@ export default function Home() {
                 className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
               >
                 {[
+                  // ===== NEW BLOG POST ADDED HERE =====
+                  {
+                    title: "Supercharge Your Workflow with Google Gemini CLI",
+                    description: "Unlock AI-powered command-line capabilities. Learn how the new Google Gemini CLI lets you bootstrap projects and generate code directly from your terminal.",
+                    date: "May 10, 2025",
+                    readTime: "5 min read",
+                    link: "/blog/supercharge-workflow-google-gemini-cli",
+                  },
+                  // ===== END OF NEW BLOG POST =====
                   {
                     title: "uv: The Fastest Python Package Manager",
                     description: "Discover the blazing fast Python package manager written in Rust that's revolutionizing Python workflows.",

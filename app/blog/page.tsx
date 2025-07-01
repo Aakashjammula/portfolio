@@ -10,6 +10,16 @@ import { BlogCard } from "@/components/blog-card"
 
 export default function BlogPage() {
   const blogPosts = [
+    // ===== NEW BLOG POST ADDED HERE =====
+    {
+      title: "Supercharge Your Workflow with Google Gemini CLI",
+      description:
+        "Unlock AI-powered command-line capabilities. Learn how the new Google Gemini CLI lets you generate code directly from your terminal.",
+      date: "May 10, 2025",
+      readTime: "5 min read",
+      slug: "supercharge-workflow-google-gemini-cli",
+    },
+    // ===== END OF NEW BLOG POST =====
     {
       title: "uv: The Fastest Python Package Manager",
       description:
