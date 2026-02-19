@@ -7,6 +7,9 @@ import { Redis } from "@upstash/redis";
 
 const conversations: Record<string, any[]> = {};
 
+// Allow streaming responses up to 60 seconds
+export const maxDuration = 60; // 60 seconds
+
 // Create a new ratelimiter, that allows 10 requests per 10 hours
 const ratelimit = new Ratelimit({
     redis: Redis.fromEnv(),
@@ -96,7 +99,7 @@ export async function POST(req: NextRequest) {
 
 
         const model = new ChatGoogleGenerativeAI({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.5-flash-lite",
             apiKey: process.env.GOOGLE_API_KEY,
         });
 
