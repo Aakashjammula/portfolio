@@ -56,11 +56,11 @@ export function ChatbotWidget() {
 
       try {
         const res = await fetch(
-          "https://aakashjammula-backend-port.hf.space/ask", // Replace with your actual API endpoint
+          "/api/chat", // Updated API endpoint
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ q: text, k: 5 }),
+            body: JSON.stringify({ q: text }),
           }
         )
         if (!res.ok) throw new Error(`Status ${res.status}`)
@@ -111,11 +111,11 @@ export function ChatbotWidget() {
               bottom-0 left-0 right-0 w-full rounded-t-lg border-t dark:border-gray-700 h-[90vh]
               md:bottom-24 md:right-6 md:left-auto md:max-w-sm md:rounded-lg md:border md:h-[500px] md:max-h-[70vh]
             `}
-            // The style attribute for height (style={{ height: "min(70vh, 500px)" }})
-            // is removed as Tailwind classes now handle responsive height.
-            // - Mobile (default): h-[90vh] (90% of viewport height).
-            //   Consider h-[90dvh] for better handling of mobile browser dynamic toolbars if your Tailwind setup supports it.
-            // - Desktop (md and up): md:h-[500px] md:max-h-[70vh] effectively achieves min(500px, 70vh).
+          // The style attribute for height (style={{ height: "min(70vh, 500px)" }})
+          // is removed as Tailwind classes now handle responsive height.
+          // - Mobile (default): h-[90vh] (90% of viewport height).
+          //   Consider h-[90dvh] for better handling of mobile browser dynamic toolbars if your Tailwind setup supports it.
+          // - Desktop (md and up): md:h-[500px] md:max-h-[70vh] effectively achieves min(500px, 70vh).
           >
             {/* Header */}
             <div className="p-4 border-b dark:border-gray-700 flex-shrink-0">
@@ -135,19 +135,33 @@ export function ChatbotWidget() {
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[75%] p-3 rounded-lg text-sm ${
-                      msg.sender === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                    }`}
-                  >
-                    <p className="break-words">{msg.text}</p>
-                    <div
-                      className={`text-xs mt-1 ${
-                        msg.sender === "user"
-                          ? "text-primary-foreground/70 text-right"
-                          : "text-gray-400 dark:text-gray-500 text-left"
+                    className={`max-w-[75%] p-3 rounded-lg text-sm ${msg.sender === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                       }`}
+                  >
+                    <p className="break-words">
+                      {msg.text.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
+                        part.match(/https?:\/\/[^\s]+/) ? (
+                          <a
+                            key={i}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-blue-500"
+                          >
+                            {part}
+                          </a>
+                        ) : (
+                          part
+                        )
+                      )}
+                    </p>
+                    <div
+                      className={`text-xs mt-1 ${msg.sender === "user"
+                        ? "text-primary-foreground/70 text-right"
+                        : "text-gray-400 dark:text-gray-500 text-left"
+                        }`}
                     >
                       {msg.timestamp.toLocaleTimeString([], {
                         hour: "2-digit",
