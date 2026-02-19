@@ -13,7 +13,7 @@ export const maxDuration = 60; // 60 seconds
 // Create a new ratelimiter, that allows 10 requests per 10 hours
 const ratelimit = new Ratelimit({
     redis: Redis.fromEnv(),
-    limiter: Ratelimit.slidingWindow(10, "10 h"),
+    limiter: Ratelimit.slidingWindow(20, "10 h"),
     analytics: true,
     prefix: "@upstash/ratelimit",
 });
