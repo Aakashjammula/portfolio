@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-npm install --legacy-peer-deps
+npm install
 ```
 
 ## Run
