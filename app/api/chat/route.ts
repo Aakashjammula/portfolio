@@ -1,15 +1,37 @@
-import { ChatGoogle } from "@langchain/google";
-import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
-
+import { ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { Pinecone } from "@pinecone-database/pinecone";
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { HumanMessage, SystemMessage, AIMessage } from "@langchain/core/messages";
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 const conversations: Record<string, any[]> = {};
 
+// Create a new ratelimiter, that allows 10 requests per 10 hours
+const ratelimit = new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(10, "10 h"),
+    analytics: true,
+    prefix: "@upstash/ratelimit",
+});
+
 export async function POST(req: NextRequest) {
     try {
-        const { q, sessionId = "default" } = await req.json();
+        const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+        const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+
+        if (!success) {
+            return NextResponse.json({ error: "Too many requests. Please try again later." }, {
+                status: 429,
+                headers: {
+                    "X-RateLimit-Limit": limit.toString(),
+                    "X-RateLimit-Remaining": remaining.toString(),
+                    "X-RateLimit-Reset": reset.toString(),
+                }
+            });
+        }
+
+        const { q, sessionId = "default", history = [] } = await req.json();
         if (!q) {
             return NextResponse.json({ error: "Message required" }, { status: 400 });
         }
@@ -73,21 +95,35 @@ export async function POST(req: NextRequest) {
         });
 
 
-        const model = new ChatGoogle("gemini-2.5-flash", {
+        const model = new ChatGoogleGenerativeAI({
+            model: "gemini-2.5-flash",
             apiKey: process.env.GOOGLE_API_KEY,
         });
 
         const userMessage = new HumanMessage(q);
 
-        const response = await model.invoke([systemMessage, userMessage]);
+        // Convert history to LangChain messages
+        const historyMessages = history.map((msg: any) => {
+            if (msg.role === "user") return new HumanMessage(msg.parts);
+            return new AIMessage(msg.parts);
+        });
+
+        const response = await model.invoke([systemMessage, ...historyMessages, userMessage]);
 
         conversations[sessionId].push(userMessage, response);
 
         return NextResponse.json({
             answer: response.content,
+        }, {
+            headers: {
+                "X-RateLimit-Limit": limit.toString(),
+                "X-RateLimit-Remaining": remaining.toString(),
+                "X-RateLimit-Reset": reset.toString(),
+            }
         });
 
     } catch (error: any) {
+        console.error("API Error:", error);
         return NextResponse.json(
             { error: error.message },
             { status: 500 }

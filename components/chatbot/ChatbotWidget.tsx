@@ -29,6 +29,7 @@ export function ChatbotWidget() {
   const [inputValue, setInputValue] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [rateLimitInfo, setRateLimitInfo] = useState<{ limit: string | null, remaining: string | null, reset: string | null } | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // smooth scroll on new message
@@ -55,15 +56,40 @@ export function ChatbotWidget() {
       setLoading(true)
 
       try {
+        // Prepare history for API
+        const history = messages.map(msg => ({
+          role: msg.sender === "user" ? "user" : "model",
+          parts: msg.text,
+        }))
+
         const res = await fetch(
-          "/api/chat", // Updated API endpoint
+          "/api/chat",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ q: text }),
+            body: JSON.stringify({ q: text, history }),
           }
         )
-        if (!res.ok) throw new Error(`Status ${res.status}`)
+
+        // Update rate limit info from headers
+        const limit = res.headers.get("X-RateLimit-Limit")
+        const remaining = res.headers.get("X-RateLimit-Remaining")
+        const reset = res.headers.get("X-RateLimit-Reset")
+
+        if (remaining) {
+          // calculated reset time in minutes could be useful
+          setRateLimitInfo({ limit, remaining, reset })
+        }
+
+        if (!res.ok) {
+          if (res.status === 429) {
+            setError("Rate limit exceeded. Please try again later.")
+          } else {
+            throw new Error(`Status ${res.status}`)
+          }
+          return
+        }
+
         const { answer } = await res.json()
 
         setMessages(m => [
@@ -76,17 +102,20 @@ export function ChatbotWidget() {
         setLoading(false)
       }
     },
-    [inputValue, loading],
+    [inputValue, loading, messages],
   )
+
+  // const [showChat, setShowChat] = useState(false) <-- removing this logic
+  // keeping it simple
 
   return (
     <>
       {/* Toggle Button */}
       <motion.div
         className="fixed bottom-6 right-6 z-[999]"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1, duration: 0.5, type: "spring", stiffness: 120 }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
       >
         <Button
           size="icon"
@@ -122,9 +151,13 @@ export function ChatbotWidget() {
               <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
                 Chat with Aakash's Assistant
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Typically replies in a moment
-              </p>
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {rateLimitInfo && (
+                  <span className="block text-[10px] mt-1 text-gray-400">
+                    {rateLimitInfo.remaining} / {rateLimitInfo.limit} requests remaining
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Messages */}
