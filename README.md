@@ -9,7 +9,7 @@ npm install
 ## Run
 
 ```bash
-npm run dev
+npm run build
 ```
 
 Open in browser: http://localhost:3000
