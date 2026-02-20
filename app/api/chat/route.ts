@@ -10,7 +10,7 @@ const conversations: Record<string, any[]> = {};
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60; // 60 seconds
 
-// Create a new ratelimiter, that allows 10 requests per 10 hours
+// Create a new ratelimiter, that allows 20 requests per 10 hours
 const ratelimit = new Ratelimit({
     redis: Redis.fromEnv(),
     limiter: Ratelimit.slidingWindow(20, "10 h"),
@@ -20,7 +20,7 @@ const ratelimit = new Ratelimit({
 
 export async function POST(req: NextRequest) {
     try {
-        const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+        const ip = (req as any).ip ?? req.headers.get("x-forwarded-for") ?? "127.0.0.1";
         const { success, limit, remaining, reset } = await ratelimit.limit(ip);
 
         if (!success) {
