@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-const conversations: Record<string, any[]> = {};
+
 
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60; // 60 seconds
@@ -34,14 +34,12 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        const { q, sessionId = "default", history = [] } = await req.json();
+        const { q, history = [] } = await req.json();
         if (!q) {
             return NextResponse.json({ error: "Message required" }, { status: 400 });
         }
 
-        if (!conversations[sessionId]) {
-            conversations[sessionId] = [];
-        }
+
 
         // 🔹 1. Initialize Embeddings
         const embeddings = new GoogleGenerativeAIEmbeddings({
@@ -111,12 +109,7 @@ export async function POST(req: NextRequest) {
                         }
                     }
 
-                    // Update history with new interaction
-                    // Limit stored conversation to last 10 turns to prevent memory overflow
-                    if (conversations[sessionId].length > 20) {
-                        conversations[sessionId] = conversations[sessionId].slice(-20);
-                    }
-                    conversations[sessionId].push(userMessage, new AIMessage(fullResponse));
+
 
                     controller.close();
                 } catch (e) {
