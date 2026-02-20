@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
 
         const results = await index.query({
             vector: queryEmbedding,
-            topK: 4,
+            topK: 3, // Reduced from 4 to save tokens
             includeMetadata: true,
         });
 
@@ -68,34 +68,16 @@ export async function POST(req: NextRequest) {
 
         // 🔹 4. Build system message with retrieved chunks
         const systemMessage = new SystemMessage({
-            content: `
-        You are an AI assistant for Aakash Jammula's portfolio website.
+            content: `You are Aakash Jammula's portfolio AI assistant. Answer using ONLY the resume context below.
+            
+            RULES:
+            - If valid, be concise, professional, and factual.
+            - If unrelated to Aakash, polite refusal.
+            - No fabrication.
+            - Guide to resume: https://tinyurl.com/aakash-jammula-resume
 
-        PRIMARY ROLE:
-        Answer questions strictly using the provided resume context retrieved from the vector database.
-
-        BEHAVIOR RULES:
-
-        1. If the question is related to Aakash Jammula, his skills, projects, education, or experience:
-        - Answer using only the provided resume context.
-        - Keep responses concise, professional, and factual.
-        - Do not fabricate information.
-        - You may guide users to download the resume:
-        https://tinyurl.com/aakash-jammula-resume
-
-        2. If the question is unrelated to Aakash Jammula or his resume (e.g., math, general knowledge, random topics):
-        - Politely respond that you are a portfolio assistant and can only help with questions about Aakash Jammula.
-        - Encourage the user to ask about his background, skills, or projects.
-
-        IMPORTANT:
-        - Do not use external knowledge.
-        - If the answer is not present in the provided context, say that the information is not available in the resume.
-        - Base your response strictly on the retrieved context below.
-        - answer as quick as possible and in paragraphs
-
-        RESUME CONTEXT:
-        ${retrievedContext}
-        `,
+            CONTEXT:
+            ${retrievedContext}`,
         });
 
 
@@ -106,20 +88,46 @@ export async function POST(req: NextRequest) {
 
         const userMessage = new HumanMessage(q);
 
-        // Convert history to LangChain messages
-        const historyMessages = history.map((msg: any) => {
+        // Limit history to last 6 messages (3 turns) + current query
+        const recentHistory = history.slice(-6).map((msg: any) => {
             if (msg.role === "user") return new HumanMessage(msg.parts);
             return new AIMessage(msg.parts);
         });
 
-        const response = await model.invoke([systemMessage, ...historyMessages, userMessage]);
+        const stream = await model.stream([systemMessage, ...recentHistory, userMessage]);
 
-        conversations[sessionId].push(userMessage, response);
+        // Create a new stream for the response
+        const responseStream = new ReadableStream({
+            async start(controller) {
+                const encoder = new TextEncoder();
+                let fullResponse = "";
+                try {
+                    for await (const chunk of stream) {
+                        const content = chunk.content;
+                        if (content) {
+                            const text = typeof content === 'string' ? content : "";
+                            fullResponse += text;
+                            controller.enqueue(encoder.encode(text));
+                        }
+                    }
 
-        return NextResponse.json({
-            answer: response.content,
-        }, {
+                    // Update history with new interaction
+                    // Limit stored conversation to last 10 turns to prevent memory overflow
+                    if (conversations[sessionId].length > 20) {
+                        conversations[sessionId] = conversations[sessionId].slice(-20);
+                    }
+                    conversations[sessionId].push(userMessage, new AIMessage(fullResponse));
+
+                    controller.close();
+                } catch (e) {
+                    controller.error(e);
+                }
+            },
+        });
+
+        return new NextResponse(responseStream, {
             headers: {
+                "Content-Type": "text/plain; charset=utf-8",
                 "X-RateLimit-Limit": limit.toString(),
                 "X-RateLimit-Remaining": remaining.toString(),
                 "X-RateLimit-Reset": reset.toString(),

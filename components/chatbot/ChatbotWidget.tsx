@@ -56,7 +56,6 @@ export function ChatbotWidget() {
       setLoading(true)
 
       try {
-        // Prepare history for API
         const history = messages.map(msg => ({
           role: msg.sender === "user" ? "user" : "model",
           parts: msg.text,
@@ -77,7 +76,6 @@ export function ChatbotWidget() {
         const reset = res.headers.get("X-RateLimit-Reset")
 
         if (remaining) {
-          // calculated reset time in minutes could be useful
           setRateLimitInfo({ limit, remaining, reset })
         }
 
@@ -90,12 +88,32 @@ export function ChatbotWidget() {
           return
         }
 
-        const { answer } = await res.json()
+        if (!res.body) throw new Error("No response body")
 
+        // Create a placeholder bot message
+        const botMsgId = getId()
         setMessages(m => [
           ...m,
-          { id: getId(), text: answer, sender: "bot", timestamp: new Date() },
+          { id: botMsgId, text: "", sender: "bot", timestamp: new Date() },
         ])
+
+        const reader = res.body.getReader()
+        const decoder = new TextDecoder()
+        let done = false
+        let botText = ""
+
+        while (!done) {
+          const { value, done: doneReading } = await reader.read()
+          done = doneReading
+          const chunkValue = decoder.decode(value, { stream: !done })
+          botText += chunkValue
+
+          setMessages(m =>
+            m.map(msg =>
+              msg.id === botMsgId ? { ...msg, text: botText } : msg
+            )
+          )
+        }
       } catch {
         setError("Oops! Something went wrong.")
       } finally {
