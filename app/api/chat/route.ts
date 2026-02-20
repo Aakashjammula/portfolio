@@ -91,6 +91,7 @@ export async function POST(req: NextRequest) {
         - Do not use external knowledge.
         - If the answer is not present in the provided context, say that the information is not available in the resume.
         - Base your response strictly on the retrieved context below.
+        - answer as quick as possible and in paragraphs
 
         RESUME CONTEXT:
         ${retrievedContext}
@@ -99,7 +100,7 @@ export async function POST(req: NextRequest) {
 
 
         const model = new ChatGoogleGenerativeAI({
-            model: "gemini-2.5-flash-lite",
+            model: "gemini-2.5-flash",
             apiKey: process.env.GOOGLE_API_KEY,
         });
 
