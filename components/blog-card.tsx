@@ -66,7 +66,7 @@ export function BlogCard({ title, description, date, readTime, slug, index }: Bl
             }}
           />
         )}
-        <Card className="overflow-hidden h-full transition-all duration-300 border-opacity-50 hover:border-primary/50 flex flex-col relative z-10 bg-white dark:bg-gray-900">
+        <Card className="overflow-hidden h-full transition-all duration-300 border-opacity-50 hover:border-primary/50 flex flex-col relative z-10">
           <CardHeader className="flex-none">
             <CardTitle className="text-xl">{title}</CardTitle>
           </CardHeader>
