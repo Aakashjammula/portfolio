@@ -46,7 +46,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <section id="home" className="w-full py-24 md:py-36 lg:py-48 xl:py-56">{/* Adjusted padding */}
+          <section id="home" className="w-full py-16 md:py-24 lg:py-32 xl:py-36">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
                 initial={{ opacity: 0 }}
