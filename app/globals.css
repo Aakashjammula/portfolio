@@ -17,6 +17,16 @@ body {
   }
 }
 
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 6s ease infinite;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

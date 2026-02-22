@@ -7,35 +7,10 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { SectionHeading } from "@/components/section-heading"
 import { BlogCard } from "@/components/blog-card"
+import { blogs } from "@/lib/data/blogs"
 
 export default function BlogPage() {
-  const blogPosts = [
-    // ===== NEW BLOG POST ADDED HERE =====
-    {
-      title: "Supercharge Your Workflow with Google Gemini CLI",
-      description:
-        "Unlock AI-powered command-line capabilities. Learn how the new Google Gemini CLI lets you generate code directly from your terminal.",
-      date: "May 10, 2025",
-      readTime: "5 min read",
-      slug: "supercharge-workflow-google-gemini-cli",
-    },
-    // ===== END OF NEW BLOG POST =====
-    {
-      title: "uv: The Fastest Python Package Manager",
-      description:
-        "Discover the blazing-fast Python package manager written in Rust that's revolutionizing Python workflows.",
-      date: "April 16, 2025",
-      readTime: "10 min read",
-      slug: "uv-fastest-python-package-manager",
-    },
-    {
-      title: "Beginner's Guide to MCP with LangChain and Gemini",
-      description: "A beginner's guide to the Model Control Protocol in AI agents with LangChain, Gemini and Python-MCP SDK.",
-      date: "April 16, 2025",
-      readTime: "10 min read",
-      slug: "mcp-model-control-protocol",
-    },
-  ]
+  const blogPosts = blogs;
 
   const container = {
     hidden: { opacity: 0 },
@@ -79,7 +54,7 @@ export default function BlogPage() {
         className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-2 max-w-4xl mx-auto"
       >
         {blogPosts.map((post, index) => (
-          <div key={index} className="h-[260px]">
+          <div key={index} className="min-h-[260px]">
             <BlogCard
               title={post.title}
               description={post.description}

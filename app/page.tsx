@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
-import { ArrowRight, Github, Linkedin, Mail, Twitter, Menu, X, Clock, Folder, Brain } from "lucide-react" // Added missing icons for StatCard
+import { motion, AnimatePresence } from "framer-motion"
+import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 
 import { Button } from "@/components/ui/button"
@@ -13,66 +13,10 @@ import { StatCard } from "@/components/stat-card"
 import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
+import { blogs } from "@/lib/data/blogs";
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState("home")
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrollDirection, setScrollDirection] = useState("none")
-  const [lastScrollY, setLastScrollY] = useState(0)
-
-  const sections = ["home", "about", "projects", "blog", "contact"]
-
-  const { scrollY } = useScroll()
-  const navOpacity = useTransform(scrollY, [0, 100], [1, 0.8]) // More subtle opacity for nav
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      if (currentScrollY > lastScrollY) {
-        setScrollDirection("down")
-      } else if (currentScrollY < lastScrollY) {
-        setScrollDirection("up")
-      }
-      setLastScrollY(currentScrollY)
-
-      // Update active section based on scroll position
-      // The active section is the last one whose top has passed the vertical midpoint of the viewport.
-      let current = sections[0]; // Default to home
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            const rect = element.getBoundingClientRect();
-            // If the section's top is above the midpoint of the viewport
-            if (rect.top < window.innerHeight / 2) {
-                current = sectionId;
-            } else {
-                // If this section is below the midpoint, subsequent ones will also be.
-                // So, the 'current' we found is the correct one.
-                break;
-            }
-        }
-      }
-      // Special case: if scrolled to the very bottom, make sure 'contact' is active.
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) { // 50px buffer
-          current = "contact";
-      }
-      setActiveSection(current);
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [lastScrollY, sections]) // Removed activeSection from dependencies here
-
-  const scrollToSection = (sectionId: string) => {
-    // setActiveSection(sectionId); // This will be handled by the scroll listener for consistency
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const direction = element.getBoundingClientRect().top > 0 ? "down" : "up"
-      setScrollDirection(direction)
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-    setMobileMenuOpen(false)
-  }
+  const [scrollDirection] = useState("down")
 
   const container = {
     hidden: { opacity: 0 },
@@ -91,85 +35,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
-      {/* Navigation */}
-      <motion.header
-        style={{ opacity: navOpacity }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b"
-      >
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-xl font-bold text-gray-800 dark:text-white"
-          >
-            Aakash Jammula
-          </motion.div>
 
-          {/* Desktop Navigation */}
-          <motion.nav
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="hidden md:flex space-x-6 lg:space-x-8" // Adjusted spacing
-          >
-            {sections.map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`text-sm font-medium capitalize transition-colors duration-200 ${
-                  activeSection === section
-                    ? "text-primary"
-                    : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                }`}
-              >
-                {section}
-              </button>
-            ))}
-          </motion.nav>
-
-          {/* Mobile Menu Button */}
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden p-2 text-gray-700 dark:text-gray-300" // Added padding and color
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
-        </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-700" // Added border-t
-            >
-              <div className="container mx-auto px-4 py-4 flex flex-col space-y-1">
-                {sections.map((section) => (
-                  <button
-                    key={section}
-                    onClick={() => scrollToSection(section)}
-                    className={`block w-full text-left py-3 px-2 rounded-md text-base font-medium capitalize transition-colors duration-200 ${ // Enhanced styling for tappability
-                      activeSection === section
-                        ? "text-primary bg-primary/10"
-                        : "text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                    }`}
-                  >
-                    {section}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.header>
 
       <AnimatePresence mode="wait">
         <motion.main
@@ -207,9 +73,16 @@ export default function Home() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
-                      className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-gray-900 dark:text-white"
+                      className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
                     >
-                      <Typewriter text="Aakash Jammula" delay={100} />
+                      <span
+                        className="bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift"
+                        style={{
+                          backgroundImage: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #6366f1)",
+                        }}
+                      >
+                        <Typewriter text="Aakash Jammula" delay={100} />
+                      </span>
                     </motion.h1>
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
@@ -227,12 +100,12 @@ export default function Home() {
                     className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center md:justify-start" // Responsive button layout
                   >
                     <Button asChild size="lg" className="w-full sm:w-auto">
-                      <Link href="#projects" onClick={() => scrollToSection("projects")}>
+                      <Link href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }) }}>
                         View Projects <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                     <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
-                      <Link href="#contact" onClick={() => scrollToSection("contact")}>
+                      <Link href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }) }}>
                         Contact Me
                       </Link>
                     </Button>
@@ -262,28 +135,28 @@ export default function Home() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.8, delay: 0.3 }}
-                  className="flex items-center justify-center mt-10 md:mt-0" // Added margin top for mobile
+                  className="hidden md:flex items-center justify-center" // Hidden on mobile, shown on md+
                 >
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, repeatType: "reverse" }}
-                  className="w-full flex justify-start items-center -ml-28"
-                >
-                  <div className="w-64 h-64 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px]">
-                    <DotLottieReact
-                      src="https://lottie.host/f1150457-df05-47b9-b381-fdad41f69e95/9dsj2iV81T.lottie"
-                      speed={1}
-                      loop
-                      autoplay
-                      style={{
-                        width: "280%",
-                        height: "auto",
-                        paddingBottom:"10%",
-                        transform: "translateX(-200px) translateY(-80px)"   // ← add this
-                      }}
-                    />
-                  </div>
-                </motion.div>
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 6, repeat: Infinity, repeatType: "reverse" }}
+                    className="w-full flex justify-start items-center -ml-28"
+                  >
+                    <div className="w-64 h-64 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px]">
+                      <DotLottieReact
+                        src="https://lottie.host/f1150457-df05-47b9-b381-fdad41f69e95/9dsj2iV81T.lottie"
+                        speed={1}
+                        loop
+                        autoplay
+                        style={{
+                          width: "280%",
+                          height: "auto",
+                          paddingBottom: "10%",
+                          transform: "translateX(-200px) translateY(-80px)"   // ← add this
+                        }}
+                      />
+                    </div>
+                  </motion.div>
 
                 </motion.div>
               </motion.div>
@@ -417,7 +290,7 @@ export default function Home() {
                   <ProjectCard
                     title="LangChain Deep Researcher"
                     description="An automated research agent that iteratively searches, summarizes, and refines information using LangChain and Gemini."
-                    tags={["python", "LangChain", "LangGraph", "gemini","ollama"]}
+                    tags={["python", "LangChain", "LangGraph", "gemini", "ollama"]}
                     link="https://github.com/Aakashjammula/langchain-deep-researcher"
                     index={1}
                   />
@@ -471,31 +344,7 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.1 }}
                 className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
               >
-                {[
-                  // ===== NEW BLOG POST ADDED HERE =====
-                  {
-                    title: "Supercharge Your Workflow with Google Gemini CLI",
-                    description: "Unlock AI-powered command-line capabilities. Learn how the new Google Gemini CLI lets you bootstrap projects and generate code directly from your terminal.",
-                    date: "May 10, 2025",
-                    readTime: "5 min read",
-                    link: "/blog/supercharge-workflow-google-gemini-cli",
-                  },
-                  // ===== END OF NEW BLOG POST =====
-                  {
-                    title: "uv: The Fastest Python Package Manager",
-                    description: "Discover the blazing fast Python package manager written in Rust that's revolutionizing Python workflows.",
-                    date: "April 16, 2025",
-                    readTime: "10 min read",
-                    link: "/blog/uv-fastest-python-package-manager",
-                  },
-                  {
-                    title: "Understanding Model Control Protocol",
-                    description: "A beginner's guide to the Model Control Protocol in AI agents with LangChain, Gemini and Python-MCP SDK.",
-                    date: "April 16, 2025",
-                    readTime: "10 min read",
-                    link: "/blog/mcp-model-control-protocol",
-                  },
-                ].map((post, index) => (
+                {blogs.slice(0, 3).map((post, index) => (
                   <motion.div
                     key={index}
                     variants={item}
@@ -517,7 +366,7 @@ export default function Home() {
                           <span>{post.readTime}</span>
                         </div>
                         <Link
-                          href={post.link}
+                          href={`/blog/${post.slug}`}
                           className="text-primary hover:underline inline-flex items-center font-medium text-sm"
                         >
                           Read More <ArrowRight className="ml-1 h-4 w-4" />
@@ -582,7 +431,7 @@ export default function Home() {
                     { icon: Github, text: "github.com/Aakashjammula", href: "https://github.com/Aakashjammula", target: "_blank" },
                     { icon: Twitter, text: "@aakashjammula6", href: "https://twitter.com/aakashjammula6", target: "_blank" },
                   ].map((contactItem, index) => (
-                     <motion.a
+                    <motion.a
                       key={index}
                       href={contactItem.href}
                       target={contactItem.target}
