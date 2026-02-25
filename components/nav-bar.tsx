@@ -15,7 +15,7 @@ export function NavBar() {
     const [activeSection, setActiveSection] = useState("home")
     const [navBackground, setNavBackground] = useState(false)
 
-    const sections = ["home", "about", "projects", "blog", "contact"]
+    const sections = ["home", "about", "projects", "blog", "resources", "contact"]
 
     useEffect(() => {
         let rafId: number | null = null
@@ -63,7 +63,7 @@ export function NavBar() {
         setMobileMenuOpen(false)
 
         // For direct pages like /blog or /projects, navigate directly
-        if (sectionId === "blog" || sectionId === "projects") {
+        if (sectionId === "blog" || sectionId === "projects" || sectionId === "resources") {
             router.push(`/${sectionId}`)
             return
         }

@@ -34,6 +34,317 @@ export interface BlogPost {
 }
 
 export const blogs: BlogPost[] = [
+    // ===== BLOG: Day 2 — 30 Days of Free Resources =====
+    {
+        title: "Day 2: 30 Days of Free Learning Resources 📚",
+        description: "Day 2 of sharing 5 free learning resources — today featuring Grow with Google, NVIDIA Academy, LangChain Academy, Oracle Academy, and Infosys Springboard.",
+        date: "February 26, 2026",
+        readTime: "3 min read",
+        slug: "day-2-30-days-free-learning-resources",
+        content: [
+            {
+                type: "paragraph",
+                content: "Welcome to Day 2 of my 30-day challenge! Today I'm sharing 5 more incredible free learning platforms. These cover AI agents, GPU computing, cloud, Java, and career growth tools.",
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🟢 Grow with Google",
+                id: "grow-with-google",
+            },
+            {
+                type: "paragraph",
+                content: "Google's career growth platform offers free training and Google Career Certificates. You can learn data analytics, UX design, project management, and IT support — all designed to get you job-ready.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Google Career Certificates in Data Analytics, UX Design, Project Management, IT Support",
+                    "Free tools and resources to grow your skills and business",
+                    "Designed for career changers — no degree required",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🟢 NVIDIA Academy",
+                id: "nvidia-academy",
+            },
+            {
+                type: "paragraph",
+                content: "NVIDIA Academy covers everything from AI & Data Science to networking and DGX Systems. They offer self-paced courses, public remote training, private customized training, and certifications.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Topics: AI & Data Science, DGX Systems, Networking, RDMA, Software & Tools",
+                    "Formats: Self-paced, public remote, private customized training",
+                    "Certifications available to validate your skills",
+                    "From beginner to advanced — including partner technical training",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🦜 LangChain Academy",
+                id: "langchain-academy",
+            },
+            {
+                type: "paragraph",
+                content: "Want to build AI agents? LangChain Academy offers free courses that take you from zero to deploying production-ready agents.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Intro to Building Agents — Python",
+                    "LangGraph Essentials — Python & TypeScript (State, Nodes, Edges, Memory)",
+                    "LangSmith Agent Builder — build no-code agents using everyday language",
+                    "LangSmith Essentials — the platform for agent engineering with live production data",
+                    "Foundation: Introduction to LangChain — pre-built architectures and model integrations",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🔴 Oracle Academy",
+                id: "oracle-academy",
+            },
+            {
+                type: "paragraph",
+                content: "Oracle Academy provides free courses for educational institutions covering the fundamentals of programming, databases, and cloud computing.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Java: Fundamentals → Foundations → Programming → AP Computer Science A",
+                    "SQL, PL/SQL, and database design with hands-on Oracle APEX labs",
+                    "Python and Node.js programming",
+                    "Oracle Cloud Infrastructure (OCI) and cloud concepts",
+                    "AI with Machine Learning in Java",
+                    "Career Center with pathways to Oracle professional certifications",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🔵 Infosys Springboard",
+                id: "infosys-springboard",
+            },
+            {
+                type: "paragraph",
+                content: "Infosys Springboard is a massive free learning platform with over 20,000 courses. Content comes from partnerships with Coursera and Harvard Business Publishing.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Programming: Java, Python, C#, JavaScript, Flutter (mobile app dev)",
+                    "Emerging tech: Big Data, Robotics, ML, IoT, LLMs, Prompt Engineering, Deep Learning",
+                    "Microsoft certifications prep (MS-900 and more)",
+                    "Certifications via virtual proctored examinations",
+                    "AI-powered immersive labs and secure assessments",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "📌 All Resources Curated",
+                id: "resources-page-day2",
+            },
+            {
+                type: "paragraph",
+                content: "Every resource I share is added to my Resources page. Head over there to browse all the resources in one place!",
+            },
+            {
+                type: "links",
+                items: [
+                    { text: "My Resources Page", url: "/resources" } as BlogLink,
+                ],
+            },
+        ],
+    },
+    // ===== BLOG: Day 1 — 30 Days of Free Resources =====
+    {
+        title: "Day 1: 30 Days of Free Learning Resources 🚀",
+        description: "I'm starting a 30-day challenge — sharing 5 free learning resources every day. Day 1 features Hugging Face, MDN, Microsoft Learn, and Google.",
+        date: "February 25, 2026",
+        readTime: "3 min read",
+        slug: "day-1-30-days-free-learning-resources",
+        content: [
+            {
+                type: "paragraph",
+                content: "I'm starting a 30-day challenge: sharing 5 free learning resources every day for the next 30 days.",
+            },
+            {
+                type: "paragraph",
+                content: "Why? Because big tech companies offer incredible, abundant resources — from networking to AI agents, full stack to cloud, backend to DevOps — and most people don't even know they exist. Every resource will range across all companies where you can learn full stack, cloud, backend, AI agents, and more — all completely free.",
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "💡 Why Free Company Resources Matter",
+                id: "why-resources-matter",
+            },
+            {
+                type: "paragraph",
+                content: "Companies like Microsoft, Google, NVIDIA, and Hugging Face have built massive learning platforms. These aren't basic tutorials — they're structured courses, career paths, and hands-on labs built by the people who make the tools you use every day.",
+            },
+            {
+                type: "paragraph",
+                content: "You can go from knowing nothing about a topic to building production-ready apps — and it won't cost you a single rupee. The only investment is your time.",
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🤗 Hugging Face Learn",
+                id: "hugging-face-learn",
+            },
+            {
+                type: "paragraph",
+                content: "Hugging Face's learning hub features 12 completely free courses built by the Hugging Face team using their open-source ecosystem.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "LLM Course — everything about Large Language Models",
+                    "AI Agents Course — build and deploy your own AI agents",
+                    "MCP Course — learn the Model Context Protocol",
+                    "Robotics Course — build robots with LeRobot",
+                    "Deep RL Course — deep reinforcement learning",
+                    "Computer Vision, Audio, Diffusion Models, ML for Games, ML for 3D",
+                    "Open-Source AI Cookbook — practical notebooks by AI builders",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "📜 JavaScript — MDN Web Docs",
+                id: "javascript-mdn",
+            },
+            {
+                type: "paragraph",
+                content: "The gold standard for learning JavaScript. Mozilla's MDN Web Docs is the definitive reference used by developers worldwide.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Beginner tutorials to get you started from scratch",
+                    "Intermediate guides: client-side frameworks, server-side programming",
+                    "Advanced topics: closures, prototypes, iterators, meta-programming",
+                    "Complete reference for every built-in object, expression, and API",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🔵 Microsoft Learn — Training Catalog",
+                id: "microsoft-learn-training",
+            },
+            {
+                type: "paragraph",
+                content: "Microsoft Learn offers thousands of free, step-by-step training modules and learning paths with built-in sandbox environments to practice.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "Azure, AI, Power Platform, Microsoft 365, Dynamics 365",
+                    "Hands-on sandbox environments — no setup needed",
+                    "Progress tracking and badges",
+                    "New modules added regularly to cover the latest technologies",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🎯 Microsoft Learn — Career Paths",
+                id: "microsoft-career-paths",
+            },
+            {
+                type: "paragraph",
+                content: "Microsoft maps their training to 15 real-world career roles. Pick your dream job role and follow a structured path to get there.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "AI Engineer — define and implement cutting-edge AI solutions",
+                    "Data Scientist — find trends and develop data-driven solutions",
+                    "Data Engineer — make complex data available and accessible",
+                    "Developer — make technology work for everyone",
+                    "DevOps Engineer — blend technical expertise with business savvy",
+                    "Solutions Architect — define vision and implementation of tech solutions",
+                    "Security Engineer, Data Analyst, Administrator, and more",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🌐 Google Learning",
+                id: "google-learning",
+            },
+            {
+                type: "paragraph",
+                content: "Google's learning hub covers school, work, and life — with a strong focus on AI and the future of learning. Over 1 billion people discover something new through Google's tools every day.",
+            },
+            {
+                type: "list",
+                style: "unordered",
+                items: [
+                    "AI experiments and tools for educators, skill-seekers, and the curious",
+                    "Google Workspace tools for working smarter",
+                    "$263M committed to closing computing education equity gaps",
+                    "70 million people gaining digital skills globally",
+                ],
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "🔮 What's Coming Next",
+                id: "whats-coming-next",
+            },
+            {
+                type: "paragraph",
+                content: "Over the next 30 days, I'll share resources from every major company — covering full stack, cloud, backend, AI agents, networking, databases, DevOps, and more. Stay tuned!",
+            },
+            { type: "divider" },
+            {
+                type: "heading",
+                level: 2,
+                content: "📌 Check My Resources Page",
+                id: "resources-page-day1",
+            },
+            {
+                type: "paragraph",
+                content: "I'm curating every resource I share on my dedicated Resources page. Bookmark it and check back daily!",
+            },
+            {
+                type: "links",
+                items: [
+                    { text: "My Resources Page", url: "/resources" } as BlogLink,
+                ],
+            },
+        ],
+    },
     // ===== BLOG 1: Google Gemini CLI =====
     {
         title: "Supercharge Your Workflow with Google Gemini CLI",
