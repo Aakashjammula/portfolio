@@ -96,14 +96,17 @@ export function ResourceCard({
                 >
                     {/* Subtle gradient overlay for depth */}
                     <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent" />
-                    <img
-                        src={logo}
-                        alt={`${title} logo`}
-                        className={`relative z-10 drop-shadow-lg ${logo.endsWith(".svg")
-                                ? "h-20 w-auto max-w-[85%] object-contain"
-                                : "w-full h-full object-cover"
-                            }`}
-                    />
+                    {logo.startsWith("/") || logo.startsWith("http") ? (
+                        <img
+                            src={logo}
+                            alt={`${title} logo`}
+                            className="relative z-10 drop-shadow-lg h-24 w-auto max-w-[85%] object-contain"
+                        />
+                    ) : (
+                        <span className="text-6xl relative z-10 drop-shadow-lg">
+                            {logo}
+                        </span>
+                    )}
                 </div>
 
                 {/* Content area */}
