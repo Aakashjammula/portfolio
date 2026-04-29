@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { NavBar } from "@/components/nav-bar"
 import { SmoothScrollProvider } from "@/components/smooth-scroll"
 import { InteractiveBackground } from "@/components/interactive-background"
+import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -29,6 +30,7 @@ export default function RootLayout({
             <InteractiveBackground />
             <NavBar />
             {children}
+            <ChatbotWidget />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

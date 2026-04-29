@@ -11,7 +11,6 @@ import { TechStack } from "@/components/tech-stack"
 import { StatCard } from "@/components/stat-card"
 import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline";
-import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { blogs } from "@/lib/data/blogs";
 import { ScrollReveal, ParallaxTitle } from "@/components/scroll-reveal";
 import { BlogRow } from "@/components/blog-row";
@@ -376,7 +375,6 @@ export default function Home() {
                   </motion.div>
                 </div>
               </div>
-              <ChatbotWidget />
             </footer>
           </div>
         </motion.main>
