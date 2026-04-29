@@ -38,27 +38,24 @@ export function ParallaxTitle({ title, subtitle }: ParallaxTitleProps) {
     offset: ["start end", "end start"],
   })
 
-  // The title moves slightly slower than the scroll, creating depth
+  // Apply parallax to the whole container, not inside the mask
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"])
 
   return (
-    <div ref={ref} className="max-w-3xl mx-auto text-center mb-12 md:mb-16 relative">
-      <ScrollReveal>
-        <motion.h2 
-          style={{ y }}
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
-        >
+    <motion.div ref={ref} style={{ y }} className="max-w-3xl mx-auto text-center mb-12 md:mb-16 relative">
+      <ScrollReveal className="py-2 -my-2">
+        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-gray-900 dark:text-white pb-2">
           {title}
-        </motion.h2>
+        </h2>
       </ScrollReveal>
       
       {subtitle && (
-        <ScrollReveal delay={0.1}>
-          <p className="mt-4 text-gray-600 dark:text-gray-400 text-lg">
+        <ScrollReveal delay={0.1} className="py-2 -my-2">
+          <p className="mt-2 text-gray-600 dark:text-gray-400 text-lg">
             {subtitle}
           </p>
         </ScrollReveal>
       )}
-    </div>
+    </motion.div>
   )
 }
