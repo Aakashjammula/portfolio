@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 
@@ -17,38 +17,6 @@ import { blogs } from "@/lib/data/blogs";
 
 export default function Home() {
   const [scrollDirection] = useState("down")
-
-  const heroRef = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  })
-  const translateX = useTransform(scrollYProgress, [0, 1], [0, -300])
-  const translateXReverse = useTransform(scrollYProgress, [0, 1], [0, 300])
-  const rotateX = useTransform(scrollYProgress, [0, 0.15], [15, 0])
-  const opacity = useTransform(scrollYProgress, [0, 0.15], [0.3, 1])
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 }
-
-  const row1 = [
-    { title: "Appointment Scheduling Agent", tag: "LangChain · Gemini · Twilio" },
-    { title: "LangChain Deep Researcher", tag: "LangGraph · Ollama · Gemini" },
-    { title: "MCP with LangChain", tag: "Python · MCP · DuckDuckGo" },
-    { title: "Gemini CLI Workflow", tag: "Node.js · Gemini · Terminal" },
-    { title: "RAG Pipeline", tag: "Pinecone · LangChain · Embeddings" },
-  ]
-  const row2 = [
-    { title: "uv: Fastest Python Package Manager", tag: "Python · Rust · Tooling" },
-    { title: "Day 1: 30 Days Free Learning", tag: "Hugging Face · MDN · Google" },
-    { title: "Day 2: 30 Days Free Learning", tag: "NVIDIA · LangChain · Oracle" },
-    { title: "Day 3: 30 Days Free Learning", tag: "freeCodeCamp · CS50 · Kaggle" },
-  ]
-  const row3 = [
-    { title: "DeepLearning.AI · fast.ai", tag: "AI · Deep Learning" },
-    { title: "AWS Skill Builder · MIT OCW", tag: "Cloud · CS" },
-    { title: "TryHackMe · PortSwigger", tag: "Security · Hacking" },
-    { title: "MongoDB · Redis University", tag: "Databases · NoSQL" },
-    { title: "React.dev · Full Stack Open", tag: "Frontend · Node.js" },
-  ]
 
   const container = {
     hidden: { opacity: 0 },
@@ -78,7 +46,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <section id="home" ref={heroRef} className="w-full py-16 md:py-24 lg:py-32 xl:py-36 overflow-hidden">
+          <section id="home" className="w-full py-16 md:py-24 lg:py-32 xl:py-36">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -193,60 +161,6 @@ export default function Home() {
                 </motion.div>
               </motion.div>
             </div>
-
-            {/* 3D Parallax Rows */}
-            <motion.div
-              style={{ rotateX, opacity }}
-              className="mt-16 [perspective:1000px] [transform-style:preserve-3d]"
-            >
-              {/* Row 1 — moves left */}
-              <motion.div
-                style={{ translateX }}
-                className="flex gap-4 mb-4 w-max"
-              >
-                {[...row1, ...row1].map((card, i) => (
-                  <div
-                    key={i}
-                    className="w-56 shrink-0 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 shadow-sm"
-                  >
-                    <p className="text-sm font-medium text-gray-900 dark:text-white leading-snug line-clamp-2">{card.title}</p>
-                    <p className="mt-1 text-xs text-indigo-500 dark:text-indigo-400 truncate">{card.tag}</p>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Row 2 — moves right */}
-              <motion.div
-                style={{ translateX: translateXReverse }}
-                className="flex gap-4 mb-4 w-max"
-              >
-                {[...row2, ...row2].map((card, i) => (
-                  <div
-                    key={i}
-                    className="w-56 shrink-0 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 shadow-sm"
-                  >
-                    <p className="text-sm font-medium text-gray-900 dark:text-white leading-snug line-clamp-2">{card.title}</p>
-                    <p className="mt-1 text-xs text-indigo-500 dark:text-indigo-400 truncate">{card.tag}</p>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Row 3 — moves left */}
-              <motion.div
-                style={{ translateX }}
-                className="flex gap-4 w-max"
-              >
-                {[...row3, ...row3].map((card, i) => (
-                  <div
-                    key={i}
-                    className="w-56 shrink-0 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 shadow-sm"
-                  >
-                    <p className="text-sm font-medium text-gray-900 dark:text-white leading-snug line-clamp-2">{card.title}</p>
-                    <p className="mt-1 text-xs text-indigo-500 dark:text-indigo-400 truncate">{card.tag}</p>
-                  </div>
-                ))}
-              </motion.div>
-            </motion.div>
           </section>
 
           {/* Stats Section */}
