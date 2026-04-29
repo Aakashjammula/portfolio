@@ -286,12 +286,12 @@ export default function Home() {
                       </motion.span>
                       <TextRotate
                         texts={[
-                          "Touch",
-                          "Sync",
-                          "Contact",
-                          "Action",
+                          "Touch.",
+                          "Sync.",
+                          "Contact.",
+                          "Action.",
                         ]}
-                        mainClassName="text-white px-4 sm:px-5 md:px-6 bg-indigo-600 dark:bg-indigo-500 overflow-hidden py-1 sm:py-2 md:py-3 justify-center rounded-2xl shadow-xl"
+                        mainClassName="text-indigo-600 dark:text-indigo-400 overflow-hidden justify-center"
                         staggerFrom={"last"}
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
