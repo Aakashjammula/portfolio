@@ -13,6 +13,7 @@ import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { blogs } from "@/lib/data/blogs";
+import { ScrollReveal, ParallaxTitle } from "@/components/scroll-reveal";
 
 export default function Home() {
   const [scrollDirection] = useState("down")
@@ -49,9 +50,9 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <motion.section 
-            id="home" 
-            ref={heroRef} 
+          <motion.section
+            id="home"
+            ref={heroRef}
             style={{ scale: heroScale, opacity: heroOpacity }}
             className="sticky top-0 h-screen flex flex-col overflow-hidden z-0"
           >
@@ -151,300 +152,228 @@ export default function Home() {
 
           {/* Wrapper for content sliding over hero */}
           <div className="relative z-10 bg-gray-50 dark:bg-gray-900 pb-10 rounded-b-[2.5rem] shadow-2xl">
-          {/* Stats Section */}
-          <section className="w-full py-12 md:py-16 bg-white dark:bg-gray-800">
-            <div className="container mx-auto px-4 md:px-6">
-              <motion.div
-                variants={container}
-                initial="show"
-                animate="show"
-                className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
-              >
-                <StatCard number="1+" label="Year Experience" iconName="Clock" />
-                <StatCard number="5+" label="Projects Completed" iconName="Folder" />
-                <StatCard number="3+" label="LLM Models Used" iconName="Brain" />
-                <StatCard number="2+" label="GenAI Solutions" iconName="Brain" />
-              </motion.div>
-            </div>
-          </section>
-
-          {/* About Section */}
-          <section id="about" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
-            <div className="container mx-auto px-4 md:px-6">
-              <motion.div
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
-              >
-                <motion.h2
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
-                >
-                  About Me
-                </motion.h2>
-              </motion.div>
-
-              <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+            {/* Stats Section */}
+            <section className="w-full py-12 md:py-16 bg-white dark:bg-gray-800">
+              <div className="container mx-auto px-4 md:px-6">
                 <motion.div
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  className="space-y-6"
+                  variants={container}
+                  initial="show"
+                  animate="show"
+                  className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
                 >
-                  <motion.p
-                    initial={{ opacity: 1, y: 0 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed"
-                  >
-                    I'm Aakash Jammula, a GenAI Engineer passionate about leveraging artificial intelligence to solve
-                    complex problems. With expertise in large language models, natural language processing, and software
-                    development, I create innovative solutions that push the boundaries of what's possible.
-                  </motion.p>
-                </motion.div>
-
-                <div className="w-full mt-12 md:mt-16">
-                  <Timeline />
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 1, scale: 1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="mt-12 md:mt-16 w-full"
-                >
-                  <TechStack />
+                  <StatCard number="1+" label="Year Experience" iconName="Clock" />
+                  <StatCard number="5+" label="Projects Completed" iconName="Folder" />
+                  <StatCard number="3+" label="LLM Models Used" iconName="Brain" />
+                  <StatCard number="2+" label="GenAI Solutions" iconName="Brain" />
                 </motion.div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          {/* Projects Section */}
-          <section id="projects" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
-            <div className="container mx-auto px-4 md:px-6">
-              <motion.div
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
-              >
-                <motion.h2
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
-                >
-                  My Projects
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 text-gray-600 dark:text-gray-400 text-lg"
-                >
-                  Explore some of my recent work in GenAI and LLMs
-                </motion.p>
-              </motion.div>
+            {/* About Section */}
+            <section id="about" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
+              <div className="container mx-auto px-4 md:px-6">
+                <ParallaxTitle title="About Me" />
 
-              <motion.div
-                variants={container}
-                initial="show"
-                animate="show"
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
-              >
-                <div className="min-h-[260px] sm:min-h-[280px] flex"> {/* Flex to make card take full height */}
-                  <ProjectCard
-                    title="Appointment Scheduling Agent"
-                    description="An intelligent call agent that automatically handles book, cancel, update, and retrieve appointments through calls."
-                    tags={["python", "twilio", "LangChain", "gemini", "llm agents"]}
-                    link="https://github.com/aakashjammula6/appointment-agent"
-                    index={0}
-                  />
-                </div>
-                <div className="min-h-[260px] sm:min-h-[280px] flex">
-                  <ProjectCard
-                    title="LangChain Deep Researcher"
-                    description="An automated research agent that iteratively searches, summarizes, and refines information using LangChain and Gemini."
-                    tags={["python", "LangChain", "LangGraph", "gemini", "ollama"]}
-                    link="https://github.com/Aakashjammula/langchain-deep-researcher"
-                    index={1}
-                  />
-                </div>
-              </motion.div>
+                <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+                  <ScrollReveal delay={0.2} className="space-y-6">
+                    <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                      I'm Aakash Jammula, a GenAI Engineer passionate about leveraging artificial intelligence to solve
+                      complex problems. With expertise in large language models, natural language processing, and software
+                      development, I create innovative solutions that push the boundaries of what's possible.
+                    </p>
+                  </ScrollReveal>
 
-              <div className="flex justify-center mt-10 md:mt-12">
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/projects">
-                    View All Projects <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </section>
+                  <div className="w-full mt-12 md:mt-16">
+                    <Timeline />
+                  </div>
 
-          {/* Blog Section */}
-          <section id="blog" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
-            <div className="container mx-auto px-4 md:px-6">
-              <motion.div
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
-              >
-                <motion.h2
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
-                >
-                  Blog
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 text-gray-600 dark:text-gray-400 text-lg"
-                >
-                  Thoughts and insights on GenAI and LLMs
-                </motion.p>
-              </motion.div>
-
-              <motion.div
-                variants={container}
-                initial="show"
-                animate="show"
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
-              >
-                {blogs.slice(0, 3).map((post, index) => (
                   <motion.div
-                    key={index}
-                    variants={item}
-                    className="min-h-[260px] sm:min-h-[280px] flex" // Flex to make card take full height
+                    initial={{ opacity: 1, scale: 1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mt-12 md:mt-16 w-full"
                   >
-                    <div className="h-full w-full bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col hover:shadow-xl transition-shadow duration-300">
-                      <div className="flex-none">
-                        <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{post.title}</h3>
-                      </div>
-                      <div className="flex-grow">
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
-                          {post.description}
-                        </p>
-                      </div>
-                      <div className="flex-none mt-auto">
-                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
-                          <span>{post.date}</span>
-                          <span className="mx-2">•</span>
-                          <span>{post.readTime}</span>
-                        </div>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-primary hover:underline inline-flex items-center font-medium text-sm"
-                        >
-                          Read More <ArrowRight className="ml-1 h-4 w-4" />
-                        </Link>
-                      </div>
-                    </div>
+                    <TechStack />
                   </motion.div>
-                ))}
-              </motion.div>
-
-              <div className="flex justify-center mt-10 md:mt-12">
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/blog">
-                    View All Blog Posts <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+
+            {/* Projects Section */}
+            <section id="projects" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
+              <div className="container mx-auto px-4 md:px-6">
+                <ParallaxTitle 
+                  title="My Projects" 
+                  subtitle="Explore some of my recent work in GenAI and LLMs" 
+                />
+
+                <motion.div
+                  variants={container}
+                  initial="show"
+                  animate="show"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
+                >
+                  <div className="min-h-[260px] sm:min-h-[280px] flex"> {/* Flex to make card take full height */}
+                    <ProjectCard
+                      title="Appointment Scheduling Agent"
+                      description="An intelligent call agent that automatically handles book, cancel, update, and retrieve appointments through calls."
+                      tags={["python", "twilio", "LangChain", "gemini", "llm agents"]}
+                      link="https://github.com/aakashjammula6/appointment-agent"
+                      index={0}
+                    />
+                  </div>
+                  <div className="min-h-[260px] sm:min-h-[280px] flex">
+                    <ProjectCard
+                      title="LangChain Deep Researcher"
+                      description="An automated research agent that iteratively searches, summarizes, and refines information using LangChain and Gemini."
+                      tags={["python", "LangChain", "LangGraph", "gemini", "ollama"]}
+                      link="https://github.com/Aakashjammula/langchain-deep-researcher"
+                      index={1}
+                    />
+                  </div>
+                </motion.div>
+
+                <div className="flex justify-center mt-10 md:mt-12">
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/projects">
+                      View All Projects <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </section>
+
+            {/* Blog Section */}
+            <section id="blog" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
+              <div className="container mx-auto px-4 md:px-6">
+                <ParallaxTitle 
+                  title="Blog" 
+                  subtitle="Thoughts and insights on GenAI and LLMs" 
+                />
+
+                <motion.div
+                  variants={container}
+                  initial="show"
+                  animate="show"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
+                >
+                  {blogs.slice(0, 3).map((post, index) => (
+                    <motion.div
+                      key={index}
+                      variants={item}
+                      className="min-h-[260px] sm:min-h-[280px] flex" // Flex to make card take full height
+                    >
+                      <div className="h-full w-full bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex-none">
+                          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{post.title}</h3>
+                        </div>
+                        <div className="flex-grow">
+                          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
+                            {post.description}
+                          </p>
+                        </div>
+                        <div className="flex-none mt-auto">
+                          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
+                            <span>{post.date}</span>
+                            <span className="mx-2">•</span>
+                            <span>{post.readTime}</span>
+                          </div>
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className="text-primary hover:underline inline-flex items-center font-medium text-sm"
+                          >
+                            Read More <ArrowRight className="ml-1 h-4 w-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                <div className="flex justify-center mt-10 md:mt-12">
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/blog">
+                      View All Blog Posts <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </section>
           </div>
 
           {/* Curtain Reveal for Contact & Footer */}
           <div className="sticky bottom-0 z-0">
-          {/* Contact Section */}
-          <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
-            <div className="container mx-auto px-4 md:px-6">
-              <motion.div
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
-              >
-                <motion.h2
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
-                >
-                  Get In Touch
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 1, y: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 text-gray-600 dark:text-gray-400 text-lg"
-                >
-                  Have a project in mind or want to collaborate? Let's talk!
-                </motion.p>
-              </motion.div>
+            {/* Contact Section */}
+            <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
+              <div className="container mx-auto px-4 md:px-6">
+                <ParallaxTitle 
+                  title="Get In Touch" 
+                  subtitle="Have a project in mind or want to collaborate? Let's talk!" 
+                />
 
-              <motion.div
-                initial={{ opacity: 1, y: 0 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="max-w-md mx-auto"
-              >
-                <div className="space-y-6">
-                  {[
-                    { icon: Mail, text: "aakashjammula6@gmail.com", href: "mailto:aakashjammula6@gmail.com" },
-                    { icon: Linkedin, text: "linkedin.com/in/aakashjammula", href: "https://www.linkedin.com/in/aakashjammula/", target: "_blank" },
-                    { icon: Github, text: "github.com/Aakashjammula", href: "https://github.com/Aakashjammula", target: "_blank" },
-                    { icon: Twitter, text: "@aakashjammula6", href: "https://twitter.com/aakashjammula6", target: "_blank" },
-                  ].map((contactItem, index) => (
-                    <motion.a
-                      key={index}
-                      href={contactItem.href}
-                      target={contactItem.target}
-                      rel={contactItem.target ? "noopener noreferrer" : undefined}
-                      className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors duration-200 group"
-                      initial={{ opacity: 1, x: 0 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0 }}
-                    >
-                      <contactItem.icon className="h-6 w-6 text-primary flex-shrink-0" />
-                      <span className="text-lg text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white break-all">
-                        {contactItem.text}
-                      </span>
-                    </motion.a>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer className="w-full py-8 bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-            <div className="container mx-auto px-4 md:px-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left"
-                >
-                  © {new Date().getFullYear()} Aakash Jammula. All rights reserved.
-                </motion.p>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="flex gap-4 sm:gap-6"
-                >
-                  <Link
-                    href="/blog"
-                    className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
-                  >
-                    Blog
-                  </Link>
-                  <Link
-                    href="/projects"
-                    className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
-                  >
-                    Projects
-                  </Link>
-                </motion.div>
+                <ScrollReveal delay={0.2} className="max-w-md mx-auto">
+                  <div className="space-y-6">
+                    {[
+                      { icon: Mail, text: "aakashjammula6@gmail.com", href: "mailto:aakashjammula6@gmail.com" },
+                      { icon: Linkedin, text: "linkedin.com/in/aakashjammula", href: "https://www.linkedin.com/in/aakashjammula/", target: "_blank" },
+                      { icon: Github, text: "github.com/Aakashjammula", href: "https://github.com/Aakashjammula", target: "_blank" },
+                      { icon: Twitter, text: "@aakashjammula6", href: "https://twitter.com/aakashjammula6", target: "_blank" },
+                    ].map((contactItem, index) => (
+                      <motion.a
+                        key={index}
+                        href={contactItem.href}
+                        target={contactItem.target}
+                        rel={contactItem.target ? "noopener noreferrer" : undefined}
+                        className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors duration-200 group"
+                        initial={{ opacity: 1, x: 0 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0 }}
+                      >
+                        <contactItem.icon className="h-6 w-6 text-primary flex-shrink-0" />
+                        <span className="text-lg text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white break-all">
+                          {contactItem.text}
+                        </span>
+                      </motion.a>
+                    ))}
+                  </div>
+                </ScrollReveal>
               </div>
-            </div>
-            <ChatbotWidget />
-          </footer>
+            </section>
+
+            {/* Footer */}
+            <footer className="w-full py-8 bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+              <div className="container mx-auto px-4 md:px-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left"
+                  >
+                    © {new Date().getFullYear()} Aakash Jammula. All rights reserved.
+                  </motion.p>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="flex gap-4 sm:gap-6"
+                  >
+                    <Link
+                      href="/blog"
+                      className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
+                    >
+                      Blog
+                    </Link>
+                    <Link
+                      href="/projects"
+                      className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
+                    >
+                      Projects
+                    </Link>
+                  </motion.div>
+                </div>
+              </div>
+              <ChatbotWidget />
+            </footer>
           </div>
         </motion.main>
       </AnimatePresence>
