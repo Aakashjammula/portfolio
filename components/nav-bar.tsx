@@ -91,47 +91,55 @@ export function NavBar() {
 
     return (
         <>
+        <div className={`fixed z-50 left-0 right-0 flex justify-center transition-all duration-300 ${navBackground ? "top-4 px-4" : "top-0 px-0"}`}>
             <motion.header
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.5 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackground
-                    ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b dark:border-gray-800"
-                    : "bg-transparent"
+                className={`w-full transition-all duration-300 ${navBackground
+                    ? "max-w-5xl bg-white/10 dark:bg-transparent backdrop-blur-md shadow-lg border dark:border-white/10 rounded-full"
+                    : "max-w-full bg-transparent border-transparent"
                     }`}
             >
-                <div className="container mx-auto px-4 py-4 flex justify-between items-center relative">
-                    <div className="flex-1 flex justify-start">
-                        <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white transition-opacity hover:opacity-80 whitespace-nowrap">
-                            Aakash Jammula
-                        </Link>
-                    </div>
+                <div className={`mx-auto flex justify-between items-center transition-all duration-300 ${navBackground ? "px-6 py-3" : "container px-4 py-5 md:px-6"}`}>
+                    <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white transition-opacity hover:opacity-80 whitespace-nowrap">
+                        Aakash Jammula
+                    </Link>
 
-                    {/* Desktop Navigation */}
-                    <nav className="hidden md:flex space-x-6 lg:space-x-8">
-                        {sections.map((section) => (
-                            <button
-                                key={section}
-                                onClick={() => handleNavClick(section)}
-                                className={`text-sm font-medium capitalize transition-colors duration-200 ${activeSection === section
-                                    ? "text-primary"
-                                    : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                                    }`}
+                    <div className="flex items-center gap-4 md:gap-8">
+                        {/* Desktop Navigation */}
+                        <nav className="hidden md:flex items-center space-x-6">
+                            {sections.filter(s => s !== "contact").map((section) => (
+                                <button
+                                    key={section}
+                                    onClick={() => handleNavClick(section)}
+                                    className={`text-sm font-medium capitalize transition-colors duration-200 ${activeSection === section
+                                        ? "text-primary"
+                                        : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                                        }`}
+                                >
+                                    {section}
+                                </button>
+                            ))}
+                        </nav>
+
+                        <div className="flex items-center gap-3">
+                            <button 
+                                onClick={() => handleNavClick("contact")}
+                                className="hidden md:flex bg-gray-900 text-white dark:bg-white dark:text-gray-950 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors shadow-sm"
                             >
-                                {section}
+                                Contact Me
                             </button>
-                        ))}
-                    </nav>
 
-                    <div className="flex-1 flex justify-end items-center gap-2">
-                        {/* Mobile Menu Button */}
-                        <button
-                            className="md:hidden p-2 text-gray-700 dark:text-gray-300 transition-transform active:scale-95"
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                        >
-                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
+                            {/* Mobile Menu Button */}
+                            <button
+                                className="md:hidden p-2 text-gray-700 dark:text-gray-300 transition-transform active:scale-95 -mr-2"
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                            >
+                                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -163,6 +171,7 @@ export function NavBar() {
                     )}
                 </AnimatePresence>
             </motion.header>
+        </div>
         </>
     )
 }
