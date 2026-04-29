@@ -199,7 +199,7 @@ export default function Home() {
             </section>
 
             {/* Projects Section */}
-            <section id="projects" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
+            <section id="projects" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)] relative z-20 -mt-10 pt-32">
               <div className="container mx-auto px-4 md:px-6">
                 <ParallaxTitle 
                   title="My Projects" 
@@ -243,7 +243,7 @@ export default function Home() {
             </section>
 
             {/* Blog Section */}
-            <section id="blog" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
+            <section id="blog" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)] relative z-30 -mt-10 pt-32">
               <div className="container mx-auto px-4 md:px-6">
                 <ParallaxTitle 
                   title="Blog" 
@@ -303,7 +303,7 @@ export default function Home() {
           {/* Curtain Reveal for Contact & Footer */}
           <div className="sticky bottom-0 z-0">
             {/* Contact Section */}
-            <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
+            <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)] relative z-40 -mt-10 pt-32">
               <div className="container mx-auto px-4 md:px-6">
                 <ParallaxTitle 
                   title="Get In Touch" 
