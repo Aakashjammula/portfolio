@@ -17,10 +17,12 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // Keep enabled so type errors are caught before deploy
+    ignoreBuildErrors: false,
   },
   images: {
-    unoptimized: true,
+    // Re-enable optimization for faster loads
+    unoptimized: false,
   },
   experimental: {
     webpackBuildWorker: true,
