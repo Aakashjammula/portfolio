@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useTransform, LayoutGroup } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -15,6 +15,7 @@ import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { blogs } from "@/lib/data/blogs";
 import { ScrollReveal, ParallaxTitle } from "@/components/scroll-reveal";
 import { BlogRow } from "@/components/blog-row";
+import { TextRotate } from "@/components/ui/text-rotate";
 
 export default function Home() {
   const [scrollDirection] = useState("down")
@@ -274,25 +275,34 @@ export default function Home() {
             <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)] relative z-40 -mt-10 pt-32">
               <div className="container mx-auto px-4 md:px-6">
                 <div className="text-center mb-16">
-                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 flex justify-center flex-wrap">
-                    {"Get In Touch".split("").map((char, index) => (
+                  <LayoutGroup>
+                    <motion.h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 flex justify-center flex-wrap items-center gap-3 md:gap-4" layout>
                       <motion.span
-                        key={index}
-                        initial={{ opacity: 0, filter: "blur(12px)", scale: 1.5, y: 10 }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)", scale: 1, y: 0 }}
-                        viewport={{ once: false, amount: 0.5 }}
-                        transition={{ 
-                          duration: 0.9, 
-                          delay: index * 0.04, 
-                          ease: [0.2, 0.8, 0.2, 1] // premium ease out
-                        }}
-                        style={{ display: "inline-block" }}
-                        className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 p-2 -m-2 drop-shadow-sm"
+                        className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 pb-2"
+                        layout
+                        transition={{ type: "spring", damping: 30, stiffness: 400 }}
                       >
-                        {char === " " ? "\u00A0" : char}
+                        Get In
                       </motion.span>
-                    ))}
-                  </h2>
+                      <TextRotate
+                        texts={[
+                          "Touch",
+                          "Sync",
+                          "Contact",
+                          "Action",
+                        ]}
+                        mainClassName="text-white px-4 sm:px-5 md:px-6 bg-indigo-600 dark:bg-indigo-500 overflow-hidden py-1 sm:py-2 md:py-3 justify-center rounded-2xl shadow-xl"
+                        staggerFrom={"last"}
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "-120%" }}
+                        staggerDuration={0.025}
+                        splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                        transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                        rotationInterval={2500}
+                      />
+                    </motion.h2>
+                  </LayoutGroup>
                   <motion.p
                     initial={{ opacity: 0, filter: "blur(5px)", y: 20 }}
                     whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
