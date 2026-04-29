@@ -100,10 +100,12 @@ export function NavBar() {
                     : "bg-transparent"
                     }`}
             >
-                <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                    <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white transition-opacity hover:opacity-80">
-                        Aakash Jammula
-                    </Link>
+                <div className="container mx-auto px-4 py-4 flex justify-between items-center relative">
+                    <div className="flex-1 flex justify-start">
+                        <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white transition-opacity hover:opacity-80 whitespace-nowrap">
+                            Aakash Jammula
+                        </Link>
+                    </div>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex space-x-6 lg:space-x-8">
@@ -121,7 +123,7 @@ export function NavBar() {
                         ))}
                     </nav>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex-1 flex justify-end items-center gap-2">
                         {/* Mobile Menu Button */}
                         <button
                             className="md:hidden p-2 text-gray-700 dark:text-gray-300 transition-transform active:scale-95"
