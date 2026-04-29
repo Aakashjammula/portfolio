@@ -136,7 +136,7 @@ export function TechStack() {
         variants={sectionContainerVariants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.1 }}
+        viewport={{ once: false, amount: 0.1 }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-12 max-w-6xl mx-auto"
       >
         {categories.map((category, idx) => {

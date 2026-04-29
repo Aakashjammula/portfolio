@@ -77,7 +77,7 @@ const timelineEvents: TimelineEvent[] = [
             key={index}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+            viewport={{ once: false, margin: "-10% 0px -10% 0px" }}
             variants={itemVariants(isEven)}
             className={`mb-12 sm:mb-16 w-full flex relative group ${
               isEven ? "justify-start" : "justify-end"
