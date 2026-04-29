@@ -2,9 +2,8 @@
 
 import { useState, useRef } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
-import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 
 import { Button } from "@/components/ui/button"
 import { ProjectCard } from "@/components/project-card"
@@ -19,6 +18,11 @@ import { HeroDissolve } from "@/components/HeroDissolve"
 export default function Home() {
   const [scrollDirection] = useState("down")
   const heroRef = useRef<HTMLElement>(null)
+// Removed scroll-linked transforms to stop animation on scroll
+  // const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] })
+  // const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"])
+  // const heroTextOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0])
+
 
   const container = {
     hidden: { opacity: 0 },
@@ -41,139 +45,116 @@ export default function Home() {
 
       <AnimatePresence mode="wait">
         <motion.main
-          className="flex-1 pt-20" // Adjusted padding-top for header height (py-4 is 16px, border 1px, total roughly 50-60px. pt-16 (64px) or pt-20 (80px) is safer)
+          className="flex-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <section id="home" ref={heroRef} className="w-full py-16 md:py-24 lg:py-32 xl:py-36 relative overflow-hidden">
-            <HeroDissolve heroRef={heroRef} />
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <section id="home" ref={heroRef} className="relative h-screen flex flex-col overflow-hidden">
+            {/* Atmospheric gradient background */}
+            <div
+              className="absolute inset-0 z-0"
+              style={{ background: "radial-gradient(ellipse at 40% 30%, #1e1b4b 0%, #0f172a 45%, #030712 100%)" }}
+            />
+            {/* Dot grid texture */}
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: "radial-gradient(circle, rgba(99,102,241,0.15) 1px, transparent 1px)",
+                backgroundSize: "28px 28px",
+              }}
+            />
+            {/* Ambient glow blobs */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-indigo-600/10 blur-3xl animate-pulse" />
+              <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-700/8 blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }} />
+            </div>
+            {/* WebGL dissolve canvas removed to stop scroll animation */}
+            {/* <HeroDissolve heroRef={heroRef} /> */}
+            {/* Hero content */}
+            <motion.div
+              style={{ y: "0%", opacity: 1 }}
+              className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 pt-24 pb-20"
+            >
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center"
+                variants={container}
+                initial="hidden"
+                animate="show"
+                className="text-center max-w-4xl mx-auto space-y-8"
               >
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="space-y-6 text-center md:text-left" // Centered text on mobile
-                >
-                  <div className="space-y-3">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
-                      className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
-                    >
-                      GenAI Engineer
-                    </motion.div>
-                    <motion.h1
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
-                    >
-                      <span
-                        className="bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift"
-                        style={{
-                          backgroundImage: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #6366f1)",
-                        }}
-                      >
-                        <Typewriter text="Aakash Jammula" delay={100} />
-                      </span>
-                    </motion.h1>
-                    <motion.p
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      className="text-gray-600 dark:text-gray-400 text-lg md:text-xl min-h-[2.5rem] sm:min-h-[3rem]" // Adjusted min-height
-                    >
-                      <Typewriter text="Building innovative GenAI solutions with LLMs" delay={50} />
-                    </motion.p>
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center md:justify-start" // Responsive button layout
-                  >
-                    <Button asChild size="lg" className="w-full sm:w-auto">
-                      <Link href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }) }}>
-                        View Projects <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
-                      <Link href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }) }}>
-                        Contact Me
-                      </Link>
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                    className="flex space-x-4 justify-center md:justify-start"
-                  >
-                    {[
-                      { href: "https://github.com/Aakashjammula", icon: Github, label: "GitHub" },
-                      { href: "https://www.linkedin.com/in/aakashjammula/", icon: Linkedin, label: "LinkedIn" },
-                      { href: "https://twitter.com/aakashjammula6", icon: Twitter, label: "Twitter" },
-                      { href: "mailto:aakashjammula6@gmail.com", icon: Mail, label: "Email" },
-                    ].map(social => (
-                      <Link key={social.label} href={social.href} target={social.label !== "Email" ? "_blank" : undefined} rel={social.label !== "Email" ? "noopener noreferrer" : undefined}>
-                        <Button variant="ghost" size="icon" className="rounded-full text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary">
-                          <social.icon className="h-5 w-5" />
-                          <span className="sr-only">{social.label}</span>
-                        </Button>
-                      </Link>
-                    ))}
-                  </motion.div>
+                <motion.div variants={item}>
+                  <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                    GenAI Engineer
+                  </span>
                 </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="hidden md:flex items-center justify-center" // Hidden on mobile, shown on md+
+                <motion.h1
+                  variants={item}
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
                 >
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 6, repeat: Infinity, repeatType: "reverse" }}
-                    className="w-full flex justify-start items-center -ml-28"
+                  <span
+                    className="bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift"
+                    style={{ backgroundImage: "linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #6366f1)" }}
                   >
-                    <div className="w-64 h-64 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px]">
-                      <DotLottieReact
-                        src="https://lottie.host/f1150457-df05-47b9-b381-fdad41f69e95/9dsj2iV81T.lottie"
-                        speed={1}
-                        loop
-                        autoplay
-                        style={{
-                          width: "280%",
-                          height: "auto",
-                          paddingBottom: "10%",
-                          transform: "translateX(-200px) translateY(-80px)"   // ← add this
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-
+                    Aakash Jammula
+                  </span>
+                </motion.h1>
+                <motion.p variants={item} className="text-gray-300 text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
+                  <Typewriter text="Building innovative GenAI solutions with LLMs" delay={50} />
+                </motion.p>
+                <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild size="lg" className="w-full sm:w-auto">
+                    <Link href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }) }}>
+                      View Projects <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10">
+                    <Link href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }) }}>
+                      Contact Me
+                    </Link>
+                  </Button>
+                </motion.div>
+                <motion.div variants={item} className="flex space-x-3 justify-center">
+                  {[
+                    { href: "https://github.com/Aakashjammula", icon: Github, label: "GitHub" },
+                    { href: "https://www.linkedin.com/in/aakashjammula/", icon: Linkedin, label: "LinkedIn" },
+                    { href: "https://twitter.com/aakashjammula6", icon: Twitter, label: "Twitter" },
+                    { href: "mailto:aakashjammula6@gmail.com", icon: Mail, label: "Email" },
+                  ].map(social => (
+                    <Link key={social.label} href={social.href} target={social.label !== "Email" ? "_blank" : undefined} rel={social.label !== "Email" ? "noopener noreferrer" : undefined}>
+                      <Button variant="ghost" size="icon" className="rounded-full text-gray-400 hover:text-white hover:bg-white/10">
+                        <social.icon className="h-5 w-5" />
+                        <span className="sr-only">{social.label}</span>
+                      </Button>
+                    </Link>
+                  ))}
                 </motion.div>
               </motion.div>
-            </div>
+            </motion.div>
+            {/* Scroll indicator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2, duration: 1 }}
+              className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
+            >
+              <span className="text-gray-500 text-xs tracking-[0.2em] uppercase">Scroll</span>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                className="w-px h-8 bg-gradient-to-b from-indigo-400 to-transparent"
+              />
+            </motion.div>
           </section>
-
           {/* Stats Section */}
           <section className="w-full py-12 md:py-16 bg-white dark:bg-gray-800">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
                 variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.3 }}
+                initial="show"
+                animate="show"
                 className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
               >
                 <StatCard number="1+" label="Year Experience" iconName="Clock" />
@@ -188,17 +169,13 @@ export default function Home() {
           <section id="about" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
                 className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
               >
                 <motion.h2
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
                 >
                   About Me
@@ -207,17 +184,13 @@ export default function Home() {
 
               <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6 }}
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
                   className="space-y-6"
                 >
                   <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
                     className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed"
                   >
                     I'm Aakash Jammula, a GenAI Engineer passionate about leveraging artificial intelligence to solve
@@ -231,10 +204,8 @@ export default function Home() {
                 </div>
 
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  initial={{ opacity: 1, scale: 1 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   className="mt-12 md:mt-16 w-full"
                 >
                   <TechStack />
@@ -247,26 +218,20 @@ export default function Home() {
           <section id="projects" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
                 className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
               >
                 <motion.h2
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
                 >
                   My Projects
                 </motion.h2>
                 <motion.p
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="mt-4 text-gray-600 dark:text-gray-400 text-lg"
                 >
                   Explore some of my recent work in GenAI and LLMs
@@ -275,9 +240,8 @@ export default function Home() {
 
               <motion.div
                 variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.1 }} // Lower amount for grid
+                initial="show"
+                animate="show"
                 className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
               >
                 <div className="min-h-[260px] sm:min-h-[280px] flex"> {/* Flex to make card take full height */}
@@ -314,26 +278,20 @@ export default function Home() {
           <section id="blog" className="w-full py-20 md:py-24 bg-gray-50 dark:bg-gray-900">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
                 className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
               >
                 <motion.h2
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
                 >
                   Blog
                 </motion.h2>
                 <motion.p
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="mt-4 text-gray-600 dark:text-gray-400 text-lg"
                 >
                   Thoughts and insights on GenAI and LLMs
@@ -342,9 +300,8 @@ export default function Home() {
 
               <motion.div
                 variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.1 }}
+                initial="show"
+                animate="show"
                 className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
               >
                 {blogs.slice(0, 3).map((post, index) => (
@@ -394,26 +351,20 @@ export default function Home() {
           <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
             <div className="container mx-auto px-4 md:px-6">
               <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
                 className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
               >
                 <motion.h2
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gray-900 dark:text-white"
                 >
                   Get In Touch
                 </motion.h2>
                 <motion.p
-                  initial={{ opacity: 0, y: scrollDirection === "up" ? -20 : 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+                  initial={{ opacity: 1, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
                   className="mt-4 text-gray-600 dark:text-gray-400 text-lg"
                 >
                   Have a project in mind or want to collaborate? Let's talk!
@@ -421,10 +372,8 @@ export default function Home() {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: scrollDirection === "up" ? -50 : 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.7 }}
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 className="max-w-md mx-auto"
               >
                 <div className="space-y-6">
@@ -440,10 +389,9 @@ export default function Home() {
                       target={contactItem.target}
                       rel={contactItem.target ? "noopener noreferrer" : undefined}
                       className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors duration-200 group"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.1 * index + 0.3 }}
+                      initial={{ opacity: 1, x: 0 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0 }}
                     >
                       <contactItem.icon className="h-6 w-6 text-primary flex-shrink-0" />
                       <span className="text-lg text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white break-all">

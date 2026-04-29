@@ -55,9 +55,8 @@ const timelineEvents: TimelineEvent[] = [
   return (
     <motion.div
       variants={timelineContainerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }}
+      initial="visible"
+      animate="visible"
       className="relative w-full max-w-2xl mx-auto mt-16 mb-20 px-4 sm:px-6 lg:px-8"
     >
       <div

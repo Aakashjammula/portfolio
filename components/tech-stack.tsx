@@ -103,10 +103,8 @@ export function TechStack() {
   return (
     <div className="py-12 md:py-16">
       <motion.h2
-        initial={{ opacity: 0, y: -25 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        initial={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         className="text-3xl sm:text-4xl font-bold mb-10 sm:mb-12 text-center"
       >
         My Tech Stack
@@ -114,9 +112,8 @@ export function TechStack() {
 
       <motion.div
         variants={sectionContainerVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.05 }}
+        initial="show"
+        animate="show"
         className="flex flex-wrap gap-6 sm:gap-8 justify-center items-start"
       >
         {categories.map((category) => {
