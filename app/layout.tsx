@@ -2,6 +2,8 @@ import type React from "react"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { NavBar } from "@/components/nav-bar"
+import { SmoothScrollProvider } from "@/components/smooth-scroll"
+import { InteractiveBackground } from "@/components/interactive-background"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -23,8 +25,11 @@ export default function RootLayout({
       <head>{/* No script needed for dotlottie-react */}</head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <NavBar />
-          {children}
+          <SmoothScrollProvider>
+            <InteractiveBackground />
+            <NavBar />
+            {children}
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>
