@@ -91,14 +91,16 @@ export function NavBar() {
 
     return (
         <>
-        <div className={`fixed z-50 left-0 right-0 flex justify-center transition-all duration-300 ${navBackground ? "top-4 px-4" : "top-0 px-0"}`}>
-            <header
-                className={`w-full transition-all duration-300 ${navBackground
-                    ? "max-w-5xl bg-white/10 dark:bg-transparent backdrop-blur-md shadow-lg border dark:border-white/10 rounded-full"
-                    : "max-w-full bg-transparent border-transparent"
-                    }`}
-            >
-                <div className={`mx-auto flex justify-between items-center transition-all duration-300 ${navBackground ? "px-6 py-3" : "container px-4 py-5 md:px-6"}`}>
+        <motion.header
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.5 }}
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackground
+                ? "bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md shadow-sm border-b dark:border-neutral-800"
+                : "bg-transparent"
+                }`}
+        >
+            <div className="container mx-auto px-4 py-4 md:px-6 flex justify-between items-center transition-all duration-300">
                     <Link href="/" className="text-xl font-bold text-gray-800 dark:text-white transition-opacity hover:opacity-80 whitespace-nowrap">
                         Aakash Jammula
                     </Link>
@@ -167,8 +169,7 @@ export function NavBar() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </header>
-        </div>
+            </motion.header>
         </>
     )
 }
