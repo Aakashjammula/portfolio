@@ -18,12 +18,10 @@ import { HeroDissolve } from "@/components/HeroDissolve"
 export default function Home() {
   const [scrollDirection] = useState("down")
   const heroRef = useRef<HTMLElement>(null)
-// Removed scroll-linked transforms to stop animation on scroll
-  // const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] })
-  // const heroTextY = useTransform(scrollYProgress, [0, 1], ["0%", "-12%"])
-  // const heroTextOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0])
-
-
+  const { scrollYProgress: scrollYProgressHero } = useScroll({ target: heroRef, offset: ["start start", "end start"] })
+  const heroScale = useTransform(scrollYProgressHero, [0, 1], [1, 0.85])
+  const heroOpacity = useTransform(scrollYProgressHero, [0, 1], [1, 0.2])
+  const heroTextY = useTransform(scrollYProgressHero, [0, 1], ["0%", "-40%"])
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -52,7 +50,12 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <section id="home" ref={heroRef} className="relative h-screen flex flex-col overflow-hidden">
+          <motion.section 
+            id="home" 
+            ref={heroRef} 
+            style={{ scale: heroScale, opacity: heroOpacity }}
+            className="sticky top-0 h-screen flex flex-col overflow-hidden z-0"
+          >
             {/* Atmospheric gradient background */}
             <div
               className="absolute inset-0 z-0"
@@ -75,7 +78,7 @@ export default function Home() {
             {/* <HeroDissolve heroRef={heroRef} /> */}
             {/* Hero content */}
             <motion.div
-              style={{ y: "0%", opacity: 1 }}
+              style={{ y: heroTextY }}
               className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 pt-24 pb-20"
             >
               <motion.div
@@ -147,7 +150,10 @@ export default function Home() {
                 className="w-px h-8 bg-gradient-to-b from-indigo-400 to-transparent"
               />
             </motion.div>
-          </section>
+          </motion.section>
+
+          {/* Wrapper for content sliding over hero */}
+          <div className="relative z-10 bg-gray-50 dark:bg-gray-900 pb-10 rounded-b-[2.5rem] shadow-2xl">
           {/* Stats Section */}
           <section className="w-full py-12 md:py-16 bg-white dark:bg-gray-800">
             <div className="container mx-auto px-4 md:px-6">
@@ -346,7 +352,10 @@ export default function Home() {
               </div>
             </div>
           </section>
+          </div>
 
+          {/* Curtain Reveal for Contact & Footer */}
+          <div className="sticky bottom-0 z-0">
           {/* Contact Section */}
           <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800">
             <div className="container mx-auto px-4 md:px-6">
@@ -441,6 +450,7 @@ export default function Home() {
         </div>
         <ChatbotWidget />
       </footer>
+      </div>
     </div>
   )
 }
