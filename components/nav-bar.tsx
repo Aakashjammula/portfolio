@@ -96,7 +96,7 @@ export function NavBar() {
                 animate={{ y: 0 }}
                 transition={{ duration: 0.5 }}
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackground
-                    ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b dark:border-gray-800"
+                    ? "bg-white/80 dark:bg-[#0f172a]/40 backdrop-blur-xl shadow-sm border-b dark:border-white/10"
                     : "bg-transparent"
                     }`}
             >

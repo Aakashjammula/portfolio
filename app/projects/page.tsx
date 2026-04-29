@@ -67,7 +67,7 @@ export default function ProjectsPage() {
         className="grid grid-cols-1 gap-6 mt-12 md:grid-cols-2 max-w-4xl mx-auto"
       >
         {projects.map((project, index) => (
-          <div key={index} className="h-[260px]">
+          <div key={index} className="min-h-[300px] flex">
             <ProjectCard
               key={index}
               title={project.title}

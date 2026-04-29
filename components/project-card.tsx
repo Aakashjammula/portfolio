@@ -92,7 +92,7 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
           >
             <div className="flex-grow">
               <motion.h3 
-                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight"
+                className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-4 tracking-tight"
                 style={{ translateZ: 50 }}
               >
                 {title}
@@ -105,7 +105,7 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
               </motion.p>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mt-12 gap-6" style={{ transformStyle: "preserve-3d" }}>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mt-auto pt-6 gap-6" style={{ transformStyle: "preserve-3d" }}>
               <motion.div 
                 className="flex flex-wrap gap-2"
                 style={{ translateZ: 40 }}
