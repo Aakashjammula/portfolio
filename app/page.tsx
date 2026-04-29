@@ -13,7 +13,6 @@ import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { blogs } from "@/lib/data/blogs";
-import { HeroDissolve } from "@/components/HeroDissolve"
 
 export default function Home() {
   const [scrollDirection] = useState("down")
@@ -74,8 +73,6 @@ export default function Home() {
               <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-indigo-600/10 blur-3xl animate-pulse" />
               <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-700/8 blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }} />
             </div>
-            {/* WebGL dissolve canvas removed to stop scroll animation */}
-            {/* <HeroDissolve heroRef={heroRef} /> */}
             {/* Hero content */}
             <motion.div
               style={{ y: heroTextY }}
