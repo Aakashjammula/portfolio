@@ -412,45 +412,45 @@ export default function Home() {
               </motion.div>
             </div>
           </section>
+
+          {/* Footer */}
+          <footer className="w-full py-8 bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div className="container mx-auto px-4 md:px-6">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left"
+                >
+                  © {new Date().getFullYear()} Aakash Jammula. All rights reserved.
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="flex gap-4 sm:gap-6"
+                >
+                  <Link
+                    href="/blog"
+                    className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    href="/projects"
+                    className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
+                  >
+                    Projects
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
+            <ChatbotWidget />
+          </footer>
+          </div>
         </motion.main>
       </AnimatePresence>
-
-      {/* Footer */}
-      <footer className="w-full py-8 bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left"
-            >
-              © {new Date().getFullYear()} Aakash Jammula. All rights reserved.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex gap-4 sm:gap-6"
-            >
-              <Link
-                href="/blog"
-                className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
-              >
-                Blog
-              </Link>
-              <Link
-                href="/projects"
-                className="text-sm text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors"
-              >
-                Projects
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-        <ChatbotWidget />
-      </footer>
-      </div>
     </div>
   )
 }
