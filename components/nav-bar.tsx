@@ -92,10 +92,7 @@ export function NavBar() {
     return (
         <>
         <div className={`fixed z-50 left-0 right-0 flex justify-center transition-all duration-300 ${navBackground ? "top-4 px-4" : "top-0 px-0"}`}>
-            <motion.header
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.5 }}
+            <header
                 className={`w-full transition-all duration-300 ${navBackground
                     ? "max-w-5xl bg-white/10 dark:bg-transparent backdrop-blur-md shadow-lg border dark:border-white/10 rounded-full"
                     : "max-w-full bg-transparent border-transparent"
@@ -170,7 +167,7 @@ export function NavBar() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </motion.header>
+            </header>
         </div>
         </>
     )
