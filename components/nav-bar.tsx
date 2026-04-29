@@ -4,12 +4,19 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Sun, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export function NavBar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const router = useRouter()
+    const { theme, setTheme } = useTheme()
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Only track active section on the home page
     const [activeSection, setActiveSection] = useState("home")
@@ -114,14 +121,38 @@ export function NavBar() {
                         ))}
                     </nav>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        className="md:hidden p-2 text-gray-700 dark:text-gray-300 transition-transform active:scale-95"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                    >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                            className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                            aria-label="Toggle theme"
+                        >
+                            <AnimatePresence mode="wait" initial={false}>
+                                {mounted && (
+                                    <motion.span
+                                        key={theme}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        transition={{ duration: 0.15 }}
+                                    >
+                                        {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                                    </motion.span>
+                                )}
+                            </AnimatePresence>
+                        </motion.button>
+
+                        {/* Mobile Menu Button */}
+                        <button
+                            className="md:hidden p-2 text-gray-700 dark:text-gray-300 transition-transform active:scale-95"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        >
+                            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Navigation Dropdown */}
