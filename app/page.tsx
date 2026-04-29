@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
@@ -14,9 +14,11 @@ import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { blogs } from "@/lib/data/blogs";
+import { HeroDissolve } from "@/components/HeroDissolve"
 
 export default function Home() {
   const [scrollDirection] = useState("down")
+  const heroRef = useRef<HTMLElement>(null)
 
   const container = {
     hidden: { opacity: 0 },
@@ -46,8 +48,9 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <section id="home" className="w-full py-16 md:py-24 lg:py-32 xl:py-36">
-            <div className="container mx-auto px-4 md:px-6">
+          <section id="home" ref={heroRef} className="w-full py-16 md:py-24 lg:py-32 xl:py-36 relative overflow-hidden">
+            <HeroDissolve heroRef={heroRef} />
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
