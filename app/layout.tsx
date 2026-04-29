@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>{/* No script needed for dotlottie-react */}</head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <SmoothScrollProvider>
             <InteractiveBackground />
             <NavBar />
