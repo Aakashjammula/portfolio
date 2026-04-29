@@ -14,7 +14,7 @@ interface StatCardProps {
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const [count, setCount] = useState(0)
   const ref = useRef<HTMLSpanElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-50px" })
+  const isInView = useInView(ref, { once: false, margin: "-50px" })
 
   useEffect(() => {
     if (!isInView) return

@@ -39,7 +39,7 @@ export function ContactForm() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: false }}
       transition={{ duration: 0.5 }}
     >
       <Card className="overflow-hidden">
@@ -54,7 +54,7 @@ export function ContactForm() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.3, delay: 0.1 }}
               className="space-y-2"
             >
@@ -64,7 +64,7 @@ export function ContactForm() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.3, delay: 0.2 }}
               className="space-y-2"
             >
@@ -74,7 +74,7 @@ export function ContactForm() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.3, delay: 0.3 }}
               className="space-y-2"
             >
@@ -84,7 +84,7 @@ export function ContactForm() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.3, delay: 0.4 }}
               className="space-y-2"
             >

@@ -2,6 +2,9 @@ import type React from "react"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { NavBar } from "@/components/nav-bar"
+import { SmoothScrollProvider } from "@/components/smooth-scroll"
+import { InteractiveBackground } from "@/components/interactive-background"
+import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -22,14 +25,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>{/* No script needed for dotlottie-react */}</head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NavBar />
-          {children}
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
+          <SmoothScrollProvider>
+            <InteractiveBackground />
+            <NavBar />
+            {children}
+            <ChatbotWidget />
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>
   )
-}
-
-
-import './globals.css'
+}

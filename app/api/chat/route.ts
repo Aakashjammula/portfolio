@@ -34,9 +34,16 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        const { q, history = [] } = await req.json();
-        if (!q) {
+        const body = await req.json();
+        const q: string = body.q ?? "";
+        const history: { role: string; parts: string }[] = body.history ?? [];
+
+        if (!q || typeof q !== "string") {
             return NextResponse.json({ error: "Message required" }, { status: 400 });
+        }
+        // Prevent excessively long inputs (prompt injection / abuse guard)
+        if (q.length > 1000) {
+            return NextResponse.json({ error: "Message too long" }, { status: 400 });
         }
 
 
@@ -135,9 +142,9 @@ ${retrievedContext}`,
         const userMessage = new HumanMessage(q);
 
         // Limit history to last 6 messages (3 turns) + current query
-        const recentHistory = history.slice(-6).map((msg: any) => {
-            if (msg.role === "user") return new HumanMessage(msg.parts);
-            return new AIMessage(msg.parts);
+        const recentHistory = history.slice(-6).map((msg: { role: string; parts: string }) => {
+            if (msg.role === "user") return new HumanMessage(String(msg.parts));
+            return new AIMessage(String(msg.parts));
         });
 
         const stream = await model.stream([systemMessage, ...recentHistory, userMessage]);
@@ -175,10 +182,11 @@ ${retrievedContext}`,
             }
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        // Log internally but never expose raw error messages to the client
         console.error("API Error:", error);
         return NextResponse.json(
-            { error: error.message },
+            { error: "An internal error occurred. Please try again later." },
             { status: 500 }
         );
     }

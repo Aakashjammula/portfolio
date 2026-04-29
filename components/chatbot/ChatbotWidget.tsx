@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageSquare, X, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ColorOrb } from "@/components/ui/ai-input"
 
 interface ChatMessage {
   id: string
@@ -123,75 +124,86 @@ export function ChatbotWidget() {
     [inputValue, loading, messages],
   )
 
-  // const [showChat, setShowChat] = useState(false) <-- removing this logic
-  // keeping it simple
-
   return (
-    <>
-      {/* Toggle Button */}
-      <motion.div
-        className="fixed bottom-6 right-6 z-[999]"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      >
-        <Button
-          size="icon"
-          className="rounded-full w-14 h-14 bg-primary hover:bg-primary/90 shadow-lg"
-          onClick={toggleOpen}
-          aria-label="Toggle chat"
-        >
-          {isOpen ? <X className="h-6 w-6" /> : <MessageSquare className="h-6 w-6" />}
-        </Button>
-      </motion.div>
-
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
+    <motion.div
+      layout
+      className={`fixed z-[999] flex flex-col overflow-hidden ${
+        isOpen
+          ? "bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 bottom-0 left-0 right-0 w-full h-[90vh] rounded-t-xl md:bottom-6 md:right-6 md:left-auto md:w-[384px] md:h-[500px] md:rounded-2xl"
+          : "bg-white/5 border border-white/10 backdrop-blur-md shadow-lg bottom-6 right-6 w-[115px] h-[44px] rounded-xl cursor-pointer hover:bg-white/10 transition-colors"
+      }`}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        mass: 0.8,
+      }}
+      onClick={!isOpen ? toggleOpen : undefined}
+    >
+      <AnimatePresence mode="wait">
+        {!isOpen ? (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={`
-              fixed z-[998] flex flex-col overflow-hidden bg-white dark:bg-gray-800 shadow-xl
-              bottom-0 left-0 right-0 w-full rounded-t-lg border-t dark:border-gray-700 h-[90vh]
-              md:bottom-24 md:right-6 md:left-auto md:max-w-sm md:rounded-lg md:border md:h-[500px] md:max-h-[70vh]
-            `}
-          // The style attribute for height (style={{ height: "min(70vh, 500px)" }})
-          // is removed as Tailwind classes now handle responsive height.
-          // - Mobile (default): h-[90vh] (90% of viewport height).
-          //   Consider h-[90dvh] for better handling of mobile browser dynamic toolbars if your Tailwind setup supports it.
-          // - Desktop (md and up): md:h-[500px] md:max-h-[70vh] effectively achieves min(500px, 70vh).
+            key="button"
+            className="flex h-full w-full items-center justify-center gap-1.5 text-white"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.15 }}
+          >
+            <div className="pointer-events-none -ml-1">
+              <ColorOrb dimension="20px" />
+            </div>
+            <span className="text-sm font-medium">Ask AI</span>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="chat"
+            className="flex flex-col h-full w-full cursor-default"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.05 }}
           >
             {/* Header */}
-            <div className="p-4 border-b dark:border-gray-700 flex-shrink-0">
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
-                Chat with Aakash's Assistant
-              </h3>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="p-4 border-b dark:border-gray-700 flex-shrink-0 flex justify-between items-center bg-gray-50 dark:bg-gray-800/80">
+              <div>
+                <h3 className="font-semibold text-base text-gray-900 dark:text-white flex items-center gap-2">
+                  <div className="pointer-events-none scale-75 origin-left">
+                    <ColorOrb dimension="20px" tones={{ base: "oklch(22.64% 0 0)" }} />
+                  </div>
+                  Ask Aakash's AI
+                </h3>
                 {rateLimitInfo && (
-                  <span className="block text-[10px] mt-1 text-gray-400">
+                  <span className="block text-[10px] mt-1 text-gray-500 dark:text-gray-400">
                     {rateLimitInfo.remaining} / {rateLimitInfo.limit} requests remaining
                   </span>
                 )}
               </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full w-8 h-8 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                onClick={toggleOpen}
+                aria-label="Close chat"
+              >
+                <X className="h-5 w-5" />
+              </Button>
             </div>
 
             {/* Messages */}
-            <div className="flex-grow p-4 space-y-3 overflow-y-auto">
+            <div className="flex-grow p-4 space-y-4 overflow-y-auto">
               {messages.map(msg => (
                 <div
                   key={msg.id}
                   className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[75%] p-3 rounded-lg text-sm ${msg.sender === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                    className={`max-w-[85%] p-3 rounded-2xl text-sm ${msg.sender === "user"
+                      ? "bg-primary text-primary-foreground rounded-tr-sm"
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-sm"
                       }`}
                   >
-                    <p className="break-words">
+                    <p className="break-words leading-relaxed">
                       {msg.text.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
                         part.match(/https?:\/\/[^\s]+/) ? (
                           <a
@@ -199,7 +211,7 @@ export function ChatbotWidget() {
                             href={part}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="underline hover:text-blue-500"
+                            className="underline hover:text-blue-500 transition-colors font-medium"
                           >
                             {part}
                           </a>
@@ -209,7 +221,7 @@ export function ChatbotWidget() {
                       )}
                     </p>
                     <div
-                      className={`text-xs mt-1 ${msg.sender === "user"
+                      className={`text-[10px] mt-1.5 ${msg.sender === "user"
                         ? "text-primary-foreground/70 text-right"
                         : "text-gray-400 dark:text-gray-500 text-left"
                         }`}
@@ -224,12 +236,12 @@ export function ChatbotWidget() {
               ))}
               <div ref={messagesEndRef} />
               {loading && (
-                <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-                  …typing
+                <p className="text-left text-xs text-gray-500 dark:text-gray-400 pl-2 animate-pulse">
+                  AI is thinking...
                 </p>
               )}
               {error && (
-                <p className="text-center text-xs text-red-500 dark:text-red-400">
+                <p className="text-center text-xs text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/10 p-2 rounded-md">
                   {error}
                 </p>
               )}
@@ -238,29 +250,29 @@ export function ChatbotWidget() {
             {/* Input */}
             <form
               onSubmit={handleSendMessage}
-              className="p-3 border-t dark:border-gray-700 flex items-center gap-2 flex-shrink-0"
+              className="p-3 border-t dark:border-gray-700 flex items-center gap-2 flex-shrink-0 bg-white dark:bg-gray-800"
             >
               <input
                 type="text"
-                placeholder="Type your message…"
+                placeholder="Ask me anything..."
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 disabled={loading}
-                className="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
+                className="flex-grow p-3 px-4 border border-gray-200 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-primary/20 focus:border-primary dark:bg-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50 text-sm outline-none transition-all"
               />
               <Button
                 type="submit"
                 size="icon"
-                className="bg-primary hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 rounded-full w-10 h-10 flex-shrink-0"
                 disabled={loading}
               >
-                <Send className="h-5 w-5" />
+                <Send className="h-4 w-4 ml-1" />
                 <span className="sr-only">Send message</span>
               </Button>
             </form>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </motion.div>
   )
 }
