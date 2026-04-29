@@ -273,10 +273,38 @@ export default function Home() {
             {/* Contact Section */}
             <section id="contact" className="w-full py-20 md:py-24 bg-white dark:bg-gray-800 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.05)] relative z-40 -mt-10 pt-32">
               <div className="container mx-auto px-4 md:px-6">
-                <ParallaxTitle 
-                  title="Get In Touch" 
-                  subtitle="Have a project in mind or want to collaborate? Let's talk!" 
-                />
+                <div className="text-center mb-16 perspective-[1000px]">
+                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 flex justify-center flex-wrap">
+                    {"Get In Touch".split("").map((char, index) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 40, rotateX: -90 }}
+                        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                        viewport={{ once: false, amount: 0.5 }}
+                        transition={{ 
+                          duration: 0.6, 
+                          delay: index * 0.05, 
+                          type: "spring", 
+                          stiffness: 150, 
+                          damping: 10 
+                        }}
+                        style={{ display: "inline-block", transformOrigin: "bottom" }}
+                        className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 drop-shadow-sm"
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                    ))}
+                  </h2>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-medium"
+                  >
+                    Have a project in mind or want to collaborate? Let's talk!
+                  </motion.p>
+                </div>
 
                 <ScrollReveal delay={0.2} className="max-w-md mx-auto">
                   <div className="space-y-6">
