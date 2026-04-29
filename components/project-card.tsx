@@ -5,9 +5,6 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 import { useRef, useState } from "react"
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-
 interface ProjectCardProps {
   title: string
   description: string
@@ -18,7 +15,6 @@ interface ProjectCardProps {
 
 export function ProjectCard({ title, description, tags, link, index }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
-  const [glowPosition, setGlowPosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
 
   const x = useMotionValue(0)
@@ -40,7 +36,6 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
     
     x.set(xPct)
     y.set(yPct)
-    setGlowPosition({ x: mouseX, y: mouseY })
   }
 
   const handleMouseLeave = () => {
@@ -57,12 +52,13 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
           opacity: 1,
           y: 0,
           transition: {
-            duration: 0.6,
+            duration: 0.8,
+            ease: [0.16, 1, 0.3, 1], // cinematic ease out
             delay: index * 0.1,
           },
         },
       }}
-      className="h-full perspective-[1000px]"
+      className="h-full w-full perspective-[1000px]"
     >
       <motion.div
         ref={cardRef}
@@ -70,49 +66,70 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={handleMouseLeave}
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        whileHover={{
-          scale: 1.03,
-          z: 20,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 15 }}
-        className="h-full relative group"
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="h-full relative group cursor-pointer"
       >
-        {/* Glow effect layer - only rendered while hovering */}
-        {isHovering && (
-          <div
-            className="absolute -inset-[1px] rounded-xl transition-opacity duration-300 pointer-events-none"
+        <div 
+          className="overflow-hidden h-full rounded-3xl bg-[#0a0a0a] border border-white/10 flex flex-col relative z-10 shadow-2xl"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {/* Deep Parallax Background */}
+          <motion.div 
+            className="absolute inset-0 z-0 opacity-40 transition-opacity duration-700 ease-out group-hover:opacity-100"
             style={{
-              background: `radial-gradient(400px circle at ${glowPosition.x}px ${glowPosition.y}px, rgba(99, 102, 241, 0.15), transparent 60%)`,
+              background: `radial-gradient(circle at 80% 0%, rgba(99,102,241,0.25) 0%, transparent 60%)`,
+              translateZ: -50,
             }}
           />
-        )}
-        <Card className="overflow-hidden h-full transition-all duration-300 border-opacity-50 hover:border-primary/50 flex flex-col relative z-10">
-          <CardHeader className="flex-none">
-            <CardTitle>{title}</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-grow">
-            <p className="text-gray-500 dark:text-gray-400">{description}</p>
-            <div className="flex flex-wrap gap-2 mt-4">
-              {tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="transition-all hover:bg-primary/20 hover:text-primary">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter className="flex-none mt-auto">
-            <motion.div whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-              <Link
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+          
+          <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-50" />
+
+          {/* Cinematic Content Layer */}
+          <div 
+            className="relative z-10 flex flex-col h-full p-8 sm:p-10"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <div className="flex-grow">
+              <motion.h3 
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight"
+                style={{ translateZ: 50 }}
               >
-                Visit Project <ArrowUpRight className="ml-1 h-4 w-4" />
-              </Link>
-            </motion.div>
-          </CardFooter>
-        </Card>
+                {title}
+              </motion.h3>
+              <motion.p 
+                className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-sm"
+                style={{ translateZ: 30 }}
+              >
+                {description}
+              </motion.p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mt-12 gap-6" style={{ transformStyle: "preserve-3d" }}>
+              <motion.div 
+                className="flex flex-wrap gap-2"
+                style={{ translateZ: 40 }}
+              >
+                {tags.map((tag) => (
+                  <span key={tag} className="px-3 py-1 rounded-full text-xs font-semibold bg-white/5 text-gray-300 border border-white/10 backdrop-blur-md">
+                    {tag}
+                  </span>
+                ))}
+              </motion.div>
+
+              <motion.div style={{ translateZ: 60 }}>
+                <Link
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-black hover:scale-110 hover:bg-indigo-50 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                >
+                  <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6" />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   )
