@@ -1,16 +1,18 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { ParallaxTitle } from "@/components/scroll-reveal"
 import {
   Code,
   FileCode,
   Braces,
   Terminal,
-  Brain, // Brain is imported but not used in the original list, kept for consistency
+  Brain,
   Cpu,
   Bot,
   Cloud,
-  CloudCog, // Will be used for Azure
+  CloudCog,
   Container,
   Boxes,
   Database,
@@ -29,8 +31,7 @@ export function TechStack() {
     { name: "PyTorch", icon: Cpu, category: "AI/ML" },
     { name: "Langchain", icon: Bot, category: "AI/ML" },
     { name: "AWS", icon: Cloud, category: "Cloud" },
-    // { name: "Google Cloud", icon: CloudCog, category: "Cloud" }, // Replaced
-    { name: "Azure", icon: CloudCog, category: "Cloud" }, // Added Azure, using CloudCog
+    { name: "Azure", icon: CloudCog, category: "Cloud" },
     { name: "Docker", icon: Container, category: "DevOps" },
     { name: "Kubernetes", icon: Boxes, category: "DevOps" },
     { name: "Git", icon: GitBranch, category: "Tools" },
@@ -42,7 +43,22 @@ export function TechStack() {
 
   const categories = Array.from(new Set(technologies.map((tech) => tech.category)))
 
-  // Animation Variants (unchanged)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  // Staggered parallax for floating effect
+  const yOffsets = [
+    useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]),
+    useTransform(scrollYProgress, [0, 1], ["0%", "15%"]),
+    useTransform(scrollYProgress, [0, 1], ["15%", "-5%"]),
+    useTransform(scrollYProgress, [0, 1], ["-5%", "10%"]),
+    useTransform(scrollYProgress, [0, 1], ["10%", "-15%"]),
+    useTransform(scrollYProgress, [0, 1], ["0%", "5%"]),
+  ]
+
   const sectionContainerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -54,13 +70,12 @@ export function TechStack() {
   }
 
   const categoryBlockVariants = {
-    hidden: { opacity: 0, y: 25, scale: 0.95 },
+    hidden: { opacity: 0, scale: 0.95 },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
       transition: {
-        duration: 0.4,
+        duration: 0.6,
         ease: "easeOut",
       },
     },
@@ -102,29 +117,29 @@ export function TechStack() {
 
   return (
     <div className="py-12 md:py-16">
-      <motion.h2
-        initial={{ opacity: 1, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-3xl sm:text-4xl font-bold mb-10 sm:mb-12 text-center"
-      >
-        My Tech Stack
-      </motion.h2>
+      <ParallaxTitle title="My Tech Stack" />
 
       <motion.div
+        ref={containerRef}
         variants={sectionContainerVariants}
-        initial="show"
-        animate="show"
-        className="flex flex-wrap gap-6 sm:gap-8 justify-center items-start"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
+        className="flex flex-wrap gap-6 sm:gap-8 justify-center items-start mt-8"
       >
-        {categories.map((category) => {
+        {categories.map((category, idx) => {
           const categoryTechs = technologies.filter(
             (tech) => tech.category === category
           )
+          
+          const y = yOffsets[idx % yOffsets.length]
+
           return (
             <motion.div
               key={category}
               variants={categoryBlockVariants}
-              className="flex flex-col p-5 sm:p-6 rounded-xl border bg-card shadow-lg 
+              style={{ y }}
+              className="flex flex-col p-5 sm:p-6 rounded-xl border bg-white dark:bg-slate-800 shadow-xl 
                          w-full min-w-[280px] 
                          sm:w-auto sm:min-w-[300px] sm:max-w-xs 
                          md:min-w-[320px] md:max-w-sm"
@@ -153,12 +168,12 @@ export function TechStack() {
                         scale: 1.05,
                         boxShadow: "0px 7px 20px -5px rgba(0, 0, 0, 0.15)",
                       }}
-                      className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-lg border bg-background hover:bg-muted dark:hover:bg-gray-800 transition-all duration-200 h-full ${
+                      className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-lg border bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 transition-all duration-200 h-full ${
                         isLastItemInOddCategory ? "col-span-2" : ""
                       }`}
                     >
-                      <tech.icon className="w-8 h-8 sm:w-9 sm:h-9 mb-2 text-accent-foreground dark:text-sky-400" />
-                      <span className="text-xs sm:text-sm font-medium text-center text-card-foreground">
+                      <tech.icon className="w-8 h-8 sm:w-9 sm:h-9 mb-2 text-indigo-500 dark:text-sky-400" />
+                      <span className="text-xs sm:text-sm font-medium text-center text-gray-700 dark:text-gray-300">
                         {tech.name}
                       </span>
                     </motion.div>
