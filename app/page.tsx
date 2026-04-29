@@ -14,6 +14,7 @@ import Timeline from "@/components/Timeline";
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget";
 import { blogs } from "@/lib/data/blogs";
 import { ScrollReveal, ParallaxTitle } from "@/components/scroll-reveal";
+import { BlogRow } from "@/components/blog-row";
 
 export default function Home() {
   const [scrollDirection] = useState("down")
@@ -250,44 +251,11 @@ export default function Home() {
                   subtitle="Thoughts and insights on GenAI and LLMs" 
                 />
 
-                <motion.div
-                  variants={container}
-                  initial="show"
-                  animate="show"
-                  className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto"
-                >
+                <div className="flex flex-col max-w-5xl mx-auto mt-10">
                   {blogs.slice(0, 3).map((post, index) => (
-                    <motion.div
-                      key={index}
-                      variants={item}
-                      className="min-h-[260px] sm:min-h-[280px] flex" // Flex to make card take full height
-                    >
-                      <div className="h-full w-full bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex-none">
-                          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{post.title}</h3>
-                        </div>
-                        <div className="flex-grow">
-                          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
-                            {post.description}
-                          </p>
-                        </div>
-                        <div className="flex-none mt-auto">
-                          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
-                            <span>{post.date}</span>
-                            <span className="mx-2">•</span>
-                            <span>{post.readTime}</span>
-                          </div>
-                          <Link
-                            href={`/blog/${post.slug}`}
-                            className="text-primary hover:underline inline-flex items-center font-medium text-sm"
-                          >
-                            Read More <ArrowRight className="ml-1 h-4 w-4" />
-                          </Link>
-                        </div>
-                      </div>
-                    </motion.div>
+                    <BlogRow key={index} post={post} index={index} />
                   ))}
-                </motion.div>
+                </div>
 
                 <div className="flex justify-center mt-10 md:mt-12">
                   <Button asChild variant="outline" size="lg">
