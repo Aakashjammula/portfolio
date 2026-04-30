@@ -17,10 +17,11 @@ export function AgentCanvas() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     if (!ctx) return;
 
-    let W: number, H: number;
+    let W: number = window.innerWidth;
+    let H: number = window.innerHeight;
     function resize() {
       if (!canvas) return;
       W = canvas.width = window.innerWidth;
