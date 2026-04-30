@@ -15,6 +15,7 @@ import { blogs } from "@/lib/data/blogs";
 import { ScrollReveal, ParallaxTitle } from "@/components/scroll-reveal";
 import { BlogRow } from "@/components/blog-row";
 import { TextRotate } from "@/components/ui/text-rotate";
+import { AgentCanvas } from "@/components/agent-canvas";
 
 export default function Home() {
   const [scrollDirection] = useState("down")
@@ -39,8 +40,9 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#06080f] dark:bg-[#06080f] overflow-x-hidden text-[#e2e8f0]">
 
+      <AgentCanvas />
 
       <AnimatePresence mode="wait">
         <motion.main
@@ -57,20 +59,7 @@ export default function Home() {
             style={{ scale: heroScale, opacity: heroOpacity }}
             className="sticky top-0 h-screen flex flex-col overflow-hidden z-0"
           >
-            {/* Atmospheric gradient background */}
-            <div
-              className="absolute inset-0 z-0"
-              style={{ background: "radial-gradient(ellipse at 40% 30%, #1e1b4b 0%, #0f172a 45%, #030712 100%)" }}
-            />
-            {/* Dot grid texture */}
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundImage: "radial-gradient(circle, rgba(99,102,241,0.15) 1px, transparent 1px)",
-                backgroundSize: "28px 28px",
-              }}
-            />
-            {/* Ambient glow blobs */}
+            {/* Ambient glow blobs - kept for some ambient color behind canvas */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-indigo-600/10 blur-3xl animate-pulse" />
               <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-700/8 blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }} />
