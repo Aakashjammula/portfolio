@@ -352,13 +352,28 @@ export function AgentCanvas() {
       isParallaxBot?: boolean;
       history: {x: number, y: number}[] = [];
       isIdle: boolean = false;
+      rotation: number = 0;
 
       constructor(typeIdx: number) {
         this.type = TYPES[typeIdx];
         this.zone = ZONES[typeIdx];
         this.px = 3.6 + (typeIdx % 3) * 0.55;
-        this.x = (this.zone.cx + (Math.random()-0.5)*this.zone.rx*0.5) * window.innerWidth;
-        this.y = (this.zone.cy + (Math.random()-0.5)*this.zone.ry*0.5) * window.innerHeight;
+        
+        let startX = (this.zone.cx + (Math.random()-0.5)*this.zone.rx*0.5) * window.innerWidth;
+        let startY = (this.zone.cy + (Math.random()-0.5)*this.zone.ry*0.5) * window.innerHeight;
+        
+        // Ensure they don't spawn exactly in the center text area, causing an explosive scatter
+        const minX = window.innerWidth / 2 - 350;
+        const maxX = window.innerWidth / 2 + 350;
+        const minY = window.innerHeight / 2 - 150;
+        const maxY = window.innerHeight / 2 + 250;
+
+        if (startX > minX && startX < maxX && startY > minY && startY < maxY) {
+            startY = Math.random() < 0.5 ? minY - 20 : maxY + 20;
+        }
+
+        this.x = startX;
+        this.y = startY;
         this.vx = 0; this.vy = 0;
         this.targetX = this.x; this.targetY = this.y;
         this.flip = false;
@@ -388,14 +403,13 @@ export function AgentCanvas() {
             this.targetX = zx + Math.cos(angle)*zrx*dist;
             this.targetY = zy + Math.sin(angle)*zry*dist;
             
-            // Make sure the target is not inside the center text area
-            const exCx = W / 2;
-            const exCy = H / 2 - 40;
-            const dx = this.targetX - exCx;
-            const dy = this.targetY - exCy;
-            const exclusionDist = Math.hypot(dx / 3.0, dy);
+            // Rectangular exclusion zone for target
+            const minX = W / 2 - 350;
+            const maxX = W / 2 + 350;
+            const minY = H / 2 - 150;
+            const maxY = H / 2 + 250;
             
-            if (exclusionDist > 160) {
+            if (this.targetX < minX || this.targetX > maxX || this.targetY < minY || this.targetY > maxY) {
                 valid = true;
             }
             attempts++;
@@ -407,7 +421,7 @@ export function AgentCanvas() {
         this.idleTick = 0;
       }
 
-      update(mx: number, my: number) {
+      update(mx: number, my: number, allAgents: Agent[]) {
         this.tick++;
         this.idleTick++;
         
@@ -468,24 +482,46 @@ export function AgentCanvas() {
           this.sprinting = true;
         }
 
-        // --- EXCLUSION ZONE (Repulsion Field) ---
-        // Prevent bots from overlapping the main text "Aakash Jammula" in the center.
-        // We use a wide ellipse to match the text shape.
-        const exCx = W / 2;
-        const exCy = H / 2 - 40; // Slightly higher than exact center
-        const dx = this.x - exCx;
-        const dy = this.y - exCy;
-        const exclusionDist = Math.hypot(dx / 3.0, dy); // Make it a wide ellipse
+        // --- EXCLUSION ZONE (Soft Rectangle) ---
+        // Prevent bots from overlapping the main text and buttons in the center.
+        const minX = W / 2 - 350;
+        const maxX = W / 2 + 350;
+        const minY = H / 2 - 150;
+        const maxY = H / 2 + 250;
 
-        if (exclusionDist < 160 && !this.isParallaxBot) {
-          const repelForce = (160 - exclusionDist) * 0.15; // Stronger push
-          const repelAngle = Math.atan2(dy, dx / 3.0);
-          this.vx += Math.cos(repelAngle) * repelForce * 3.0;
-          this.vy += Math.sin(repelAngle) * repelForce;
-          this.sprinting = true;
-          // Pick a new target if they get pushed out so they don't get stuck
-          if (Math.random() < 0.2) this.pickNewTarget();
+        if (this.x > minX && this.x < maxX && this.y > minY && this.y < maxY && !this.isParallaxBot) {
+            // Find closest edge
+            const dLeft = this.x - minX;
+            const dRight = maxX - this.x;
+            const dTop = this.y - minY;
+            const dBottom = maxY - this.y;
+            const minDist = Math.min(dLeft, dRight, dTop, dBottom);
+            
+            // Apply a gentle push rather than a violent scatter
+            const push = 0.6;
+            if (minDist === dLeft) this.vx -= push;
+            else if (minDist === dRight) this.vx += push;
+            else if (minDist === dTop) this.vy -= push;
+            else if (minDist === dBottom) this.vy += push;
+
+            if (Math.random() < 0.02) this.pickNewTarget();
         }
+        // ----------------------------------------
+
+        // --- INTER-BOT COLLISION (Bouncing off each other) ---
+        allAgents.forEach(other => {
+            if (other === this) return;
+            const dx = this.x - other.x;
+            const dy = this.y - other.y;
+            const dist = Math.hypot(dx, dy);
+            const minSpace = this.px * 16; // About 50-60px
+            if (dist < minSpace && dist > 0.1) {
+                const force = (minSpace - dist) * 0.05;
+                const angle = Math.atan2(dy, dx);
+                this.vx += Math.cos(angle) * force;
+                this.vy += Math.sin(angle) * force;
+            }
+        });
         // ----------------------------------------
 
         const spd = Math.hypot(this.vx, this.vy);
@@ -493,6 +529,13 @@ export function AgentCanvas() {
         if(spd > maxSpd) { this.vx=this.vx/spd*maxSpd; this.vy=this.vy/spd*maxSpd; }
 
         this.isIdle = spd < 0.4 && !this.sprinting;
+
+        // Roll animation when moving quickly
+        if (this.sprinting || spd > 1.5) {
+            this.rotation = this.vx * 0.06;
+        } else {
+            this.rotation *= 0.85; // smooth return to upright
+        }
 
         // Record history for pixel trails if moving fast
         if (spd > 2.0 || this.sprinting) {
@@ -555,11 +598,19 @@ export function AgentCanvas() {
         ctx.fillStyle=gr; ctx.fill();
         ctx.restore();
 
+        // Apply rolling rotation
+        ctx.save();
+        ctx.translate(this.cx, this.cy);
+        ctx.rotate(this.rotation);
+        ctx.translate(-this.cx, -this.cy);
+
         drawSprite(this.x, this.y, this.px, this.type, this.frame, this.flip, this.opacity);
 
         ctx.save(); ctx.globalAlpha = this.opacity;
         if(this.type.drawTool) this.type.drawTool(this.x,this.y,this.px,this.flip,this.tick, this.isIdle);
         ctx.restore();
+        
+        ctx.restore(); // Restore rolling rotation
 
         drawBadge(this.x, this.y, this.px, this.type);
 
@@ -597,7 +648,7 @@ export function AgentCanvas() {
         for(let j=i+1;j<agents.length;j++)
           drawPipelineBeam(agents[i],agents[j],t);
       agents.sort((a,b)=>a.y-b.y);
-      agents.forEach(a=>a.update(mouseX,mouseY));
+      agents.forEach(a=>a.update(mouseX,mouseY, agents));
       agents.forEach(a=>a.draw());
       animationFrameId = requestAnimationFrame(loop);
     }
