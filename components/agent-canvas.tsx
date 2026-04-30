@@ -96,7 +96,7 @@ export function AgentCanvas() {
         role: 'Coder', badge: 'CODE',
         color: '#4ade80', dark: '#14532d', eye: '#071a0e', accent: '#86efac',
         messages: ['def agent():', 'syntax ✓', 'test passed', 'git commit ✓', 'linting…'],
-        drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
+        drawTool(x: number, y: number, px: number, flip: boolean, tick: number, isIdle: boolean) {
           const tx = flip ? x - px*5.5 : x + SPRITE_W*px + px*0.2;
           const ty = y + px*1.8;
           ctx.save();
@@ -106,7 +106,10 @@ export function AgentCanvas() {
           const lineColors = ['#4ade80','#86efac','#4ade80','#a3e635'];
           lineColors.forEach((c,i) => {
             ctx.fillStyle = c;
-            ctx.fillRect(tx+px*0.3, ty+px*(0.35+i*0.65), px*(1.2+i*0.35), px*0.28);
+            // Matrix scrolling effect when idle
+            let scrollOffset = isIdle ? (i - tick * 0.1) % 4 : i;
+            if (scrollOffset < 0) scrollOffset += 4;
+            ctx.fillRect(tx+px*0.3, ty+px*(0.35+scrollOffset*0.65), px*(1.2+i*0.35), px*0.28);
           });
           if (blink) { ctx.fillStyle = '#86efac'; ctx.fillRect(tx+px*2, ty+px*2.55, px*0.15, px*0.35); }
           ctx.fillStyle = '#1a2a1a'; ctx.strokeStyle = '#4ade80';
@@ -118,9 +121,9 @@ export function AgentCanvas() {
         role: 'Reviewer', badge: 'REVW',
         color: '#fbbf24', dark: '#78350f', eye: '#1c0800', accent: '#fde68a',
         messages: ['reviewing PR…', 'score: 9/10', 'nit: var name', 'LGTM ✓', 'needs fix'],
-        drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
+        drawTool(x: number, y: number, px: number, flip: boolean, tick: number, isIdle: boolean) {
           const cx = x + SPRITE_W*px*0.5;
-          const ty = y - px*1.5;
+          const ty = y - px*1.5 + (isIdle ? Math.sin(tick*0.3)*px*0.6 : 0); // Glasses shift up and down when idle
           ctx.save();
           ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 1;
           ctx.fillStyle = 'rgba(251,191,36,0.1)';
@@ -185,7 +188,7 @@ export function AgentCanvas() {
         role: 'BugFixer', badge: 'FIX',
         color: '#f43f5e', dark: '#881337', eye: '#1c0208', accent: '#fda4af',
         messages: ['bug found 🐛', 'stack traced', 'patching…', 'hotfix merged', 'tests pass ✓'],
-        drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
+        drawTool(x: number, y: number, px: number, flip: boolean, tick: number, isIdle: boolean) {
           const tx = flip ? x - px*4.5 : x + SPRITE_W*px + px*0.2;
           const ty = y + px*1;
           ctx.save(); ctx.translate(tx, ty);
@@ -198,16 +201,24 @@ export function AgentCanvas() {
           ctx.restore();
           
           const bx = tx + (flip?-px*2:px*2.5);
-          const by = ty + px*3.2 + Math.sin(tick*0.08)*px*0.9;
+          const by = ty + px*3.2 + (isIdle ? 0 : Math.sin(tick*0.08)*px*0.9);
           ctx.save();
+          if (isIdle) {
+              // Bug crawls in a circle when idle
+              ctx.translate(bx, by);
+              ctx.rotate(tick * 0.15);
+              ctx.translate(px*1.5, 0);
+          } else {
+              ctx.translate(bx, by);
+          }
           ctx.fillStyle = '#22c55e';
-          ctx.beginPath(); ctx.ellipse(bx,by,px*0.72,px*0.52,0,0,Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(0,0,px*0.72,px*0.52,0,0,Math.PI*2); ctx.fill();
           ctx.fillStyle = '#15803d';
-          ctx.beginPath(); ctx.ellipse(bx,by-px*0.42,px*0.42,px*0.36,0,0,Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(0,-px*0.42,px*0.42,px*0.36,0,0,Math.PI*2); ctx.fill();
           ctx.strokeStyle = '#15803d'; ctx.lineWidth = 0.5;
           [-0.9,0,0.9].forEach(i => {
-            ctx.beginPath(); ctx.moveTo(bx-px*0.62,by+i*px*0.22); ctx.lineTo(bx-px*1.35,by+i*px*0.22-px*0.32); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(bx+px*0.62,by+i*px*0.22); ctx.lineTo(bx+px*1.35,by+i*px*0.22-px*0.32); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-px*0.62,i*px*0.22); ctx.lineTo(-px*1.35,i*px*0.22-px*0.32); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(px*0.62,i*px*0.22); ctx.lineTo(px*1.35,i*px*0.22-px*0.32); ctx.stroke();
           });
           ctx.restore();
         }
@@ -339,6 +350,8 @@ export function AgentCanvas() {
       opacity: number; tick: number; bubble: string | null; bubbleTick: number; bubbleCooldown: number;
       idleTick: number; idleDur: number; cx: number; cy: number; sprinting?: boolean; sprintCooldown?: number;
       isParallaxBot?: boolean;
+      history: {x: number, y: number}[] = [];
+      isIdle: boolean = false;
 
       constructor(typeIdx: number) {
         this.type = TYPES[typeIdx];
@@ -366,10 +379,28 @@ export function AgentCanvas() {
         const zy = this.zone.cy * H;
         const zrx = this.zone.rx * W;
         const zry = this.zone.ry * H;
-        const angle = Math.random() * Math.PI * 2;
-        const dist = Math.random() * 0.85;
-        this.targetX = zx + Math.cos(angle)*zrx*dist;
-        this.targetY = zy + Math.sin(angle)*zry*dist;
+        
+        let valid = false;
+        let attempts = 0;
+        while (!valid && attempts < 10) {
+            const angle = Math.random() * Math.PI * 2;
+            const dist = Math.random() * 0.85;
+            this.targetX = zx + Math.cos(angle)*zrx*dist;
+            this.targetY = zy + Math.sin(angle)*zry*dist;
+            
+            // Make sure the target is not inside the center text area
+            const exCx = W / 2;
+            const exCy = H / 2 - 40;
+            const dx = this.targetX - exCx;
+            const dy = this.targetY - exCy;
+            const exclusionDist = Math.hypot(dx / 3.0, dy);
+            
+            if (exclusionDist > 160) {
+                valid = true;
+            }
+            attempts++;
+        }
+
         this.targetX = Math.max(60, Math.min(W-80, this.targetX));
         this.targetY = Math.max(90, Math.min(H-80, this.targetY));
         this.idleDur = 70+Math.random()*180;
@@ -441,25 +472,35 @@ export function AgentCanvas() {
         // Prevent bots from overlapping the main text "Aakash Jammula" in the center.
         // We use a wide ellipse to match the text shape.
         const exCx = W / 2;
-        const exCy = H / 2 - 60; // Slightly higher than exact center
+        const exCy = H / 2 - 40; // Slightly higher than exact center
         const dx = this.x - exCx;
         const dy = this.y - exCy;
         const exclusionDist = Math.hypot(dx / 3.0, dy); // Make it a wide ellipse
 
-        if (exclusionDist < 120 && !this.isParallaxBot) {
-          const repelForce = (120 - exclusionDist) * 0.08;
+        if (exclusionDist < 160 && !this.isParallaxBot) {
+          const repelForce = (160 - exclusionDist) * 0.15; // Stronger push
           const repelAngle = Math.atan2(dy, dx / 3.0);
           this.vx += Math.cos(repelAngle) * repelForce * 3.0;
           this.vy += Math.sin(repelAngle) * repelForce;
           this.sprinting = true;
           // Pick a new target if they get pushed out so they don't get stuck
-          if (Math.random() < 0.05) this.pickNewTarget();
+          if (Math.random() < 0.2) this.pickNewTarget();
         }
         // ----------------------------------------
 
         const spd = Math.hypot(this.vx, this.vy);
         const maxSpd = this.sprinting ? 3.8 : 1.8;
         if(spd > maxSpd) { this.vx=this.vx/spd*maxSpd; this.vy=this.vy/spd*maxSpd; }
+
+        this.isIdle = spd < 0.4 && !this.sprinting;
+
+        // Record history for pixel trails if moving fast
+        if (spd > 2.0 || this.sprinting) {
+            this.history.unshift({x: this.x, y: this.y});
+            if (this.history.length > 8) this.history.pop();
+        } else if (this.history.length > 0) {
+            this.history.pop();
+        }
 
         this.x += this.vx; this.y += this.vy;
 
@@ -493,6 +534,18 @@ export function AgentCanvas() {
       }
 
       draw() {
+        if (this.opacity < 0.01) return;
+
+        // Draw High-Tech Pixel Trail
+        if (this.history.length > 0) {
+            ctx.save();
+            this.history.forEach((pos, i) => {
+                const trailAlpha = this.opacity * 0.35 * (1 - i / this.history.length);
+                drawSprite(pos.x, pos.y, this.px, this.type, this.frame, this.flip, trailAlpha);
+            });
+            ctx.restore();
+        }
+
         ctx.save();
         ctx.globalAlpha = this.opacity * 0.45;
         const gr = ctx.createRadialGradient(this.cx,this.cy,0,this.cx,this.cy,this.px*12);
@@ -505,7 +558,7 @@ export function AgentCanvas() {
         drawSprite(this.x, this.y, this.px, this.type, this.frame, this.flip, this.opacity);
 
         ctx.save(); ctx.globalAlpha = this.opacity;
-        if(this.type.drawTool) this.type.drawTool(this.x,this.y,this.px,this.flip,this.tick);
+        if(this.type.drawTool) this.type.drawTool(this.x,this.y,this.px,this.flip,this.tick, this.isIdle);
         ctx.restore();
 
         drawBadge(this.x, this.y, this.px, this.type);
