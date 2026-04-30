@@ -437,6 +437,26 @@ export function AgentCanvas() {
           this.sprinting = true;
         }
 
+        // --- EXCLUSION ZONE (Repulsion Field) ---
+        // Prevent bots from overlapping the main text "Aakash Jammula" in the center.
+        // We use a wide ellipse to match the text shape.
+        const exCx = W / 2;
+        const exCy = H / 2 - 60; // Slightly higher than exact center
+        const dx = this.x - exCx;
+        const dy = this.y - exCy;
+        const exclusionDist = Math.hypot(dx / 3.0, dy); // Make it a wide ellipse
+
+        if (exclusionDist < 120 && !this.isParallaxBot) {
+          const repelForce = (120 - exclusionDist) * 0.08;
+          const repelAngle = Math.atan2(dy, dx / 3.0);
+          this.vx += Math.cos(repelAngle) * repelForce * 3.0;
+          this.vy += Math.sin(repelAngle) * repelForce;
+          this.sprinting = true;
+          // Pick a new target if they get pushed out so they don't get stuck
+          if (Math.random() < 0.05) this.pickNewTarget();
+        }
+        // ----------------------------------------
+
         const spd = Math.hypot(this.vx, this.vy);
         const maxSpd = this.sprinting ? 3.8 : 1.8;
         if(spd > maxSpd) { this.vx=this.vx/spd*maxSpd; this.vy=this.vy/spd*maxSpd; }
