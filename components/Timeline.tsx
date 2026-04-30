@@ -35,12 +35,12 @@ const timelineEvents: TimelineEvent[] = [
 
   const itemVariants = (isEven: boolean) => ({
     hidden: { opacity: 0, x: isEven ? 50 : -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut", delay: 0.1 } },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" as const, delay: 0.1 } },
   });
 
   const dotVariants = {
     hidden: { scale: 0 },
-    visible: { scale: 1, transition: { duration: 0.4, ease: "backOut", delay: 0 } },
+    visible: { scale: 1, transition: { duration: 0.4, ease: "backOut" as const, delay: 0 } },
   };
 
   const ref = useRef<HTMLDivElement>(null);
