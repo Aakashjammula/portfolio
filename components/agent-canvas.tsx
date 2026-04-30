@@ -36,7 +36,7 @@ export function AgentCanvas() {
       {
         role: 'Explorer', badge: 'EXPL',
         color: '#34d399', dark: '#065f46', eye: '#022c22', accent: '#6ee7b7',
-        messages: ['scanning…', 'path found!', 'new zone!', 'signal: strong', 'mapping…'],
+        messages: ['scanning…', 'path found!', 'new zone!', 'signal: strong', 'mapping…', 'exploring depths', 'node discovered', 'tracing route', 'pinging host...', 'radar active', 'navigating', 'waypoint set', 'fetching coordinates', 'sector clear', 'recon complete'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
           const tx = flip ? x - px*3.5 : x + SPRITE_W*px + px*0.5;
           const ty = y + px*2.2;
@@ -55,7 +55,7 @@ export function AgentCanvas() {
       {
         role: 'Planner', badge: 'PLAN',
         color: '#a78bfa', dark: '#5b21b6', eye: '#1e1040', accent: '#c4b5fd',
-        messages: ['planning…', 'step 1 set', 'delegate now', 'priority: HIGH', 'roadmap ✓'],
+        messages: ['planning…', 'step 1 set', 'delegate now', 'priority: HIGH', 'roadmap ✓', 'allocating tasks', 'sprint started', 'backlog groomed', 'agile approach', 'optimizing workflow', 'scheduling jobs', 'ETA: 2s', 'scrum master', 'architecting', 'dependencies mapped'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
           const tx = flip ? x - px*4 : x + SPRITE_W*px + px*0.5;
           const ty = y + px*1;
@@ -77,7 +77,7 @@ export function AgentCanvas() {
       {
         role: 'Researcher', badge: 'RAG',
         color: '#38bdf8', dark: '#0c4a6e', eye: '#041020', accent: '#7dd3fc',
-        messages: ['searching…', 'RAG query ✓', '12 chunks found', 'embedding hit!', 'context ready'],
+        messages: ['searching…', 'RAG query ✓', '12 chunks found', 'embedding hit!', 'context ready', 'vectorizing...', 'querying DB', 'semantic search', 'cosine similarity', 'knowledge retrieved', 'parsing docs', 'chunking text', 'analyzing context', 'data ingested', 'matching tokens'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
           const tx = flip ? x - px*3.5 : x + SPRITE_W*px + px*0.3;
           const ty = y + px*1.5;
@@ -95,7 +95,7 @@ export function AgentCanvas() {
       {
         role: 'Coder', badge: 'CODE',
         color: '#4ade80', dark: '#14532d', eye: '#071a0e', accent: '#86efac',
-        messages: ['def agent():', 'syntax ✓', 'test passed', 'git commit ✓', 'linting…'],
+        messages: ['def agent():', 'syntax ✓', 'test passed', 'git commit ✓', 'linting…', 'writing logic', 'import langchain', 'npm install', 'compiling...', 'refactoring', 'O(1) achieved', 'resolving conflicts', 'push to origin', 'typing code', 'while(true)'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number, isIdle: boolean) {
           const tx = flip ? x - px*5.5 : x + SPRITE_W*px + px*0.2;
           const ty = y + px*1.8;
@@ -120,7 +120,7 @@ export function AgentCanvas() {
       {
         role: 'Reviewer', badge: 'REVW',
         color: '#fbbf24', dark: '#78350f', eye: '#1c0800', accent: '#fde68a',
-        messages: ['reviewing PR…', 'score: 9/10', 'nit: var name', 'LGTM ✓', 'needs fix'],
+        messages: ['reviewing PR…', 'score: 9/10', 'nit: var name', 'LGTM ✓', 'needs fix', 'checking types', 'code smells?', 'approved', 'requesting changes', 'security check', 'optimizing loop', 'missing docs', 'coverage 100%', 'squash commits', 'looks good'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number, isIdle: boolean) {
           const cx = x + SPRITE_W*px*0.5;
           const ty = y - px*1.5 + (isIdle ? Math.sin(tick*0.3)*px*0.6 : 0); // Glasses shift up and down when idle
@@ -141,7 +141,7 @@ export function AgentCanvas() {
       {
         role: 'Cleaner', badge: 'SWEEP',
         color: '#e879f9', dark: '#701a75', eye: '#200818', accent: '#f0abfc',
-        messages: ['sweeping…', 'cache cleared!', 'rm -rf /tmp', 'memory freed', 'cleanup ✓'],
+        messages: ['sweeping…', 'cache cleared!', 'rm -rf /tmp', 'memory freed', 'cleanup ✓', 'garbage collection', 'optimizing RAM', 'closing connections', 'killing zombies', 'freeing ports', 'deleting logs', 'purging DB', 'vacuuming', 'shredding data', 'system pruned'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
           const tx = flip ? x - px*1.5 : x + SPRITE_W*px - px*0.5;
           const ty = y + px*0.8;
@@ -161,7 +161,7 @@ export function AgentCanvas() {
       {
         role: 'Deployer', badge: 'SHIP',
         color: '#f97316', dark: '#7c2d12', eye: '#1c0800', accent: '#fdba74',
-        messages: ['deploying…', 'docker ✓', 'k8s live!', 'CI passed ✓', '🚀 launched!'],
+        messages: ['deploying…', 'docker ✓', 'k8s live!', 'CI passed ✓', '🚀 launched!', 'building image', 'scaling pods', 'health check OK', 'load balancing', 'CDN updated', 'zero downtime', 'rolling update', 'provisioning EC2', 'pushing to prod', 'serverless active'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number) {
           const tx = x + SPRITE_W*px*0.5 - px*1.2;
           const ty = y - px*4;
@@ -187,7 +187,7 @@ export function AgentCanvas() {
       {
         role: 'BugFixer', badge: 'FIX',
         color: '#f43f5e', dark: '#881337', eye: '#1c0208', accent: '#fda4af',
-        messages: ['bug found 🐛', 'stack traced', 'patching…', 'hotfix merged', 'tests pass ✓'],
+        messages: ['bug found 🐛', 'stack traced', 'patching…', 'hotfix merged', 'tests pass ✓', 'squashing bug', 'null pointer?', 'memory leak fixed', 'reverting commit', 'debugging...', 'console.log()', 'issue closed', 'try/catch added', 'edge case handled', 'it works now'],
         drawTool(x: number, y: number, px: number, flip: boolean, tick: number, isIdle: boolean) {
           const tx = flip ? x - px*4.5 : x + SPRITE_W*px + px*0.2;
           const ty = y + px*1;
