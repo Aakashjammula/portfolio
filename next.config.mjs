@@ -24,11 +24,6 @@ const nextConfig = {
     // Re-enable optimization for faster loads
     unoptimized: false,
   },
-  experimental: {
-    webpackBuildWorker: true,
-    parallelServerBuildTraces: true,
-    parallelServerCompiles: true,
-  },
 }
 
 if (userConfig) {
