@@ -1,0 +1,112 @@
+---
+title: "Beginner's Guide to MCP with LangChain and Gemini"
+description: "A beginner's guide to Model Context Protocol in AI agents using LangChain, Gemini, and the Python MCP SDK."
+date: "2025-04-16"
+readTime: "10 min read"
+---
+
+MCP (Model Context Protocol) is a standard way for language models to interact with external tools — like web search, calculators, and databases — in a structured, clean manner. It acts like a bridge between the model and its tools, making communication modular and manageable.
+
+---
+
+## Why Use MCP in Agents?
+
+- Separates model logic from tool logic
+- Allows the AI agent to decide how and when to use tools
+- Keeps your system modular, scalable, and easier to maintain
+- Works great with agent frameworks like LangChain
+
+In short, MCP makes your AI agent smarter and more capable by letting it access external knowledge and functionalities on demand.
+
+---
+
+## Understanding MCP Through a Project
+
+To see MCP in action, let's look at a practical example: the [mcp_langchain_examples](https://github.com/Aakashjammula/mcp_langchain_examples) GitHub project.
+
+### Project Structure
+
+```
+mcp_langchain_examples/
+├── server.py      # MCP server with DuckDuckGo search tool
+├── client.py      # MCP client that connects to the server
+├── prompt.py      # System prompts to guide the AI
+├── main.py        # Agent logic with Gemini + MCP tools
+└── requirements.txt
+```
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+
+- Python 3.8+
+- Google API key for Gemini model
+
+### Method 1: Using uv (recommended)
+
+```bash
+# Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Create env & install
+uv venv
+uv sync
+```
+
+### Method 2: Using pip
+
+```bash
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+Then create a `.env` file in the root and add your Gemini API key:
+
+```bash
+GOOGLE_API_KEY=your_api_key_here
+```
+
+---
+
+## How It Works
+
+```
+User Question
+     ↓
+LangChain Agent (Gemini model)
+     ↓
+Decides to use MCP tool
+     ↓
+MCP Client → MCP Server
+     ↓
+DuckDuckGo Search
+     ↓
+Results returned to agent
+     ↓
+Formatted response to user
+```
+
+---
+
+## Example Interaction
+
+```bash
+Question: Who is the current CEO of OpenAI?
+Answer: Based on the latest search, the CEO of OpenAI is Sam Altman.
+```
+
+---
+
+## Conclusion
+
+MCP brings a structured, scalable way to empower your AI agents. By combining LangChain with a capable model like Gemini, you can build smart, flexible, tool-using agents easily. Try out the project and start building your own powerful AI workflows!
+
+---
+
+[Project GitHub Repo](https://github.com/Aakashjammula/mcp_langchain_examples) · [LangChain Docs](https://docs.langchain.com) · [Gemini API](https://ai.google.dev/)

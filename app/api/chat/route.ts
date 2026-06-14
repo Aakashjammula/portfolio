@@ -5,31 +5,45 @@ import { NextRequest, NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-// Module-level singletons — reused across requests in the same Lambda instance
-const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-const pineconeIndex = pc.index("resume");
-const embeddings = new GoogleGenerativeAIEmbeddings({
-    apiKey: process.env.GOOGLE_API_KEY,
-    model: "models/gemini-embedding-001",
-});
+// Lazy singletons — initialized on first request to allow build without env vars
+let _pc: Pinecone | null = null;
+let _pineconeIndex: ReturnType<Pinecone["index"]> | null = null;
+let _embeddings: GoogleGenerativeAIEmbeddings | null = null;
+
+function getPineconeIndex() {
+    if (!_pc) _pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
+    if (!_pineconeIndex) _pineconeIndex = _pc.index("resume");
+    return _pineconeIndex;
+}
+
+function getEmbeddings() {
+    if (!_embeddings) _embeddings = new GoogleGenerativeAIEmbeddings({
+        apiKey: process.env.GOOGLE_API_KEY,
+        model: "models/gemini-embedding-001",
+    });
+    return _embeddings;
+}
 
 
 
 // Allow streaming responses up to 60 seconds
 export const maxDuration = 60; // 60 seconds
 
-// Create a new ratelimiter, that allows 20 requests per 10 hours
-const ratelimit = new Ratelimit({
-    redis: Redis.fromEnv(),
-    limiter: Ratelimit.slidingWindow(20, "10 h"),
-    analytics: true,
-    prefix: "@upstash/ratelimit",
-});
+let _ratelimit: Ratelimit | null = null;
+function getRatelimit() {
+    if (!_ratelimit) _ratelimit = new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.slidingWindow(20, "10 h"),
+        analytics: true,
+        prefix: "@upstash/ratelimit",
+    });
+    return _ratelimit;
+}
 
 export async function POST(req: NextRequest) {
     try {
         const ip = (req as any).ip ?? req.headers.get("x-forwarded-for") ?? "127.0.0.1";
-        const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+        const { success, limit, remaining, reset } = await getRatelimit().limit(ip);
 
         if (!success) {
             return NextResponse.json({ error: "Too many requests. Please try again later." }, {
@@ -57,10 +71,10 @@ export async function POST(req: NextRequest) {
 
 
         // 🔹 1. Embed user query (uses module-level singleton)
-        const queryEmbedding = await embeddings.embedQuery(q);
+        const queryEmbedding = await getEmbeddings().embedQuery(q);
 
         // 🔹 2. Query Pinecone (uses module-level singleton)
-        const results = await pineconeIndex.query({
+        const results = await getPineconeIndex().query({
             vector: queryEmbedding,
             topK: 3,
             includeMetadata: true,

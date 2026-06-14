@@ -1,0 +1,126 @@
+---
+title: "uv: The Fastest Python Package Manager"
+description: "Discover the blazing-fast Python package manager written in Rust that's revolutionizing Python workflows."
+date: "2025-04-16"
+readTime: "10 min read"
+---
+
+`uv` is a blazing-fast, all-in-one Python package and project manager built in Rust by the creators of Ruff. It aims to replace `pip`, `pip-tools`, `pipx`, `virtualenv`, `poetry`, `pyenv`, and `twine` — in a single tool.
+
+## Highlights
+
+- 🔥 **10–100x faster** than pip (Rust-powered, aggressive caching)
+- 🌍 **Universal lockfile** for reproducible environments
+- 🔧 **Drop-in pip replacement** — same commands, faster results
+- 📦 **Manages Python versions** — like pyenv
+- 🏗️ **Cargo-style workspaces** for mono-repos
+
+---
+
+## Installation
+
+```bash
+# macOS / Linux (recommended)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### With pip or pipx
+
+```bash
+pip install uv
+# or
+pipx install uv
+```
+
+To update:
+
+```bash
+uv self update
+```
+
+---
+
+## How to Use uv
+
+### 1. Creating a new project
+
+```bash
+uv init myproject
+cd myproject
+uv add requests
+uv run script.py
+```
+
+- Initializes `pyproject.toml`
+- Creates `.venv` automatically
+- Adds dependencies and runs the code
+
+### 2. Using uv in an existing project
+
+```bash
+cd existing-project
+uv venv        # create/manage virtualenv
+uv sync        # install from lockfile
+uv run app.py  # run code inside env
+```
+
+### 3. Full command reference
+
+```bash
+# Package management
+uv add requests         # Add a dependency
+uv remove requests      # Remove a dependency
+uv sync                 # Install from lockfile
+
+# Pip compatibility mode
+uv pip install requests         # Use pip commands
+uv pip sync requirements.txt    # Install requirements.txt
+
+# Run scripts
+uv run script.py     # Run Python file in env
+uv run "command"     # Run shell command in venv
+
+# Tools (like pipx)
+uv tool install ruff             # Install CLI tool globally
+uvx pycowsay "hello world"       # Run tool temporarily
+
+# Scripts with inline metadata
+uv add --script script.py requests  # Inject deps into script
+uv run script.py                    # Run it in isolated env
+
+# Cache and maintenance
+uv cache clean    # Clear cache
+uv self update    # Update uv itself
+```
+
+---
+
+## Pros and Cons
+
+### Pros
+
+- Extremely fast (Rust-powered)
+- Drop-in pip & pipx replacement
+- All-in-one (env, deps, tools, Python)
+- Global cache saves disk space
+- Universal lockfile
+- Great for mono-repos (Cargo-style workspaces)
+
+### Cons
+
+- Still newer — less battle-tested than pip/poetry
+- Not all advanced Poetry features are available yet
+- Smaller ecosystem of plugins/integrations
+
+---
+
+## Conclusion
+
+`uv` is not just fast — it's a serious contender to unify the Python tooling ecosystem. Whether you're a beginner or managing large workspaces, it's worth trying. The speed improvement alone makes the switch worthwhile.
+
+---
+
+[uv on GitHub](https://github.com/astral-sh/uv) · [Official Docs](https://docs.astral.sh/uv/)

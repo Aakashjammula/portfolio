@@ -12,7 +12,7 @@ import { TechStack } from "@/components/tech-stack"
 import { StatCard } from "@/components/stat-card"
 import { Typewriter } from "@/components/typewriter"
 import Timeline from "@/components/Timeline";
-import { blogs } from "@/lib/data/blogs";
+import { posts } from "@/.velite";
 import { ScrollReveal, ParallaxTitle } from "@/components/scroll-reveal";
 import { BlogRow } from "@/components/blog-row";
 import { TextRotate } from "@/components/ui/text-rotate";
@@ -242,8 +242,8 @@ export default function Home() {
                 />
 
                 <div className="flex flex-col max-w-5xl mx-auto mt-10">
-                  {blogs.slice(0, 3).map((post, index) => (
-                    <BlogRow key={index} post={post} index={index} />
+                  {[...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3).map((post, index) => (
+                    <BlogRow key={post.slug} post={{ ...post, slug: post.slug.replace(/^blog\//, "") }} index={index} />
                   ))}
                 </div>
 
