@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image" // Make sure Image is imported
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { notFound } from "next/navigation"
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import type { JSX } from "react"
@@ -165,7 +165,7 @@ export default function BlogPostPage() {
   }, [headings])
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -181,7 +181,7 @@ export default function BlogPostPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
         {/* Sidebar with Table of Contents */}
-        <motion.aside
+        <m.aside
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
@@ -209,31 +209,31 @@ export default function BlogPostPage() {
               ))}
             </nav>
           </div>
-        </motion.aside>
+        </m.aside>
 
         {/* Main Content */}
-        <motion.article
+        <m.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
           className="md:col-span-3"
         >
-          <motion.h1
+          <m.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4"
           >
             {post.title}
-          </motion.h1>
-          <motion.div
+          </m.h1>
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
             className="text-gray-500 dark:text-gray-400 mb-8"
           >
             {post.date}
-          </motion.div>
+          </m.div>
 
           {/* Mobile Table of Contents */}
           <div className="md:hidden mb-8">
@@ -263,7 +263,7 @@ export default function BlogPostPage() {
 
           <Separator className="my-8" />
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -272,9 +272,9 @@ export default function BlogPostPage() {
             {post.content.map((item, index) => (
               <ContentRenderer key={index} item={item} />
             ))}
-          </motion.div>
-        </motion.article>
+          </m.div>
+        </m.article>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

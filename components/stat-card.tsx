@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { motion, useInView } from "framer-motion"
+import * as m from "framer-motion/m"
+import { useInView } from "framer-motion"
 import { Clock, Folder, Users, Brain } from "lucide-react"
 
 interface StatCardProps {
@@ -72,7 +73,7 @@ export function StatCard({ number, label, icon, iconName }: StatCardProps) {
   }
 
   return (
-    <motion.div
+    <m.div
       variants={{
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0 },
@@ -88,6 +89,6 @@ export function StatCard({ number, label, icon, iconName }: StatCardProps) {
         <AnimatedCounter value={numericValue} suffix={suffix} />
       </div>
       <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{label}</div>
-    </motion.div>
+    </m.div>
   )
 }

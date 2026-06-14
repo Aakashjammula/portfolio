@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import * as m from "framer-motion/m"
+import { AnimatePresence } from "framer-motion"
 import { Menu, X, Sun, Moon } from "lucide-react"
 import { useTheme } from "next-themes"
 
@@ -91,7 +92,7 @@ export function NavBar() {
 
     return (
         <>
-            <motion.header
+            <m.header
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.5 }}
@@ -145,7 +146,7 @@ export function NavBar() {
                 {/* Mobile Navigation Dropdown */}
                 <AnimatePresence>
                     {mobileMenuOpen && (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
@@ -166,10 +167,10 @@ export function NavBar() {
                                     </button>
                                 ))}
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
-            </motion.header>
+            </m.header>
         </>
     )
 }

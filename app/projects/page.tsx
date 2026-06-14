@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 
 import { Button } from "@/components/ui/button"
 import { ProjectCard } from "@/components/project-card"
@@ -36,31 +36,31 @@ export default function ProjectsPage() {
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       className="container px-4 py-12 md:px-6 md:py-24"
     >
-      <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
+      <m.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
         <Button variant="ghost" asChild className="mb-8">
           <Link href="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Link>
         </Button>
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <SectionHeading title="My Projects" description="A collection of my work in GenAI and LLM development" />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         variants={container}
         initial="hidden"
         animate="show"
@@ -78,7 +78,7 @@ export default function ProjectsPage() {
             />
           </div>
         ))}
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }

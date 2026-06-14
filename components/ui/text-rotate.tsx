@@ -8,10 +8,10 @@ import {
   useMemo,
   useState,
 } from "react"
+import * as m from "framer-motion/m"
 import {
   AnimatePresence,
   AnimatePresenceProps,
-  motion,
   MotionProps,
   Transition,
 } from "framer-motion"
@@ -175,7 +175,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
     }, [next, rotationInterval, auto])
 
     return (
-      <motion.span
+      <m.span
         className={cn("flex flex-wrap whitespace-pre-wrap", mainClassName)}
         {...props}
         layout
@@ -187,7 +187,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
           mode={animatePresenceMode}
           initial={animatePresenceInitial}
         >
-          <motion.div
+          <m.div
             key={currentTextIndex}
             className={cn(
               "flex flex-wrap",
@@ -213,7 +213,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                   className={cn("inline-flex", splitLevelClassName)}
                 >
                   {wordObj.characters.map((char, charIndex) => (
-                    <motion.span
+                    <m.span
                       initial={initial}
                       animate={animate}
                       exit={exit}
@@ -231,7 +231,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                       className={cn("inline-block", elementLevelClassName)}
                     >
                       {char}
-                    </motion.span>
+                    </m.span>
                   ))}
                   {wordObj.needsSpace && (
                     <span className="whitespace-pre"> </span>
@@ -239,9 +239,9 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                 </span>
               )
             })}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
-      </motion.span>
+      </m.span>
     )
   }
 )

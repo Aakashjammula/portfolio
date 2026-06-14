@@ -1,5 +1,6 @@
 // Timeline.tsx
-import { motion, useScroll, useSpring } from "framer-motion";
+import * as m from "framer-motion/m";
+import { useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 
 interface TimelineEvent {
@@ -64,7 +65,7 @@ const timelineEvents: TimelineEvent[] = [
       <div className="absolute left-1/2 top-0 bottom-0 w-[2px] sm:w-[3px] transform -translate-x-1/2 z-0 bg-slate-200 dark:bg-slate-800" />
       
       {/* Animated drawing line */}
-      <motion.div
+      <m.div
         className={`absolute left-1/2 top-0 w-[2px] sm:w-[3px] transform -translate-x-1/2 z-0 origin-top ${centralPathColor}`}
         style={{ scaleY, height: "100%" }}
       />
@@ -73,7 +74,7 @@ const timelineEvents: TimelineEvent[] = [
         const isEven = index % 2 === 0;
 
         return (
-          <motion.div
+          <m.div
             key={index}
             initial="hidden"
             whileInView="visible"
@@ -83,7 +84,7 @@ const timelineEvents: TimelineEvent[] = [
               isEven ? "justify-start" : "justify-end"
             }`}
           >
-            <motion.div
+            <m.div
               variants={dotVariants}
               className={`absolute top-1/2 transform -translate-y-1/2 
                            w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full 
@@ -101,7 +102,7 @@ const timelineEvents: TimelineEvent[] = [
             >
               {/* Glow effect can be achieved with box-shadow on hover */}
               <div className={`absolute inset-0 rounded-full group-hover:shadow-[0_0_15px_3px_rgba(${dotGlowColorRgb},0.6)] transition-shadow duration-300`}/>
-            </motion.div>
+            </m.div>
 
             <div
               className={`w-[calc(50%-2.5rem)] sm:w-[calc(50%-3rem)] 
@@ -126,7 +127,7 @@ const timelineEvents: TimelineEvent[] = [
                 </p>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         );
       })}
     </div>

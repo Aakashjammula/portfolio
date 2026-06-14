@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 import { ArrowRight } from "lucide-react"
 import { useRef, useState } from "react"
 
@@ -31,7 +31,7 @@ export function BlogCard({ title, description, date, readTime, slug, index }: Bl
   }
 
   return (
-    <motion.div
+    <m.div
       variants={{
         hidden: { opacity: 0, y: 50 },
         show: {
@@ -45,7 +45,7 @@ export function BlogCard({ title, description, date, readTime, slug, index }: Bl
       }}
       className="h-full"
     >
-      <motion.div
+      <m.div
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
@@ -79,17 +79,17 @@ export function BlogCard({ title, description, date, readTime, slug, index }: Bl
               <span className="mx-2">•</span>
               <span>{readTime}</span>
             </div>
-            <motion.div whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
+            <m.div whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 400 }}>
               <Link
                 href={`/blog/${slug}`}
                 className="inline-flex items-center text-sm font-medium text-primary hover:underline"
               >
                 Read More <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
-            </motion.div>
+            </m.div>
           </CardFooter>
         </Card>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }

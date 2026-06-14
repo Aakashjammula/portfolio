@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 import { Send } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -36,7 +36,7 @@ export function ContactForm() {
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false }}
@@ -51,7 +51,7 @@ export function ContactForm() {
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false }}
@@ -60,8 +60,8 @@ export function ContactForm() {
             >
               <Label htmlFor="name">Name</Label>
               <Input id="name" placeholder="Your name" required />
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false }}
@@ -70,8 +70,8 @@ export function ContactForm() {
             >
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" placeholder="Your email address" required />
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false }}
@@ -80,8 +80,8 @@ export function ContactForm() {
             >
               <Label htmlFor="subject">Subject</Label>
               <Input id="subject" placeholder="What is this regarding?" required />
-            </motion.div>
-            <motion.div
+            </m.div>
+            <m.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false }}
@@ -90,10 +90,10 @@ export function ContactForm() {
             >
               <Label htmlFor="message">Message</Label>
               <Textarea id="message" placeholder="Your message..." className="min-h-32" required />
-            </motion.div>
+            </m.div>
           </CardContent>
           <CardFooter>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full">
+            <m.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full">
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   "Sending..."
@@ -103,10 +103,10 @@ export function ContactForm() {
                   </>
                 )}
               </Button>
-            </motion.div>
+            </m.div>
           </CardFooter>
         </form>
       </Card>
-    </motion.div>
+    </m.div>
   )
 }

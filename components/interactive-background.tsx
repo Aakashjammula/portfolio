@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useSpring } from "framer-motion";
+import * as m from "framer-motion/m";
+import { useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function InteractiveBackground() {
@@ -31,7 +32,7 @@ export function InteractiveBackground() {
 
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
-      <motion.div
+      <m.div
         className="absolute w-[600px] h-[600px] rounded-full bg-indigo-500/20 dark:bg-indigo-600/15 blur-[120px]"
         style={{
           x: smoothX,

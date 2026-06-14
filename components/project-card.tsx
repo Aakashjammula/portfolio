@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import * as m from "framer-motion/m"
+import { useMotionValue, useSpring, useTransform } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 import { useRef, useState } from "react"
 
@@ -45,7 +46,7 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
   }
 
   return (
-    <motion.div
+    <m.div
       variants={{
         hidden: { opacity: 0, y: 50 },
         show: {
@@ -60,7 +61,7 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
       }}
       className="h-full w-full perspective-[1000px]"
     >
-      <motion.div
+      <m.div
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
@@ -75,7 +76,7 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
           style={{ transformStyle: "preserve-3d" }}
         >
           {/* Deep Parallax Background */}
-          <motion.div 
+          <m.div 
             className="absolute inset-0 z-0 opacity-40 transition-opacity duration-700 ease-out group-hover:opacity-100"
             style={{
               background: `radial-gradient(circle at 80% 0%, rgba(99,102,241,0.25) 0%, transparent 60%)`,
@@ -91,22 +92,22 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
             style={{ transformStyle: "preserve-3d" }}
           >
             <div className="flex-grow">
-              <motion.h3 
+              <m.h3 
                 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-4 tracking-tight"
                 style={{ translateZ: 50 }}
               >
                 {title}
-              </motion.h3>
-              <motion.p 
+              </m.h3>
+              <m.p 
                 className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-sm"
                 style={{ translateZ: 30 }}
               >
                 {description}
-              </motion.p>
+              </m.p>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mt-auto pt-6 gap-6" style={{ transformStyle: "preserve-3d" }}>
-              <motion.div 
+              <m.div 
                 className="flex flex-wrap gap-2"
                 style={{ translateZ: 40 }}
               >
@@ -115,9 +116,9 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
                     {tag}
                   </span>
                 ))}
-              </motion.div>
+              </m.div>
 
-              <motion.div style={{ translateZ: 60 }}>
+              <m.div style={{ translateZ: 60 }}>
                 <Link
                   href={link}
                   target="_blank"
@@ -126,11 +127,11 @@ export function ProjectCard({ title, description, tags, link, index }: ProjectCa
                 >
                   <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6" />
                 </Link>
-              </motion.div>
+              </m.div>
             </div>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   )
 }

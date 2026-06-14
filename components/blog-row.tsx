@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 import { ArrowRight } from "lucide-react"
 
 interface BlogRowProps {
@@ -17,7 +17,7 @@ interface BlogRowProps {
 
 export function BlogRow({ post, index }: BlogRowProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: "-50px" }}
@@ -52,6 +52,6 @@ export function BlogRow({ post, index }: BlogRowProps) {
           </div>
         </Link>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

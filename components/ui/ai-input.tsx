@@ -2,7 +2,8 @@
 
 import React from "react"
 import { cx } from "class-variance-authority"
-import { AnimatePresence, motion } from "framer-motion"
+import * as m from "framer-motion/m"
+import { AnimatePresence } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -228,7 +229,7 @@ export function MorphPanel() {
   )
 
   return (
-    <motion.div
+    <m.div
       ref={wrapperRef}
       data-panel
       className={cx(
@@ -252,7 +253,7 @@ export function MorphPanel() {
         <DockBar />
         <InputForm ref={textareaRef} onSuccess={handleSuccess} />
       </FormContext.Provider>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -264,7 +265,7 @@ function DockBar() {
         <div className="flex w-fit items-center gap-2">
           <AnimatePresence mode="wait">
             {showForm ? (
-              <motion.div
+              <m.div
                 key="blank"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0 }}
@@ -272,7 +273,7 @@ function DockBar() {
                 className="h-5 w-5"
               />
             ) : (
-              <motion.div
+              <m.div
                 key="orb"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -281,7 +282,7 @@ function DockBar() {
                 className="pointer-events-none"
               >
                 <ColorOrb dimension="24px" tones={{ base: "oklch(22.64% 0 0)" }} />
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>
@@ -327,7 +328,7 @@ function InputForm({ ref, onSuccess }: { ref: React.Ref<HTMLTextAreaElement>; on
     >
       <AnimatePresence>
         {showForm && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -355,13 +356,13 @@ function InputForm({ ref, onSuccess }: { ref: React.Ref<HTMLTextAreaElement>; on
               onKeyDown={handleKeys}
               spellCheck={false}
             />
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {showForm && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -369,7 +370,7 @@ function InputForm({ ref, onSuccess }: { ref: React.Ref<HTMLTextAreaElement>; on
             className="absolute top-2 left-3 pointer-events-none"
           >
             <ColorOrb dimension="24px" tones={{ base: "oklch(22.64% 0 0)" }} />
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </form>

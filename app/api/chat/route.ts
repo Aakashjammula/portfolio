@@ -5,6 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
+// Module-level singletons — reused across requests in the same Lambda instance
+const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
+const pineconeIndex = pc.index("resume");
+const embeddings = new GoogleGenerativeAIEmbeddings({
+    apiKey: process.env.GOOGLE_API_KEY,
+    model: "models/gemini-embedding-001",
+});
+
 
 
 // Allow streaming responses up to 60 seconds
@@ -48,22 +56,13 @@ export async function POST(req: NextRequest) {
 
 
 
-        // 🔹 1. Initialize Embeddings
-        const embeddings = new GoogleGenerativeAIEmbeddings({
-            apiKey: process.env.GOOGLE_API_KEY,
-            model: "models/gemini-embedding-001",
-        });
-
-        // 🔹 2. Embed user query
+        // 🔹 1. Embed user query (uses module-level singleton)
         const queryEmbedding = await embeddings.embedQuery(q);
 
-        // 🔹 3. Query Pinecone
-        const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-        const index = pc.index("resume");
-
-        const results = await index.query({
+        // 🔹 2. Query Pinecone (uses module-level singleton)
+        const results = await pineconeIndex.query({
             vector: queryEmbedding,
-            topK: 3, // Reduced from 4 to save tokens
+            topK: 3,
             includeMetadata: true,
         });
 

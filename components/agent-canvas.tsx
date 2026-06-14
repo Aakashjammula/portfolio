@@ -9,7 +9,7 @@ export function AgentCanvas() {
   const scrollYRef = useRef(0);
 
   useEffect(() => {
-    return scrollYProgress.onChange((latest) => {
+    return scrollYProgress.on("change", (latest) => {
       scrollYRef.current = latest;
     });
   }, [scrollYProgress]);

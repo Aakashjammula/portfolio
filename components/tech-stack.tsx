@@ -1,7 +1,8 @@
 "use client"
 
 import { useRef } from "react"
-import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue } from "framer-motion"
+import * as m from "framer-motion/m"
+import { useScroll, useTransform, useMotionTemplate, useMotionValue } from "framer-motion"
 import { ParallaxTitle } from "@/components/scroll-reveal"
 import {
   Code,
@@ -28,7 +29,7 @@ function BentoCard({ children, className, style }: any) {
   const mouseY = useMotionValue(0)
 
   return (
-    <motion.div
+    <m.div
       style={style}
       onMouseMove={(e) => {
         const { left, top } = e.currentTarget.getBoundingClientRect()
@@ -37,7 +38,7 @@ function BentoCard({ children, className, style }: any) {
       }}
       className={`group relative overflow-hidden rounded-3xl bg-white/60 dark:bg-gray-900/40 border border-gray-200/50 dark:border-white/10 backdrop-blur-xl shadow-xl ${className}`}
     >
-      <motion.div
+      <m.div
         className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-500 group-hover:opacity-100 z-10"
         style={{
           background: useMotionTemplate`
@@ -52,7 +53,7 @@ function BentoCard({ children, className, style }: any) {
       <div className="relative p-6 sm:p-8 h-full flex flex-col z-20">
         {children}
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -131,7 +132,7 @@ export function TechStack() {
     <div className="py-12 md:py-16">
       <ParallaxTitle title="My Tech Stack" subtitle="The tools and technologies I use to build scalable GenAI solutions" />
 
-      <motion.div
+      <m.div
         ref={containerRef}
         variants={sectionContainerVariants}
         initial="hidden"
@@ -153,7 +154,7 @@ export function TechStack() {
               style={{ y }}
               className={`${spanClass}`}
             >
-              <motion.div variants={categoryBlockVariants} className="h-full flex flex-col">
+              <m.div variants={categoryBlockVariants} className="h-full flex flex-col">
                 <h3 className="text-xl sm:text-2xl font-bold mb-6 text-gray-900 dark:text-white tracking-tight">
                   {category}
                 </h3>
@@ -171,11 +172,11 @@ export function TechStack() {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </m.div>
             </BentoCard>
           )
         })}
-      </motion.div>
+      </m.div>
     </div>
   )
 }

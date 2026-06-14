@@ -5,6 +5,7 @@ import { NavBar } from "@/components/nav-bar"
 import { SmoothScrollProvider } from "@/components/smooth-scroll"
 import { InteractiveBackground } from "@/components/interactive-background"
 import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget"
+import { MotionProvider } from "@/components/motion-provider"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -12,8 +13,21 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "Aakash Jammula | GenAI Engineer",
   description:
-    "Portfolio website of Aakash Jammula, a GenAI Engineer specializing in artificial intelligence and machine learning.",
-  generator: 'v0.dev'
+    "Portfolio of Aakash Jammula — GenAI Engineer specializing in LLMs, RAG pipelines, and AI agents.",
+  metadataBase: new URL("https://aakashjammula.dev"),
+  openGraph: {
+    title: "Aakash Jammula | GenAI Engineer",
+    description: "Portfolio of Aakash Jammula — GenAI Engineer specializing in LLMs, RAG pipelines, and AI agents.",
+    url: "https://aakashjammula.dev",
+    siteName: "Aakash Jammula",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aakash Jammula | GenAI Engineer",
+    description: "Portfolio of Aakash Jammula — GenAI Engineer specializing in LLMs, RAG pipelines, and AI agents.",
+    creator: "@aakashjammula",
+  },
 }
 
 export default function RootLayout({
@@ -25,14 +39,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>{/* No script needed for dotlottie-react */}</head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
-          <SmoothScrollProvider>
-            <InteractiveBackground />
-            <NavBar />
-            {children}
-            <ChatbotWidget />
-          </SmoothScrollProvider>
-        </ThemeProvider>
+        <MotionProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
+            <SmoothScrollProvider>
+              <InteractiveBackground />
+              <NavBar />
+              {children}
+              <ChatbotWidget />
+            </SmoothScrollProvider>
+          </ThemeProvider>
+        </MotionProvider>
       </body>
     </html>
   )

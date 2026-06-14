@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import * as m from "framer-motion/m"
+import { AnimatePresence } from "framer-motion"
 import { MessageSquare, X, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ColorOrb } from "@/components/ui/ai-input"
@@ -125,7 +126,7 @@ export function ChatbotWidget() {
   )
 
   return (
-    <motion.div
+    <m.div
       layout
       className={`fixed z-[999] flex flex-col overflow-hidden ${
         isOpen
@@ -142,7 +143,7 @@ export function ChatbotWidget() {
     >
       <AnimatePresence mode="wait">
         {!isOpen ? (
-          <motion.div
+          <m.div
             key="button"
             className="flex h-full w-full items-center justify-center gap-1.5 text-white"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -154,9 +155,9 @@ export function ChatbotWidget() {
               <ColorOrb dimension="20px" />
             </div>
             <span className="text-sm font-medium">Ask AI</span>
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="chat"
             className="flex flex-col h-full w-full cursor-default"
             initial={{ opacity: 0 }}
@@ -270,9 +271,9 @@ export function ChatbotWidget() {
                 <span className="sr-only">Send message</span>
               </Button>
             </form>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </m.div>
   )
 }

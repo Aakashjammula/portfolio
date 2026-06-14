@@ -1,7 +1,8 @@
 "use client"
 
 import { useRef, ReactNode } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import * as m from "framer-motion/m"
+import { useScroll, useTransform } from "framer-motion"
 
 interface ScrollRevealProps {
   children: ReactNode
@@ -13,14 +14,14 @@ interface ScrollRevealProps {
 export function ScrollReveal({ children, className = "", delay = 0 }: ScrollRevealProps) {
   return (
     <div className={`overflow-hidden ${className}`}>
-      <motion.div
+      <m.div
         initial={{ y: "100%", opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: false, margin: "-50px" }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay }} // Custom spring-like easing
       >
         {children}
-      </motion.div>
+      </m.div>
     </div>
   )
 }
@@ -42,7 +43,7 @@ export function ParallaxTitle({ title, subtitle }: ParallaxTitleProps) {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"])
 
   return (
-    <motion.div ref={ref} style={{ y }} className="max-w-3xl mx-auto text-center mb-12 md:mb-16 relative">
+    <m.div ref={ref} style={{ y }} className="max-w-3xl mx-auto text-center mb-12 md:mb-16 relative">
       <ScrollReveal className="py-2 -my-2">
         <h2 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-gray-900 dark:text-white pb-2">
           {title}
@@ -56,6 +57,6 @@ export function ParallaxTitle({ title, subtitle }: ParallaxTitleProps) {
           </p>
         </ScrollReveal>
       )}
-    </motion.div>
+    </m.div>
   )
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -31,14 +31,14 @@ export default function ResourcesPage() {
     }
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className="container px-4 py-12 md:px-6 md:py-24"
         >
-            <motion.div
+            <m.div
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -49,9 +49,9 @@ export default function ResourcesPage() {
                         Back to Home
                     </Link>
                 </Button>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -60,10 +60,10 @@ export default function ResourcesPage() {
                     title="Resources"
                     description="Curated tools, articles, and learning materials I recommend"
                 />
-            </motion.div>
+            </m.div>
 
             {/* Category filter pills */}
-            <motion.div
+            <m.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -81,10 +81,10 @@ export default function ResourcesPage() {
                         {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </button>
                 ))}
-            </motion.div>
+            </m.div>
 
             {/* Resources grid */}
-            <motion.div
+            <m.div
                 variants={container}
                 initial="hidden"
                 animate="show"
@@ -103,18 +103,18 @@ export default function ResourcesPage() {
                         index={index}
                     />
                 ))}
-            </motion.div>
+            </m.div>
 
             {/* Empty state */}
             {filteredResources.length === 0 && (
-                <motion.p
+                <m.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="text-center text-gray-500 dark:text-gray-400 mt-12 text-lg"
                 >
                     No resources found in this category.
-                </motion.p>
+                </m.p>
             )}
-        </motion.div>
+        </m.div>
     )
 }

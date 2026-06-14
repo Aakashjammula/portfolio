@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import * as m from "framer-motion/m"
 import { ExternalLink } from "lucide-react"
 import { useRef, useState } from "react"
 
@@ -53,7 +53,7 @@ export function ResourceCard({
     })()
 
     return (
-        <motion.div
+        <m.div
             variants={{
                 hidden: { opacity: 0, y: 50 },
                 show: {
@@ -66,7 +66,7 @@ export function ResourceCard({
                 },
             }}
         >
-            <motion.div
+            <m.div
                 ref={cardRef}
                 onMouseMove={handleMouseMove}
                 onMouseEnter={() => setIsHovering(true)}
@@ -138,7 +138,7 @@ export function ResourceCard({
                         </span>
                     </div>
                 </div>
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     )
 }

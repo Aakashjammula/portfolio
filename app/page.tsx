@@ -2,7 +2,8 @@
 
 import { useState, useRef } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence, useScroll, useTransform, LayoutGroup } from "framer-motion"
+import * as m from "framer-motion/m"
+import { AnimatePresence, useScroll, useTransform, LayoutGroup } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -45,7 +46,7 @@ export default function Home() {
       <AgentCanvas />
 
       <AnimatePresence mode="wait">
-        <motion.main
+        <m.main
           className="flex-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -53,7 +54,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
         >
           {/* Hero Section */}
-          <motion.section
+          <m.section
             id="home"
             ref={heroRef}
             style={{ scale: heroScale, opacity: heroOpacity }}
@@ -65,23 +66,23 @@ export default function Home() {
               <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-700/8 blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }} />
             </div>
             {/* Hero content */}
-            <motion.div
+            <m.div
               style={{ y: heroTextY }}
               className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 pt-24 pb-20"
             >
-              <motion.div
+              <m.div
                 variants={container}
                 initial="hidden"
                 animate="show"
                 className="text-center max-w-4xl mx-auto space-y-8"
               >
-                <motion.div variants={item}>
+                <m.div variants={item}>
                   <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium tracking-wider">
                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
                     GenAI Engineer
                   </span>
-                </motion.div>
-                <motion.h1
+                </m.div>
+                <m.h1
                   variants={item}
                   className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
                 >
@@ -91,11 +92,11 @@ export default function Home() {
                   >
                     Aakash Jammula
                   </span>
-                </motion.h1>
-                <motion.p variants={item} className="text-gray-300 text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
+                </m.h1>
+                <m.p variants={item} className="text-gray-300 text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
                   <Typewriter text="Building innovative GenAI solutions with LLMs" delay={50} />
-                </motion.p>
-                <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center">
+                </m.p>
+                <m.div variants={item} className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }) }}>
                       View Projects <ArrowRight className="ml-2 h-4 w-4" />
@@ -106,8 +107,8 @@ export default function Home() {
                       Contact Me
                     </Link>
                   </Button>
-                </motion.div>
-                <motion.div variants={item} className="flex space-x-3 justify-center">
+                </m.div>
+                <m.div variants={item} className="flex space-x-3 justify-center">
                   {[
                     { href: "https://github.com/Aakashjammula", icon: Github, label: "GitHub" },
                     { href: "https://www.linkedin.com/in/aakashjammula/", icon: Linkedin, label: "LinkedIn" },
@@ -121,31 +122,31 @@ export default function Home() {
                       </Button>
                     </Link>
                   ))}
-                </motion.div>
-              </motion.div>
-            </motion.div>
+                </m.div>
+              </m.div>
+            </m.div>
             {/* Scroll indicator */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2, duration: 1 }}
               className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
             >
               <span className="text-gray-500 text-xs tracking-[0.2em] uppercase">Scroll</span>
-              <motion.div
+              <m.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                 className="w-px h-8 bg-gradient-to-b from-indigo-400 to-transparent"
               />
-            </motion.div>
-          </motion.section>
+            </m.div>
+          </m.section>
 
           {/* Wrapper for content sliding over hero */}
           <div className="relative z-10 bg-gray-50 dark:bg-gray-900 pb-10 rounded-b-[2.5rem] shadow-2xl">
             {/* Stats Section */}
             <section className="w-full py-12 md:py-16 bg-white dark:bg-gray-800">
               <div className="container mx-auto px-4 md:px-6">
-                <motion.div
+                <m.div
                   variants={container}
                   initial="show"
                   animate="show"
@@ -155,7 +156,7 @@ export default function Home() {
                   <StatCard number="5+" label="Projects Completed" iconName="Folder" />
                   <StatCard number="3+" label="LLM Models Used" iconName="Brain" />
                   <StatCard number="2+" label="GenAI Solutions" iconName="Brain" />
-                </motion.div>
+                </m.div>
               </div>
             </section>
 
@@ -177,13 +178,13 @@ export default function Home() {
                     <Timeline />
                   </div>
 
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 1, scale: 1 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="mt-12 md:mt-16 w-full"
                   >
                     <TechStack />
-                  </motion.div>
+                  </m.div>
                 </div>
               </div>
             </section>
@@ -196,7 +197,7 @@ export default function Home() {
                   subtitle="Explore some of my recent work in GenAI and LLMs" 
                 />
 
-                <motion.div
+                <m.div
                   variants={container}
                   initial="show"
                   animate="show"
@@ -220,7 +221,7 @@ export default function Home() {
                       index={1}
                     />
                   </div>
-                </motion.div>
+                </m.div>
 
                 <div className="flex justify-center mt-10 md:mt-12">
                   <Button asChild variant="outline" size="lg">
@@ -264,14 +265,14 @@ export default function Home() {
               <div className="container mx-auto px-4 md:px-6">
                 <div className="text-center mb-16">
                   <LayoutGroup>
-                    <motion.h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 flex justify-center flex-wrap items-center gap-3 md:gap-4" layout>
-                      <motion.span
+                    <m.h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 flex justify-center flex-wrap items-center gap-3 md:gap-4" layout>
+                      <m.span
                         className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 pb-2"
                         layout
                         transition={{ type: "spring", damping: 30, stiffness: 400 }}
                       >
                         Get In
-                      </motion.span>
+                      </m.span>
                       <TextRotate
                         texts={[
                           "Touch.",
@@ -289,9 +290,9 @@ export default function Home() {
                         transition={{ type: "spring", damping: 30, stiffness: 400 }}
                         rotationInterval={2500}
                       />
-                    </motion.h2>
+                    </m.h2>
                   </LayoutGroup>
-                  <motion.p
+                  <m.p
                     initial={{ opacity: 0, filter: "blur(5px)", y: 20 }}
                     whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                     viewport={{ once: false }}
@@ -299,7 +300,7 @@ export default function Home() {
                     className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-medium"
                   >
                     Have a project in mind or want to collaborate? Let's talk!
-                  </motion.p>
+                  </m.p>
                 </div>
 
                 <ScrollReveal delay={0.2} className="max-w-md mx-auto">
@@ -310,7 +311,7 @@ export default function Home() {
                       { icon: Github, text: "github.com/Aakashjammula", href: "https://github.com/Aakashjammula", target: "_blank" },
                       { icon: Twitter, text: "@aakashjammula6", href: "https://twitter.com/aakashjammula6", target: "_blank" },
                     ].map((contactItem, index) => (
-                      <motion.a
+                      <m.a
                         key={index}
                         href={contactItem.href}
                         target={contactItem.target}
@@ -324,7 +325,7 @@ export default function Home() {
                         <span className="text-lg text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white break-all">
                           {contactItem.text}
                         </span>
-                      </motion.a>
+                      </m.a>
                     ))}
                   </div>
                 </ScrollReveal>
@@ -335,15 +336,15 @@ export default function Home() {
             <footer className="w-full py-8 bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
               <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <motion.p
+                  <m.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left"
                   >
                     © {new Date().getFullYear()} Aakash Jammula. All rights reserved.
-                  </motion.p>
-                  <motion.div
+                  </m.p>
+                  <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
@@ -361,12 +362,12 @@ export default function Home() {
                     >
                       Projects
                     </Link>
-                  </motion.div>
+                  </m.div>
                 </div>
               </div>
             </footer>
           </div>
-        </motion.main>
+        </m.main>
       </AnimatePresence>
     </div>
   )
