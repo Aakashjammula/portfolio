@@ -95,11 +95,11 @@ export function ResourceCard({
                     style={{ backgroundColor: brandColor }}
                 >
                     {logo.startsWith("/") || logo.startsWith("http") ? (
-                        <div className="bg-white rounded-2xl p-3 shadow-md">
+                        <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 ring-1 ring-white/20">
                             <img
                                 src={logo}
                                 alt={`${title} logo`}
-                                className="h-14 w-14 object-contain"
+                                className="h-14 w-14 object-contain drop-shadow-lg"
                             />
                         </div>
                     ) : (
