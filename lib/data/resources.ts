@@ -291,7 +291,7 @@ export const resources: Resource[] = [
         url: "https://www.frontendmentor.io/",
         category: "course",
         logo: "/images/resources/frontend-mentor.png",
-        brandColor: "#FFFFFF",
+        brandColor: "#3F54A3",
     },
     {
         title: "MIT OpenCourseWare",
@@ -339,7 +339,7 @@ export const resources: Resource[] = [
         url: "https://www.deeplearning.ai/",
         category: "course",
         logo: "/images/resources/deeplearning-ai.png",
-        brandColor: "#FFFFFF",
+        brandColor: "#0B2545",
     },
     {
         title: "TryHackMe",
@@ -355,7 +355,7 @@ export const resources: Resource[] = [
         url: "https://www.fast.ai/",
         category: "course",
         logo: "/images/resources/fast-ai.png",
-        brandColor: "#FFFFFF",
+        brandColor: "#1a1a2e",
     },
     {
         title: "GitHub Skills",
@@ -387,7 +387,7 @@ export const resources: Resource[] = [
         url: "https://cs50.harvard.edu/x/",
         category: "course",
         logo: "/images/resources/harvard-cs50.svg",
-        brandColor: "#FFFFFF",
+        brandColor: "#A51C30",
     },
     {
         title: "IBM SkillsBuild",
@@ -395,7 +395,7 @@ export const resources: Resource[] = [
         url: "https://skillsbuild.org/",
         category: "course",
         logo: "/images/resources/ibm-skillsbuild.png",
-        brandColor: "#FFFFFF",
+        brandColor: "#161616",
     },
     {
         title: "The Odin Project",
@@ -403,7 +403,7 @@ export const resources: Resource[] = [
         url: "https://www.theodinproject.com/",
         category: "course",
         logo: "/images/resources/the-odin-project.png",
-        brandColor: "#FFFFFF",
+        brandColor: "#1a1a1a",
     },
     {
         title: "Kaggle Learn",
