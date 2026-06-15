@@ -89,18 +89,13 @@ export function ResourceCard({
                     />
                 )}
 
-                {/* Banner with brand color and logo */}
-                <div
-                    className="flex items-center justify-center h-40 relative overflow-hidden"
-                    style={{ backgroundColor: brandColor }}
-                >
-                    {/* Subtle gradient overlay for depth */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent" />
+                {/* Banner with neutral background and logo */}
+                <div className="flex items-center justify-center h-40 relative overflow-hidden bg-gray-100 dark:bg-gray-800/60">
                     {logo.startsWith("/") || logo.startsWith("http") ? (
                         <img
                             src={logo}
                             alt={`${title} logo`}
-                            className="relative z-10 drop-shadow-lg h-24 w-auto max-w-[85%] object-contain"
+                            className="relative z-10 h-16 w-auto max-w-[70%] object-contain"
                         />
                     ) : (
                         <span className="text-6xl relative z-10 drop-shadow-lg">
