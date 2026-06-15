@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { NavBar } from "@/components/nav-bar"
 import { SmoothScrollProvider } from "@/components/smooth-scroll"
 import { InteractiveBackground } from "@/components/interactive-background"
-import { ChatbotWidget } from "@/components/chatbot/ChatbotWidget"
 import { MotionProvider } from "@/components/motion-provider"
 import "./globals.css"
 
@@ -45,7 +44,6 @@ export default function RootLayout({
               <InteractiveBackground />
               <NavBar />
               {children}
-              <ChatbotWidget />
             </SmoothScrollProvider>
           </ThemeProvider>
         </MotionProvider>
