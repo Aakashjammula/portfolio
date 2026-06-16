@@ -12,7 +12,7 @@ export default function BlogPage() {
   )
 
   return (
-    <div className="container px-4 py-12 md:px-6 md:py-24">
+    <div className="container mx-auto px-4 py-12 md:px-6 md:py-24">
       <Button variant="ghost" asChild className="mb-8">
         <Link href="/">
           <ArrowLeft className="mr-2 h-4 w-4" />

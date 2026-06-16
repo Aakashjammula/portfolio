@@ -36,7 +36,7 @@ export default function ResourcesPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="container px-4 py-12 md:px-6 md:py-24"
+            className="container mx-auto px-4 py-12 md:px-6 md:py-24"
         >
             <m.div
                 initial={{ x: -20, opacity: 0 }}

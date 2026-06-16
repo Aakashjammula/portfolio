@@ -7,6 +7,7 @@ import { NavBar } from "@/components/nav-bar"
 import { SmoothScrollProvider } from "@/components/smooth-scroll"
 import { InteractiveBackground } from "@/components/interactive-background"
 import { MotionProvider } from "@/components/motion-provider"
+import { ScrollToTop } from "@/components/scroll-to-top"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -43,6 +44,7 @@ export default function RootLayout({
         <MotionProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
             <SmoothScrollProvider>
+              <ScrollToTop />
               <InteractiveBackground />
               <NavBar />
               {children}
