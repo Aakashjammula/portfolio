@@ -1,5 +1,7 @@
 import type React from "react"
 import { Inter } from "next/font/google"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { NavBar } from "@/components/nav-bar"
 import { SmoothScrollProvider } from "@/components/smooth-scroll"
@@ -47,6 +49,8 @@ export default function RootLayout({
             </SmoothScrollProvider>
           </ThemeProvider>
         </MotionProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )
