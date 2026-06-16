@@ -205,10 +205,10 @@ export default function Home() {
                 >
                   <div className="min-h-[260px] sm:min-h-[280px] flex"> {/* Flex to make card take full height */}
                     <ProjectCard
-                      title="Appointment Scheduling Agent"
-                      description="An intelligent call agent that automatically handles book, cancel, update, and retrieve appointments through calls."
-                      tags={["python", "twilio", "LangChain", "gemini", "llm agents"]}
-                      link="https://github.com/aakashjammula6/appointment-agent"
+                      title="Claude Skills"
+                      description="My collection of Claude Code skills — built to work across Claude Code, OpenCode, Codex CLI, and Copilot CLI. Currently includes webagent for browser automation with built-in token tracking; more skills are being added over time."
+                      tags={["claude code", "ai agents", "browser automation"]}
+                      link="https://github.com/Aakashjammula/skills"
                       index={0}
                     />
                   </div>

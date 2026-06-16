@@ -1,0 +1,97 @@
+---
+title: "webagent: The Claude Code Plugin Skill That Turns Any Agent Into a Web Agent"
+description: "I built claude-skills, a Claude Code plugin that works across Claude Code, OpenCode, Codex CLI, and Copilot CLI. Its first skill, webagent, gives any of them browser automation — plus token tracking so it never runs away on cost."
+date: "2026-06-16"
+readTime: "6 min read"
+---
+
+claude-skills is a plugin, not a one-off script — skills live inside it. The first one I built, webagent, gives whichever agent it's dropped into full browser automation: find content, scrape data, research a topic, download media, or navigate and interact with a site, all from a plain-language request.
+
+---
+
+## One Plugin, Any Platform
+
+Skills follow the open SKILL.md standard, so the plugin isn't locked to one tool. According to its own compatibility table, it works across every major coding agent without modification:
+
+- Claude Code — skills + hooks supported
+- OpenCode — skills + hooks supported (Claude Code compatible config)
+- Codex CLI (OpenAI) — skills + hooks supported
+- Copilot CLI — skills + hooks supported
+- Antigravity CLI (Google) — skills supported, hooks not yet ported
+
+Drop webagent into any of these and that agent can suddenly browse, scrape, and download — it's not a Claude Code-only trick.
+
+---
+
+## What webagent Can Actually Do
+
+Every request gets classified into one of five task types before anything happens:
+
+- find_content — videos, articles, examples, demos
+- scrape_data — structured data extraction from a page
+- research — gather and compare information across sources
+- download — video/audio/file download (saved to ~/Downloads/webagent)
+- navigate — a deterministic URL + action, e.g. "go to github.com/settings and find 2FA"
+
+In practice that looks like: "go to youtube and find me a video on Claude Code hooks", or "download this YouTube video", or "go to docs.aws.amazon.com/bedrock and find all Moonshot AI model documents" — webagent figures out which mode it's in and takes it from there.
+
+---
+
+## It Plans Before It Acts — Unless You Already Have One
+
+Most agents fail because they act before they understand what you actually meant. webagent runs three phases: clarify, plan, execute.
+
+- Clarify — one question at a time (topic, then goal, then format) until the request is unambiguous
+- Plan — a step list with a token estimate per step, shown to you before anything runs
+- Execute — runs one step at a time and reports tokens spent after each one
+
+```text
+Step 1: Navigate to youtube.com           [~180 tokens]
+Step 2: Search for query                  [~150 tokens]
+Step 3: Scan results                      [~300 tokens]
+Estimated total: ~630 tokens
+Proceed? (yes / adjust)
+```
+
+If the task is already deterministic — like a direct navigate request — it skips the clarification questions entirely and goes straight to the plan. You don't get interrogated for something you already spelled out.
+
+---
+
+## Token Tracking Is the Specialty
+
+This is the part I care most about. A PostToolUse hook fires after every browser action, reads the actual tool output, and counts real tokens — not an upfront guess — accumulating a running session total.
+
+```text
+2026-06-15T10:23:44Z | browser_navigate | 142 tokens | session total: 4821
+2026-06-15T10:45:00Z | HARD STOP | session total 50142 exceeded 50000 cap
+```
+
+At 50,000 tokens the hook injects a hard stop and the agent halts all further browser tool calls — so a research task can't quietly burn through your context window without you noticing.
+
+---
+
+## Installing It
+
+```bash
+# Mac / Linux
+git clone https://github.com/Aakashjammula/skills
+cd skills
+bash scripts/install.sh
+```
+
+```powershell
+# Windows (run as Administrator for symlinks)
+git clone https://github.com/Aakashjammula/skills
+cd skills
+.\scripts\install.ps1
+```
+
+The install script symlinks every skill into each platform's discovery path automatically — no manual config wiring per tool.
+
+---
+
+## More Skills Coming
+
+webagent is one skill living inside the claude-skills plugin — I'm adding more over time. Adding a new one is intentionally low-friction: drop a SKILL.md into `skills/<name>/`, no extra config required.
+
+[claude-skills GitHub Repo](https://github.com/Aakashjammula/skills)

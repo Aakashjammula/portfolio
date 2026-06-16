@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Colors */
   --color-background: hsl(var(--background));
@@ -297,4 +299,53 @@ pre code .token.italic {
 
 pre code .token.entity {
   cursor: help;
+}
+
+/* Editorial article styling (blog post page) */
+.article-body {
+  counter-reset: section;
+}
+
+.article-h2::before {
+  counter-increment: section;
+  content: counter(section, decimal-leading-zero);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(238 75% 70%);
+  letter-spacing: 0.05em;
+}
+
+.article-p:first-of-type::first-letter {
+  font-size: 3.4em;
+  font-weight: 700;
+  line-height: 0.85;
+  float: left;
+  margin-right: 0.08em;
+  color: hsl(238 75% 75%);
+}
+
+.article-pre {
+  position: relative;
+  padding-top: 2.5rem;
+}
+
+.article-pre[data-language]::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.75rem 0.75rem 0 0;
 }

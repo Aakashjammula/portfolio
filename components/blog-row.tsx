@@ -3,6 +3,7 @@
 import Link from "next/link"
 import * as m from "framer-motion/m"
 import { ArrowRight } from "lucide-react"
+import { formatDate } from "@/lib/utils"
 
 interface BlogRowProps {
   post: {
@@ -33,7 +34,7 @@ export function BlogRow({ post, index }: BlogRowProps) {
 
           <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-12 w-full px-2">
             <div className="text-gray-500 dark:text-gray-400 font-medium text-sm md:w-32 flex-shrink-0">
-              {post.date}
+              {formatDate(post.date)}
             </div>
             
             <div className="flex-grow group-hover:translate-x-6 transition-transform duration-500 ease-out">

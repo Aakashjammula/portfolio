@@ -11,10 +11,11 @@ import { SectionHeading } from "@/components/section-heading"
 export default function ProjectsPage() {
   const projects = [
     {
-      title: "Appointment Scheduling Agent",
-      description: "An intelligent call agent that automatically handles book, cancel, update, and retrieve appointments.",
-      tags: ["python", "twilio", "LangChain", "gemini", "llm agents"],
-      link: "https://github.com/aakashjammula6/appointment-agent",
+      title: "Claude Skills",
+      description:
+        "My collection of Claude Code skills — built to work across Claude Code, OpenCode, Codex CLI, and Copilot CLI. Currently includes webagent for browser automation with built-in token tracking; more skills are being added over time.",
+      tags: ["claude code", "ai agents", "browser automation"],
+      link: "https://github.com/Aakashjammula/skills",
     },
     {
       title: "LangChain Deep Researcher",
@@ -22,6 +23,12 @@ export default function ProjectsPage() {
         "An automated research agent that iteratively searches, summarizes, and refines information using LangChain and Gemini.",
       tags: ["python", "LangChain", "LangGraph", "gemini", "ollama"],
       link: "https://github.com/Aakashjammula/langchain-deep-researcher",
+    },
+    {
+      title: "Appointment Scheduling Agent",
+      description: "An intelligent call agent that automatically handles book, cancel, update, and retrieve appointments.",
+      tags: ["python", "twilio", "LangChain", "gemini", "llm agents"],
+      link: "https://github.com/aakashjammula6/appointment-agent",
     },
   ]
 
